@@ -24,6 +24,7 @@ class SignInActivity : AppCompatActivity(), SignInCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySignInBinding = ActivitySignInBinding.inflate(layoutInflater)
+        signInHeaderBinding = SigninHeaderBinding.inflate(layoutInflater)
         setContentView(activitySignInBinding.root)
 
         val factory = ViewModelFactory.getInstance(this)
@@ -66,7 +67,7 @@ class SignInActivity : AppCompatActivity(), SignInCallback {
     }
 
     override fun onSuccess() {
-        Intent(this, HomeActivity::class.java)
+        startActivity(Intent(this, HomeActivity::class.java))
         this.finish()
     }
 

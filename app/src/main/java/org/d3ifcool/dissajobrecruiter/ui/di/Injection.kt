@@ -7,13 +7,14 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.room.DissajobRecruiterDa
 import org.d3ifcool.dissajobrecruiter.data.source.remote.RemoteDataSource
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.JobHelper
+import org.d3ifcool.dissajobrecruiter.utils.UserHelper
 
 object Injection {
     fun provideRepository(context: Context): DataRepository {
 
         val database = DissajobRecruiterDatabase.getInstance(context)
 
-        val remoteDataSource = RemoteDataSource.getInstance(JobHelper)
+        val remoteDataSource = RemoteDataSource.getInstance(JobHelper, UserHelper)
         val localDataSource = LocalDataSource.getInstance(database.jobDao(), database.userDao())
         val appExecutors = AppExecutors()
 

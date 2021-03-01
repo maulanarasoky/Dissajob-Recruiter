@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityHomeBinding
@@ -33,8 +34,9 @@ class HomeActivity : AppCompatActivity() {
         activityHomeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(activityHomeBinding.root)
 
-        if (AuthHelper.currentUser == null) {
+        if (FirebaseAuth.getInstance().currentUser == null) {
             startActivity(Intent(this, SignInActivity::class.java))
+            this.finish()
             return
         }
 
@@ -64,7 +66,7 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
-        if (savedInstanceState == null && bottomNavState == 0) {
+        if (savedInstanceState == null || bottomNavState == 0) {
             activityHomeBinding.bottomNavigation.selectedItemId = R.id.home
         }
     }

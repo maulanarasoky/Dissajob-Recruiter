@@ -24,6 +24,7 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySignUpBinding = ActivitySignUpBinding.inflate(layoutInflater)
+        signUpHeaderBinding = SignupHeaderBinding.inflate(layoutInflater)
         setContentView(activitySignUpBinding.root)
 
         val factory = ViewModelFactory.getInstance(this)
