@@ -19,12 +19,21 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:tabIndicatorColor="@android:color/white"
-        app:tabTextColor="@android:color/white" />
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:tabIndicatorColor="@color/softBlack"
+        app:tabTextColor="@color/softBlack" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height=".7dp"
+        android:background="@drawable/shadow"
+        app:layout_constraintTop_toBottomOf="@id/tabs"
+        app:layout_constraintEnd_toEndOf="@id/tabs"
+        app:layout_constraintStart_toStartOf="@id/tabs" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

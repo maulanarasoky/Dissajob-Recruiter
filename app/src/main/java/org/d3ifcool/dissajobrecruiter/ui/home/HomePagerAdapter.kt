@@ -32,5 +32,5 @@ class HomePagerAdapter(private val mContext: Context, fm: FragmentManager) :
         TAB_TITLES[position]
     )
 
-    override fun getCount(): Int = 2
+    override fun getCount(): Int = 4
 }
