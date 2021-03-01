@@ -2,9 +2,9 @@ package org.d3ifcool.dissajobrecruiter.ui.home
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseUser
@@ -14,6 +14,8 @@ import org.d3ifcool.dissajobrecruiter.ui.auth.AuthViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.JobFragment
 import org.d3ifcool.dissajobrecruiter.ui.notification.NotificationFragment
 import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileFragment
+import org.d3ifcool.dissajobrecruiter.ui.signin.SignInActivity
+import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var activityHomeBinding: ActivityHomeBinding
@@ -31,10 +33,14 @@ class HomeActivity : AppCompatActivity() {
         activityHomeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(activityHomeBinding.root)
 
-        loadHomeFragment()
-//        val viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
-//        mUserObserver = Observer { updateUI(savedInstanceState) }
-//        viewModel.authState.observe(this, mUserObserver)
+        if (AuthHelper.currentUser == null) {
+            startActivity(Intent(this, SignInActivity::class.java))
+            return
+        }
+
+        val viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+        mUserObserver = Observer { updateUI(savedInstanceState) }
+        viewModel.authState.observe(this, mUserObserver)
     }
 
     private fun updateUI(savedInstanceState: Bundle?) {

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import org.d3ifcool.dissajobrecruiter.data.source.DataRepository
 import org.d3ifcool.dissajobrecruiter.ui.di.Injection
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
+import org.d3ifcool.dissajobrecruiter.ui.signin.SignInViewModel
+import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpViewModel
 
 class ViewModelFactory private constructor(private val dataRepository: DataRepository): ViewModelProvider.NewInstanceFactory(){
 
@@ -23,6 +25,12 @@ class ViewModelFactory private constructor(private val dataRepository: DataRepos
         return when {
             modelClass.isAssignableFrom(JobViewModel::class.java) -> {
                 JobViewModel(dataRepository) as T
+            }
+            modelClass.isAssignableFrom(SignUpViewModel::class.java) -> {
+                SignUpViewModel(dataRepository) as T
+            }
+            modelClass.isAssignableFrom(SignInViewModel::class.java) -> {
+                SignInViewModel(dataRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

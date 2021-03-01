@@ -9,6 +9,9 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.JobEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.RemoteDataSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
+import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
@@ -16,7 +19,7 @@ class DataRepository private constructor(
     private val remoteDataSource: RemoteDataSource, private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
 ) :
-    JobDataSource {
+    JobDataSource, UserDataSource {
 
     companion object {
         @Volatile
@@ -73,4 +76,15 @@ class DataRepository private constructor(
             }
         }.asLiveData()
     }
+
+    override fun createUser(
+        email: String,
+        password: String,
+        user: UserResponseEntity,
+        callback: SignUpCallback
+    ) = appExecutors.diskIO()
+        .execute { remoteDataSource.createUser(email, password, user, callback) }
+
+    override fun signIn(email: String, password: String, callback: SignInCallback) = appExecutors.diskIO()
+        .execute { remoteDataSource.signIn(email, password, callback) }
 }
