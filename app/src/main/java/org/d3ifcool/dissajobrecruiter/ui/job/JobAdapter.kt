@@ -3,8 +3,6 @@ package org.d3ifcool.dissajobrecruiter.ui.job
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -16,27 +14,22 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.JobEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.UserEntity
+import org.d3ifcool.dissajobrecruiter.data.entity.JobEntity
+import org.d3ifcool.dissajobrecruiter.data.entity.UserEntity
 import org.d3ifcool.dissajobrecruiter.databinding.JobItemsBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class JobAdapter : PagedListAdapter<JobEntity, JobAdapter.JobViewHolder>(DIFF_CALLBACK) {
+class JobAdapter : RecyclerView.Adapter<JobAdapter.JobViewHolder>() {
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<JobEntity>() {
-            override fun areItemsTheSame(oldItem: JobEntity, newItem: JobEntity): Boolean {
-                return oldItem.id == newItem.id
-            }
+    private var listData = ArrayList<JobEntity>()
 
-            override fun areContentsTheSame(oldItem: JobEntity, newItem: JobEntity): Boolean {
-                return oldItem == newItem
-            }
-        }
+    fun setData(data: List<JobEntity>) {
+        if (data.isEmpty()) return
+        this.listData.clear()
+        this.listData.addAll(data)
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobViewHolder {
         val itemsJobBinding =
@@ -45,10 +38,7 @@ class JobAdapter : PagedListAdapter<JobEntity, JobAdapter.JobViewHolder>(DIFF_CA
     }
 
     override fun onBindViewHolder(holder: JobViewHolder, position: Int) {
-        val job = getItem(position)
-        if (job != null) {
-            holder.bindItem(job)
-        }
+        holder.bindItem(listData[position])
     }
 
     inner class JobViewHolder(private val binding: JobItemsBinding) :
@@ -112,4 +102,6 @@ class JobAdapter : PagedListAdapter<JobEntity, JobAdapter.JobViewHolder>(DIFF_CA
                 })
         }
     }
+
+    override fun getItemCount(): Int = listData.size
 }

@@ -3,11 +3,12 @@ package org.d3ifcool.dissajobrecruiter.ui.signup
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.entity.UserEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivitySignUpBinding
 import org.d3ifcool.dissajobrecruiter.databinding.SignupHeaderBinding
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInActivity
@@ -21,16 +22,26 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
 
     private lateinit var viewModel: SignUpViewModel
 
+    private lateinit var dialog: SweetAlertDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySignUpBinding = ActivitySignUpBinding.inflate(layoutInflater)
-        signUpHeaderBinding = SignupHeaderBinding.inflate(layoutInflater)
         setContentView(activitySignUpBinding.root)
+
+        signUpHeaderBinding = SignupHeaderBinding.inflate(layoutInflater,
+            activitySignUpBinding.root.parent as ViewGroup?, true)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignUpViewModel::class.java]
 
+        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+
         signUpHeaderBinding.imgBackBtn.setOnClickListener {
+            finish()
+        }
+
+        signUpHeaderBinding.signInBtn.setOnClickListener {
             finish()
         }
 
@@ -40,10 +51,15 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
     }
 
     private fun signUp(email: String, password: String) {
+        dialog.titleText = resources.getString(R.string.loading)
+        dialog.setCancelable(false)
+        dialog.show()
+
+
         val firstName = activitySignUpBinding.etFirstName.text.toString().trim()
         val lastName = activitySignUpBinding.etLastName.text.toString().trim()
         val role = activitySignUpBinding.etRole.text.toString().trim()
-        val user = UserResponseEntity(firstName = firstName, lastName = lastName, role = role)
+        val user = UserEntity(firstName = firstName, lastName = lastName, role = role)
 
         viewModel.signUp(email, password, user, this)
     }
@@ -55,11 +71,11 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
             return
         }
 
-        if (TextUtils.isEmpty(activitySignUpBinding.etLastName.text.toString().trim())) {
-            activitySignUpBinding.etLastName.error =
-                resources.getString(R.string.error_alert, "Nama belakang")
-            return
-        }
+//        if (TextUtils.isEmpty(activitySignUpBinding.etLastName.text.toString().trim())) {
+//            activitySignUpBinding.etLastName.error =
+//                resources.getString(R.string.error_alert, "Nama belakang")
+//            return
+//        }
 
         if (TextUtils.isEmpty(activitySignUpBinding.etEmail.text.toString().trim())) {
             activitySignUpBinding.etEmail.error = resources.getString(R.string.error_alert, "Email")
@@ -104,13 +120,20 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
     }
 
     override fun onSuccess() {
-        Toast.makeText(this, resources.getString(R.string.success_signup), Toast.LENGTH_SHORT)
-            .show()
-        startActivity(Intent(this, SignInActivity::class.java))
-        this.finish()
+        dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+        dialog.titleText = resources.getString(R.string.success_signup)
+        dialog.setConfirmClickListener {
+            this.finish()
+        }
+        dialog.show()
     }
 
     override fun onFailure(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
+        dialog.titleText = message
+        dialog.setConfirmClickListener {
+            it.dismissWithAnimation()
+        }
+        dialog.show()
     }
 }

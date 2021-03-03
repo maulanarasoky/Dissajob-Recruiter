@@ -23,7 +23,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/first_name"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/softBlack"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header" />
@@ -52,7 +52,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/last_name"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/softBlack"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etFirstName" />
@@ -81,7 +81,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/role"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/softBlack"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etLastName" />
@@ -110,7 +110,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/email"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/softBlack"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etRole" />
@@ -139,7 +139,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/password"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/softBlack"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etEmail" />
@@ -168,7 +168,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/confirm_password"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/softBlack"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etPassword" />
@@ -196,10 +196,14 @@
         android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginEnd="@dimen/margin_16dp"
+        android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
         android:fontFamily="@font/firasans_regular"
         android:paddingTop="@dimen/margin_16dp"
         android:paddingBottom="@dimen/margin_16dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
         android:text="@string/daftar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

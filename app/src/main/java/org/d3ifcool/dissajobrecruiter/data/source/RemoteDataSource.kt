@@ -1,9 +1,11 @@
-package org.d3ifcool.dissajobrecruiter.data.source.remote
+package org.d3ifcool.dissajobrecruiter.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobResponseEntity
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.entity.JobDetailsEntity
+import org.d3ifcool.dissajobrecruiter.data.entity.JobEntity
+import org.d3ifcool.dissajobrecruiter.data.entity.UserEntity
+import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
@@ -28,7 +30,7 @@ class RemoteDataSource private constructor(
     fun createUser(
         email: String,
         password: String,
-        user: UserResponseEntity,
+        user: UserEntity,
         callback: SignUpCallback
     ) {
         EspressoIdlingResource.increment()
@@ -65,13 +67,30 @@ class RemoteDataSource private constructor(
         })
     }
 
-    fun getJobs(callback: LoadJobsCallback): LiveData<ApiResponse<List<JobResponseEntity>>> {
+    fun createJob(job: JobDetailsEntity, callback: JobPostCallback) {
         EspressoIdlingResource.increment()
-        val resultJob = MutableLiveData<ApiResponse<List<JobResponseEntity>>>()
-        jobHelper.getJobs(object : LoadJobsCallback {
-            override fun onAllJobsReceived(jobResponse: List<JobResponseEntity>): List<JobResponseEntity> {
-                resultJob.value = ApiResponse.success(callback.onAllJobsReceived(jobResponse))
+        jobHelper.createJob(job, object : JobPostCallback {
+            override fun onSuccess() {
+                callback.onSuccess()
                 EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailure(message: String) {
+                callback.onFailure(message)
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
+
+    fun getJobs(callback: LoadJobsCallback): LiveData<List<JobEntity>> {
+        EspressoIdlingResource.increment()
+        val resultJob = MutableLiveData<List<JobEntity>>()
+        jobHelper.getJobs(object : LoadJobsCallback {
+            override fun onAllJobsReceived(jobResponse: List<JobEntity>): List<JobEntity> {
+                resultJob.value = callback.onAllJobsReceived(jobResponse)
+                if (EspressoIdlingResource.espressoTestIdlingResource.isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
                 return jobResponse
             }
         })
@@ -79,6 +98,6 @@ class RemoteDataSource private constructor(
     }
 
     interface LoadJobsCallback {
-        fun onAllJobsReceived(jobResponse: List<JobResponseEntity>): List<JobResponseEntity>
+        fun onAllJobsReceived(jobResponse: List<JobEntity>): List<JobEntity>
     }
 }

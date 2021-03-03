@@ -17,7 +17,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="password">Password</string>
     <string name="error_alert">%1$s tidak boleh kosong</string>
-    <string name="password_doesnt_match">%1$s tidak boleh kosong</string>
+    <string name="password_doesnt_match">%1$s tidak cocok</string>
     <string name="tidak_ada_pekerjaan">Tidak ada pekerjaan</string>
     <string name="title">Title</string>
     <string name="deskripsi">Deskripsi</string>
@@ -25,7 +25,7 @@
     <string name="employment">Employment</string>
     <string name="industri">Industri</string>
     <string name="gaji">Gaji</string>
-    <string name="post">Post</string>
+    <string name="publish">Publish</string>
     <string name="post_pekerjaan">Post pekerjaan</string>
     <string name="role">Role</string>
     <string name="bergabung_sekarang_di_dissajob">Bergabung sekarang di Dissajob</string>
@@ -37,4 +37,6 @@
     <string name="success_signup">Silahkan lakukan verifikasi email</string>
     <string name="email_is_not_verified">Silahkan lakukan verifikasi email terlebih dahulu</string>
     <string name="success_post_job">Pekerjaan berhasil ditambahkan</string>
+    <string name="failure_post_job">Pekerjaan gagal ditambahkan</string>
+    <string name="loading">Loading</string>
 </resources>

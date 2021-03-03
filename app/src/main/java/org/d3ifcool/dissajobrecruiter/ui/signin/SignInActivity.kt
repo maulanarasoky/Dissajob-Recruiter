@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.ui.signin
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -24,15 +25,17 @@ class SignInActivity : AppCompatActivity(), SignInCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activitySignInBinding = ActivitySignInBinding.inflate(layoutInflater)
-        signInHeaderBinding = SigninHeaderBinding.inflate(layoutInflater)
         setContentView(activitySignInBinding.root)
+
+        signInHeaderBinding =
+            SigninHeaderBinding.inflate(
+                layoutInflater,
+                activitySignInBinding.root.parent as ViewGroup?, true
+            )
+
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignInViewModel::class.java]
-
-        signInHeaderBinding.imgBackBtn.setOnClickListener {
-            finish()
-        }
 
         activitySignInBinding.signInBtn.setOnClickListener {
             formValidation()
