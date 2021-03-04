@@ -7,67 +7,61 @@
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/margin_16dp">
 
-    <ImageView
-        android:id="@+id/imgRecruiter"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/tvJobTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/softBlack"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imgRecruiter"
-        app:layout_constraintTop_toTopOf="@id/imgRecruiter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Job title" />
 
     <TextView
-        android:id="@+id/tvRecruiterName"
+        android:id="@+id/tvDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:ellipsize="end"
         android:fontFamily="@font/firasans_regular"
         android:maxLines="1"
         android:textColor="@color/softBlack"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imgRecruiter"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvJobTitle"
-        tools:text="Recruiter Name" />
-
-    <TextView
-        android:id="@+id/tvRecruiterAddress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:fontFamily="@font/firasans_regular"
-        android:textColor="@color/softBlack"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imgRecruiter"
-        app:layout_constraintTop_toBottomOf="@id/tvRecruiterName"
-        tools:text="Address" />
+        tools:text="Description" />
 
     <TextView
         android:id="@+id/tvPostedDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_8dp"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/colorPrimary"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imgRecruiter"
-        app:layout_constraintTop_toBottomOf="@id/tvRecruiterAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription"
         tools:text="15 minutes ago" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_open_status"
+        android:fontFamily="@font/firasans_regular"
+        android:paddingStart="@dimen/margin_8dp"
+        android:paddingTop="@dimen/margin_4dp"
+        android:paddingEnd="@dimen/margin_8dp"
+        android:paddingBottom="@dimen/margin_4dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Open" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

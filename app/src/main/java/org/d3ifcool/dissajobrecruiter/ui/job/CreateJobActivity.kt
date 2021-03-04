@@ -9,15 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.entity.JobDetailsEntity
-import org.d3ifcool.dissajobrecruiter.databinding.ActivityJobPostBinding
+import org.d3ifcool.dissajobrecruiter.databinding.ActivityCreateJobBinding
 import org.d3ifcool.dissajobrecruiter.databinding.JobPostHeaderBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
-class JobPostActivity : AppCompatActivity(), JobPostCallback {
+class CreateJobActivity : AppCompatActivity(), JobPostCallback {
 
-    private lateinit var activityJobPostBinding: ActivityJobPostBinding
+    private lateinit var activityJobPostBinding: ActivityCreateJobBinding
     private lateinit var jobPostHeaderBinding: JobPostHeaderBinding
 
     private lateinit var viewModel: JobViewModel
@@ -26,7 +26,7 @@ class JobPostActivity : AppCompatActivity(), JobPostCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityJobPostBinding = ActivityJobPostBinding.inflate(layoutInflater)
+        activityJobPostBinding = ActivityCreateJobBinding.inflate(layoutInflater)
         setContentView(activityJobPostBinding.root)
         jobPostHeaderBinding = JobPostHeaderBinding.inflate(
             layoutInflater,

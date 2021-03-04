@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,11 +13,9 @@ import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentJobBinding
 import org.d3ifcool.dissajobrecruiter.databinding.JobFragmentHeaderBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobFragment : Fragment(), View.OnClickListener {
     private lateinit var fragmentJobBinding: FragmentJobBinding
-    private lateinit var headerJobFragmentBinding: JobFragmentHeaderBinding
 
     private lateinit var jobAdapter: JobAdapter
 
@@ -28,8 +25,6 @@ class JobFragment : Fragment(), View.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         fragmentJobBinding = FragmentJobBinding.inflate(layoutInflater, container, false)
-        headerJobFragmentBinding =
-            JobFragmentHeaderBinding.inflate(layoutInflater, container, true)
         return fragmentJobBinding.root
     }
 
@@ -38,7 +33,7 @@ class JobFragment : Fragment(), View.OnClickListener {
 
         if (activity != null) {
 
-            headerJobFragmentBinding.addJob.setOnClickListener(this)
+            fragmentJobBinding.header.addJob.setOnClickListener(this)
 
             showLoading(true)
             val factory = ViewModelFactory.getInstance(requireContext())
@@ -93,7 +88,7 @@ class JobFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         if (p0?.id == R.id.addJob) {
-            startActivity(Intent(activity, JobPostActivity::class.java))
+            startActivity(Intent(activity, CreateJobActivity::class.java))
         }
     }
 }

@@ -13,7 +13,7 @@
         tools:replace="android:icon">
         <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.signin.SignInActivity" />
-        <activity android:name=".ui.job.JobPostActivity" />
+        <activity android:name=".ui.job.CreateJobActivity" />
         <activity android:name=".ui.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

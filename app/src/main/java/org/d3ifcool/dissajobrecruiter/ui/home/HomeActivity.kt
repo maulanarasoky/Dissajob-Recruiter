@@ -1,9 +1,7 @@
 package org.d3ifcool.dissajobrecruiter.ui.home
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,14 +14,9 @@ import org.d3ifcool.dissajobrecruiter.ui.job.JobFragment
 import org.d3ifcool.dissajobrecruiter.ui.notification.NotificationFragment
 import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileFragment
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInActivity
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var activityHomeBinding: ActivityHomeBinding
-
-    companion object {
-        const val REQUEST_PROFILE = 100
-    }
 
     private var bottomNavState = 0
 
@@ -109,17 +102,5 @@ class HomeActivity : AppCompatActivity() {
                 ProfileFragment::class.java.simpleName
             )
             .commit()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_PROFILE) {
-            if (resultCode == Activity.RESULT_OK) {
-                activityHomeBinding.bottomNavigation.selectedItemId = R.id.profile
-                Log.d("MASUK", "MASUK")
-            } else {
-                Log.d("MASUK", "ENGGAK")
-            }
-        }
     }
 }

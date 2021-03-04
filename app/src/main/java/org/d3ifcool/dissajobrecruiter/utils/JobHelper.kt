@@ -38,8 +38,7 @@ object JobHelper {
                                 data.child("description").value.toString(),
                                 data.child("postedBy").value.toString(),
                                 data.child("postedDate").value.toString(),
-                                data.child("imagePath").value.toString(),
-                                data.child("isOpen").value.toString().toBoolean()
+                                data.child("open").value.toString().toBoolean()
                             )
                             arrJob.add(job)
                         }

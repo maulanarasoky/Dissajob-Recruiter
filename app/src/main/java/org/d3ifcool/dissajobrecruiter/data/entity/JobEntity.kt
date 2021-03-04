@@ -1,9 +1,5 @@
 package org.d3ifcool.dissajobrecruiter.data.entity
 
-import androidx.annotation.NonNull
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.firebase.database.Exclude
 
 data class JobEntity(
@@ -13,8 +9,7 @@ data class JobEntity(
     val description: String? = "-",
     val postedBy: String? = "-",
     val postedDate: String? = "-",
-    val imagePath: String? = "-",
-    val isOpen: Boolean? = false
+    val isOpen: Boolean? = true
 )
 
 data class JobDetailsEntity(
@@ -30,6 +25,5 @@ data class JobDetailsEntity(
     val postedDate: String? = "-",
     val updatedDate: String? = "-",
     val closedDate: String? = "-",
-    val imagePath: String? = "-",
-    val isOpen: Boolean? = false
+    val isOpen: Boolean? = true
 )
