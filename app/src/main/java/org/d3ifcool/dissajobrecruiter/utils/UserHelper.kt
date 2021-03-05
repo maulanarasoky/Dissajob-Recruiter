@@ -2,7 +2,7 @@ package org.d3ifcool.dissajobrecruiter.utils
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import org.d3ifcool.dissajobrecruiter.data.entity.UserEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 
@@ -12,7 +12,7 @@ object UserHelper {
     fun signUp(
         email: String,
         password: String,
-        user: UserEntity,
+        user: UserResponseEntity,
         callback: SignUpCallback
     ) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { insert ->
@@ -42,7 +42,7 @@ object UserHelper {
         }
     }
 
-    private fun insertData(user: UserEntity, callback: SignUpCallback) {
+    private fun insertData(user: UserResponseEntity, callback: SignUpCallback) {
         val db = FirebaseDatabase.getInstance().getReference("users").child("recruiters")
         db.child(user.id.toString()).setValue(user).addOnSuccessListener {
             callback.onSuccess()

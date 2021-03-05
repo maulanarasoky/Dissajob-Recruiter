@@ -1,17 +1,17 @@
 package org.d3ifcool.dissajobrecruiter.utils
 
 import com.google.firebase.database.*
-import org.d3ifcool.dissajobrecruiter.data.entity.JobDetailsEntity
-import org.d3ifcool.dissajobrecruiter.data.entity.JobEntity
-import org.d3ifcool.dissajobrecruiter.data.source.RemoteDataSource
+import org.d3ifcool.dissajobrecruiter.data.source.remote.RemoteDataSource
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobDetailsResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
 
 object JobHelper {
 
     private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("jobs")
-    private val arrJob: MutableList<JobEntity> = mutableListOf()
+    private val arrJob: MutableList<JobResponseEntity> = mutableListOf()
 
-    fun createJob(job: JobDetailsEntity, callback: JobPostCallback) {
+    fun createJob(job: JobDetailsResponseEntity, callback: JobPostCallback) {
         val id = database.push().key
         job.id = id.toString()
         job.postedBy = AuthHelper.currentUser?.uid.toString()
@@ -23,7 +23,7 @@ object JobHelper {
     }
 
     fun getJobs(callback: RemoteDataSource.LoadJobsCallback) {
-        database.orderByChild("posted")
+        database.orderByChild("postedBy").equalTo(AuthHelper.currentUser?.uid.toString())
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {
                 }
@@ -32,7 +32,7 @@ object JobHelper {
                     arrJob.clear()
                     if (dataSnapshot.exists()) {
                         for (data in dataSnapshot.children.reversed()) {
-                            val job = JobEntity(
+                            val job = JobResponseEntity(
                                 data.key.toString(),
                                 data.child("title").value.toString(),
                                 data.child("description").value.toString(),

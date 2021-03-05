@@ -1,8 +1,8 @@
-package org.d3ifcool.dissajobrecruiter.data.entity
+package org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity
 
 import com.google.firebase.database.Exclude
 
-data class JobEntity(
+data class JobResponseEntity(
     @get:Exclude
     var id: String,
     val title: String? = "-",
@@ -12,7 +12,7 @@ data class JobEntity(
     val isOpen: Boolean? = true
 )
 
-data class JobDetailsEntity(
+data class JobDetailsResponseEntity(
     @get:Exclude
     var id: String,
     val title: String? = "-",

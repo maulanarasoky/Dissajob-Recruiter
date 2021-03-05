@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.entity.JobDetailsEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityCreateJobBinding
 import org.d3ifcool.dissajobrecruiter.databinding.JobPostHeaderBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
@@ -106,7 +106,7 @@ class CreateJobActivity : AppCompatActivity(), JobPostCallback {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val currentDate: String = sdf.format(Date())
 
-        val job = JobDetailsEntity(
+        val job = JobDetailsResponseEntity(
             id = "",
             title = title,
             description = description,

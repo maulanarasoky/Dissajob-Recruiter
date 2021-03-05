@@ -1,6 +1,5 @@
 package org.d3ifcool.dissajobrecruiter.ui.signup
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.ViewGroup
@@ -8,10 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.entity.UserEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivitySignUpBinding
 import org.d3ifcool.dissajobrecruiter.databinding.SignupHeaderBinding
-import org.d3ifcool.dissajobrecruiter.ui.signin.SignInActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import java.util.regex.Pattern
 
@@ -29,8 +27,10 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
         activitySignUpBinding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(activitySignUpBinding.root)
 
-        signUpHeaderBinding = SignupHeaderBinding.inflate(layoutInflater,
-            activitySignUpBinding.root.parent as ViewGroup?, true)
+        signUpHeaderBinding = SignupHeaderBinding.inflate(
+            layoutInflater,
+            activitySignUpBinding.root.parent as ViewGroup?, true
+        )
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignUpViewModel::class.java]
@@ -59,7 +59,7 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
         val firstName = activitySignUpBinding.etFirstName.text.toString().trim()
         val lastName = activitySignUpBinding.etLastName.text.toString().trim()
         val role = activitySignUpBinding.etRole.text.toString().trim()
-        val user = UserEntity(firstName = firstName, lastName = lastName, role = role)
+        val user = UserResponseEntity(firstName = firstName, lastName = lastName, role = role)
 
         viewModel.signUp(email, password, user, this)
     }

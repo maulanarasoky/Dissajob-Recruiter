@@ -3,23 +3,30 @@ package org.d3ifcool.dissajobrecruiter.ui.job
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.entity.JobEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.JobEntity
 import org.d3ifcool.dissajobrecruiter.databinding.JobItemsBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class JobAdapter : RecyclerView.Adapter<JobAdapter.JobViewHolder>() {
+class JobAdapter : PagedListAdapter<JobEntity, JobAdapter.JobViewHolder>(DIFF_CALLBACK) {
 
-    private var listData = ArrayList<JobEntity>()
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<JobEntity>() {
+            override fun areItemsTheSame(oldItem: JobEntity, newItem: JobEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    fun setData(data: List<JobEntity>) {
-        if (data.isEmpty()) return
-        this.listData.clear()
-        this.listData.addAll(data)
+            override fun areContentsTheSame(oldItem: JobEntity, newItem: JobEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobViewHolder {
         val itemsJobBinding =
@@ -28,7 +35,10 @@ class JobAdapter : RecyclerView.Adapter<JobAdapter.JobViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: JobViewHolder, position: Int) {
-        holder.bindItem(listData[position])
+        val job = getItem(position)
+        if (job != null) {
+            holder.bindItem(job)
+        }
     }
 
     inner class JobViewHolder(private val binding: JobItemsBinding) :
@@ -60,6 +70,4 @@ class JobAdapter : RecyclerView.Adapter<JobAdapter.JobViewHolder>() {
             }
         }
     }
-
-    override fun getItemCount(): Int = listData.size
 }
