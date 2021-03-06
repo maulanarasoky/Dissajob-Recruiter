@@ -6,8 +6,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.JobDetailsEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.JobEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
 
 @Dao
 interface JobDao {

@@ -8,7 +8,7 @@
     android:padding="@dimen/margin_16dp">
 
     <TextView
-        android:id="@+id/tvJobTitle"
+        android:id="@+id/tvApplicantName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
@@ -18,10 +18,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Job title" />
+        tools:text="Applicant Name" />
 
     <TextView
-        android:id="@+id/tvDescription"
+        android:id="@+id/tvAboutMe"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
@@ -32,7 +32,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvJobTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvApplicantName"
         tools:text="Description" />
 
     <TextView
@@ -53,17 +53,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
-        android:background="@drawable/bg_open_status"
         android:fontFamily="@font/firasans_regular"
         android:paddingStart="@dimen/margin_8dp"
         android:paddingTop="@dimen/margin_4dp"
         android:paddingEnd="@dimen/margin_8dp"
         android:paddingBottom="@dimen/margin_4dp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDescription"
-        tools:text="Open" />
+        app:layout_constraintTop_toBottomOf="@id/tvAboutMe"
+        tools:text="Waiting" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

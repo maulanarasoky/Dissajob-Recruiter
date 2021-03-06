@@ -2,7 +2,7 @@ package org.d3ifcool.dissajobrecruiter.utils
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 

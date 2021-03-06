@@ -3,7 +3,7 @@ package org.d3ifcool.dissajobrecruiter.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.UserEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
 
 @Dao
 interface UserDao {

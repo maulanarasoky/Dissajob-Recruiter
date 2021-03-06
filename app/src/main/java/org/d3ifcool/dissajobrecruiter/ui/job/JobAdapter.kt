@@ -7,7 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.JobEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
 import org.d3ifcool.dissajobrecruiter.databinding.JobItemsBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat

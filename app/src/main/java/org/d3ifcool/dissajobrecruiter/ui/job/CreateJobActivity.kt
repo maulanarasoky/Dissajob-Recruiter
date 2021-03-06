@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobDetailsResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityCreateJobBinding
 import org.d3ifcool.dissajobrecruiter.databinding.JobPostHeaderBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory

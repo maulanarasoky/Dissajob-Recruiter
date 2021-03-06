@@ -1,0 +1,43 @@
+package org.d3ifcool.dissajobrecruiter.data.source.repository.user
+
+import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalUserSource
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
+import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
+import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
+import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
+import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
+
+class UserRepository private constructor(
+    private val remoteUserSource: RemoteUserSource,
+    private val localUserSource: LocalUserSource,
+    private val appExecutors: AppExecutors, private val networkCallback: NetworkStateCallback
+) : UserDataSource {
+
+    companion object {
+        @Volatile
+        private var instance: UserRepository? = null
+
+        fun getInstance(
+            remoteUser: RemoteUserSource,
+            localUser: LocalUserSource,
+            appExecutors: AppExecutors,
+            networkCallback: NetworkStateCallback
+        ): UserRepository =
+            instance ?: synchronized(this) {
+                instance ?: UserRepository(remoteUser, localUser, appExecutors, networkCallback)
+            }
+    }
+
+    override fun createUser(
+        email: String,
+        password: String,
+        user: UserResponseEntity,
+        callback: SignUpCallback
+    ) = appExecutors.diskIO()
+        .execute { remoteUserSource.createUser(email, password, user, callback) }
+
+    override fun signIn(email: String, password: String, callback: SignInCallback) =
+        appExecutors.diskIO()
+            .execute { remoteUserSource.signIn(email, password, callback) }
+}

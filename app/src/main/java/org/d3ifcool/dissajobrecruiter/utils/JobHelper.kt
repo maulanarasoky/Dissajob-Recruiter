@@ -1,9 +1,9 @@
 package org.d3ifcool.dissajobrecruiter.utils
 
 import com.google.firebase.database.*
-import org.d3ifcool.dissajobrecruiter.data.source.remote.RemoteDataSource
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobDetailsResponseEntity
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.JobResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
 
 object JobHelper {
@@ -22,7 +22,7 @@ object JobHelper {
         }
     }
 
-    fun getJobs(callback: RemoteDataSource.LoadJobsCallback) {
+    fun getJobs(callback: RemoteJobSource.LoadJobsCallback) {
         database.orderByChild("postedBy").equalTo(AuthHelper.currentUser?.uid.toString())
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {

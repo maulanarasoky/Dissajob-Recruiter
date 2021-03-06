@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.data.source.local.entity
+package org.d3ifcool.dissajobrecruiter.data.source.local.entity.job
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo

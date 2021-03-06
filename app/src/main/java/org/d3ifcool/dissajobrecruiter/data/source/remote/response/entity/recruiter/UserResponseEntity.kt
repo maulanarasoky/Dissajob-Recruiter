@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity
+package org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter
 
 import com.google.firebase.database.Exclude
 
