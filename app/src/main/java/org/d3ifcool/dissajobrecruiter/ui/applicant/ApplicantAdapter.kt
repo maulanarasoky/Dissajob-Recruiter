@@ -75,5 +75,6 @@ class ApplicantAdapter(private val callback: LoadApplicantDetailsCallback) :
 
     interface LoadApplicantDetailsCallback {
         fun onLoadApplicantDetailsCallback(applicantId: String): ApplicantDetailsEntity
+        fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity): ApplicantDetailsEntity
     }
 }

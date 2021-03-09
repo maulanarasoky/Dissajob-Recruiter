@@ -71,7 +71,7 @@ class AllApplicantsFragment : Fragment(), ApplicantAdapter.LoadApplicantDetailsC
             addItemDecoration(
                 DividerItemDecoration(
                     requireContext(),
-                    androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+                    DividerItemDecoration.VERTICAL
                 )
             )
             adapter = applicantAdapter
@@ -91,8 +91,13 @@ class AllApplicantsFragment : Fragment(), ApplicantAdapter.LoadApplicantDetailsC
         viewModel.getApplicantDetails(applicantId).observe(viewLifecycleOwner) { applicantDetails ->
             if (applicantDetails != null) {
                 details = applicantDetails.data!!
+                onGetApplicantDetails(details)
             }
         }
         return details
+    }
+
+    override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity): ApplicantDetailsEntity {
+        return applicantDetails
     }
 }
