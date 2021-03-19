@@ -52,29 +52,38 @@ class ApplicantAdapter(private val callback: LoadApplicantDetailsCallback) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindItem(items: ApplicantEntity) {
             with(binding) {
-                val applicantDetails =
-                    callback.onLoadApplicantDetailsCallback(items.applicantId.toString())
-                tvApplicantName.text = applicantDetails.firstName
-                tvAboutMe.text = applicantDetails.aboutMe
-                val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                sdf.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
-                try {
-                    val time: Long = sdf.parse(items.applyDate).time
-                    val now = System.currentTimeMillis()
-                    val ago =
-                        DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS)
-                    tvPostedDate.text = ago
-                } catch (e: ParseException) {
-                    e.printStackTrace()
-                }
+                val applicantDetails = callback.onLoadApplicantDetailsCallback(items.applicantId.toString(), object : LoadApplicantDetailsCallback {
+                    override fun onLoadApplicantDetailsCallback(
+                        applicantId: String,
+                        callback: LoadApplicantDetailsCallback
+                    ) {
+                        TODO("Not yet implemented")
+                    }
 
-                tvStatus.text = items.status
+                    override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity) {
+                        tvApplicantName.text = applicantDetails.firstName
+                        tvAboutMe.text = applicantDetails.aboutMe
+                        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        sdf.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
+                        try {
+                            val time: Long = sdf.parse(items.applyDate).time
+                            val now = System.currentTimeMillis()
+                            val ago =
+                                DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS)
+                            tvPostedDate.text = ago
+                        } catch (e: ParseException) {
+                            e.printStackTrace()
+                        }
+
+                        tvStatus.text = items.status
+                    }
+                })
             }
         }
     }
 
     interface LoadApplicantDetailsCallback {
-        fun onLoadApplicantDetailsCallback(applicantId: String): ApplicantDetailsEntity
-        fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity): ApplicantDetailsEntity
+        fun onLoadApplicantDetailsCallback(applicantId: String, callback: LoadApplicantDetailsCallback)
+        fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity)
     }
 }

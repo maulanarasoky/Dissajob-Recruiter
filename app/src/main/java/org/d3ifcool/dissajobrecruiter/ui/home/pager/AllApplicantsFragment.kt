@@ -86,18 +86,17 @@ class AllApplicantsFragment : Fragment(), ApplicantAdapter.LoadApplicantDetailsC
         }
     }
 
-    override fun onLoadApplicantDetailsCallback(applicantId: String): ApplicantDetailsEntity {
-        lateinit var details: ApplicantDetailsEntity
+    override fun onLoadApplicantDetailsCallback(
+        applicantId: String,
+        callback: ApplicantAdapter.LoadApplicantDetailsCallback
+    ) {
         viewModel.getApplicantDetails(applicantId).observe(viewLifecycleOwner) { applicantDetails ->
             if (applicantDetails != null) {
-                details = applicantDetails.data!!
-                onGetApplicantDetails(details)
+                callback.onGetApplicantDetails(applicantDetails.data!!)
             }
         }
-        return details
     }
 
-    override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity): ApplicantDetailsEntity {
-        return applicantDetails
+    override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity) {
     }
 }
