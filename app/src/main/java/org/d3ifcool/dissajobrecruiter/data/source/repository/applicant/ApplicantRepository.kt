@@ -87,6 +87,50 @@ class ApplicantRepository private constructor(
         }.asLiveData()
     }
 
+    override fun getAcceptedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>> {
+        return object :
+            NetworkBoundResource<PagedList<ApplicantEntity>, List<ApplicantResponseEntity>>(
+                appExecutors
+            ) {
+            public override fun loadFromDB(): LiveData<PagedList<ApplicantEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(localApplicantSource.getAcceptedApplicants(), config).build()
+            }
+
+            override fun shouldFetch(data: PagedList<ApplicantEntity>?): Boolean =
+                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+
+            public override fun createCall(): LiveData<ApiResponse<List<ApplicantResponseEntity>>> =
+                remoteApplicantSource.getAcceptedApplicants(object :
+                    RemoteApplicantSource.LoadAllApplicantsCallback {
+                    override fun onAllApplicantsReceived(applicantsResponse: List<ApplicantResponseEntity>): List<ApplicantResponseEntity> {
+                        return applicantsResponse
+                    }
+                })
+
+            public override fun saveCallResult(data: List<ApplicantResponseEntity>) {
+                val applicantList = ArrayList<ApplicantEntity>()
+                for (response in data) {
+                    val applicant = ApplicantEntity(
+                        response.id.toString(),
+                        response.applicantId,
+                        response.jobId,
+                        response.applyDate,
+                        response.status,
+                        response.isMarked
+                    )
+                    applicantList.add(applicant)
+                }
+
+                localApplicantSource.insertApplicant(applicantList)
+            }
+        }.asLiveData()
+    }
+
     override fun getApplicantDetails(applicantId: String): LiveData<Resource<ApplicantDetailsEntity>> {
         return object :
             NetworkBoundResource<ApplicantDetailsEntity, ApplicantDetailsResponseEntity>(

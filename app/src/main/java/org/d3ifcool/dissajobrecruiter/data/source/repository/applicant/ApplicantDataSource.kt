@@ -8,5 +8,6 @@ import org.d3ifcool.dissajobrecruiter.vo.Resource
 
 interface ApplicantDataSource {
     fun getApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>>
+    fun getAcceptedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>>
     fun getApplicantDetails(applicantId: String): LiveData<Resource<ApplicantDetailsEntity>>
 }
