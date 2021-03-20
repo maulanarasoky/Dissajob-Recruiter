@@ -12,6 +12,15 @@ class ApplicantViewModel(private val applicantRepository: ApplicantRepository) :
     fun getApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>> =
         applicantRepository.getApplicants()
 
+    fun getAcceptedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>> =
+        applicantRepository.getAcceptedApplicants()
+
+    fun getRejectedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>> =
+        applicantRepository.getRejectedApplicants()
+
+    fun getMarkedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>> =
+        applicantRepository.getMarkedApplicants()
+
     fun getApplicantDetails(applicantId: String): LiveData<Resource<ApplicantDetailsEntity>> =
         applicantRepository.getApplicantDetails(applicantId)
 }
