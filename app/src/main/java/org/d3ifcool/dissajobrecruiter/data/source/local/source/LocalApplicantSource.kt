@@ -23,6 +23,8 @@ class LocalApplicantSource private constructor(
 
     fun getRejectedApplicants(): DataSource.Factory<Int, ApplicantEntity> = mApplicantDao.getApplicantsByStatus("rejected")
 
+    fun getMarkedApplicants(): DataSource.Factory<Int, ApplicantEntity> = mApplicantDao.getMarkedApplicants()
+
     fun getApplicantDetails(applicantId: String): LiveData<ApplicantDetailsEntity> =
         mApplicantDao.getApplicantDetails(applicantId)
 

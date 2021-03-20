@@ -69,6 +69,22 @@ class RemoteApplicantSource private constructor(
         return resultApplicant
     }
 
+    fun getMarkedApplicants(callback: LoadAllApplicantsCallback): LiveData<ApiResponse<List<ApplicantResponseEntity>>> {
+        EspressoIdlingResource.increment()
+        val resultApplicant = MutableLiveData<ApiResponse<List<ApplicantResponseEntity>>>()
+        applicantHelper.getMarkedApplicants(object : LoadAllApplicantsCallback {
+            override fun onAllApplicantsReceived(applicantsResponse: List<ApplicantResponseEntity>): List<ApplicantResponseEntity> {
+                resultApplicant.value =
+                    ApiResponse.success(callback.onAllApplicantsReceived(applicantsResponse))
+                if (EspressoIdlingResource.espressoTestIdlingResource.isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
+                return applicantsResponse
+            }
+        })
+        return resultApplicant
+    }
+
     fun getApplicantDetails(
         applicantId: String,
         callback: LoadApplicantDetailsCallback

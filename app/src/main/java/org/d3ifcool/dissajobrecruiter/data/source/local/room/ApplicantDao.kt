@@ -17,6 +17,9 @@ interface ApplicantDao {
     @Query("SELECT * FROM applicants WHERE status = :status")
     fun getApplicantsByStatus(status: String): DataSource.Factory<Int, ApplicantEntity>
 
+    @Query("SELECT * FROM applicants WHERE is_marked = 1")
+    fun getMarkedApplicants(): DataSource.Factory<Int, ApplicantEntity>
+
     @Query("SELECT * FROM applicant_details WHERE id = :applicantId")
     fun getApplicantDetails(applicantId: String): LiveData<ApplicantDetailsEntity>
 
