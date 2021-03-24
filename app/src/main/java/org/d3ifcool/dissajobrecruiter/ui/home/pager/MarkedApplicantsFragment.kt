@@ -71,7 +71,7 @@ class MarkedApplicantsFragment : Fragment(), ApplicantAdapter.LoadApplicantDetai
             addItemDecoration(
                 DividerItemDecoration(
                     requireContext(),
-                    androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+                    DividerItemDecoration.VERTICAL
                 )
             )
             adapter = applicantAdapter
