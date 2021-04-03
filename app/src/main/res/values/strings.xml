@@ -42,4 +42,8 @@
     <string name="open_status">Open</string>
     <string name="closed_status">Closed</string>
     <string name="no_applicants">Tidak ada pelamar</string>
+    <string name="job_description">Deskripsi</string>
+    <string name="job_details_title">Detail</string>
+    <string name="applicants">Pelamar</string>
+    <string name="job_details">Detail Pekerjaan</string>
 </resources>
