@@ -48,4 +48,32 @@ object JobHelper {
 
             })
     }
+
+    fun getJobDetails(jobId: String, callback: RemoteJobSource.LoadJobDetailsCallback) {
+        database.child(jobId).addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(dataSnapshot: DatabaseError) {
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        val jobDetails = JobDetailsResponseEntity(
+                            dataSnapshot.key.toString(),
+                            dataSnapshot.child("title").value.toString(),
+                            dataSnapshot.child("description").value.toString(),
+                            dataSnapshot.child("qualification").value.toString(),
+                            dataSnapshot.child("employment").value.toString(),
+                            dataSnapshot.child("industry").value.toString(),
+                            dataSnapshot.child("salary").value.toString().toInt(),
+                            dataSnapshot.child("postedBy").value.toString(),
+                            dataSnapshot.child("postedDate").value.toString(),
+                            dataSnapshot.child("updatedDate").value.toString(),
+                            dataSnapshot.child("closedDate").value.toString(),
+                            dataSnapshot.child("open").value.toString().toBoolean()
+                        )
+                        callback.onJobDetailsReceived(jobDetails)
+                    }
+                }
+
+            })
+    }
 }

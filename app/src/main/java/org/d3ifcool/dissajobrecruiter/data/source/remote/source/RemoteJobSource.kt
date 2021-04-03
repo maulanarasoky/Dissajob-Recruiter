@@ -53,7 +53,28 @@ class RemoteJobSource private constructor(
         return resultJob
     }
 
+    fun getJobDetails(
+        jobId: String,
+        callback: LoadJobDetailsCallback
+    ): LiveData<ApiResponse<JobDetailsResponseEntity>> {
+        EspressoIdlingResource.increment()
+        val resultJob = MutableLiveData<ApiResponse<JobDetailsResponseEntity>>()
+        jobHelper.getJobDetails(jobId, object : LoadJobDetailsCallback {
+            override fun onJobDetailsReceived(jobResponse: JobDetailsResponseEntity): JobDetailsResponseEntity {
+                resultJob.value = ApiResponse.success(callback.onJobDetailsReceived(jobResponse))
+                if (EspressoIdlingResource.espressoTestIdlingResource.isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
+                return jobResponse
+            }
+        })
+        return resultJob
+    }
+
     interface LoadJobsCallback {
         fun onAllJobsReceived(jobResponse: List<JobResponseEntity>): List<JobResponseEntity>
+    }
+    interface LoadJobDetailsCallback {
+        fun onJobDetailsReceived(jobResponse: JobDetailsResponseEntity): JobDetailsResponseEntity
     }
 }

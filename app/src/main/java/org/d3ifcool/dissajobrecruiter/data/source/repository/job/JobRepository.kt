@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import org.d3ifcool.dissajobrecruiter.data.NetworkBoundResource
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
@@ -74,6 +75,46 @@ class JobRepository private constructor(
                 }
 
                 localJobSource.insertJob(jobList)
+            }
+        }.asLiveData()
+    }
+
+    override fun getJobDetails(jobId: String): LiveData<Resource<JobDetailsEntity>> {
+        return object :
+            NetworkBoundResource<JobDetailsEntity, JobDetailsResponseEntity>(
+                appExecutors
+            ) {
+            public override fun loadFromDB(): LiveData<JobDetailsEntity> =
+                localJobSource.getJobDetails(jobId)
+
+            override fun shouldFetch(data: JobDetailsEntity?): Boolean =
+                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+
+            public override fun createCall(): LiveData<ApiResponse<JobDetailsResponseEntity>> =
+                remoteJobSource.getJobDetails(
+                    jobId,
+                    object : RemoteJobSource.LoadJobDetailsCallback {
+                        override fun onJobDetailsReceived(jobResponse: JobDetailsResponseEntity): JobDetailsResponseEntity {
+                            return jobResponse
+                        }
+                    })
+
+            public override fun saveCallResult(data: JobDetailsResponseEntity) {
+                val jobDetails = JobDetailsEntity(
+                    data.id,
+                    data.title,
+                    data.description,
+                    data.qualification,
+                    data.employment,
+                    data.industry,
+                    data.salary,
+                    data.postedBy,
+                    data.postedDate,
+                    data.updatedDate,
+                    data.closedDate,
+                    data.isOpen
+                )
+                localJobSource.insertJobDetails(jobDetails)
             }
         }.asLiveData()
     }
