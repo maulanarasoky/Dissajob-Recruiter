@@ -100,7 +100,12 @@ class RemoteUserSource private constructor(
         })
     }
 
-    fun updateEmailProfile(userId: String, email: String, password: String, callback: UpdateProfileCallback) {
+    fun updateEmailProfile(
+        userId: String,
+        email: String,
+        password: String,
+        callback: UpdateProfileCallback
+    ) {
         EspressoIdlingResource.increment()
         userHelper.updateEmailProfile(userId, email, password, object : UpdateProfileCallback {
             override fun onSuccess() {
@@ -113,6 +118,30 @@ class RemoteUserSource private constructor(
                 EspressoIdlingResource.decrement()
             }
         })
+    }
+
+    fun updatePasswordProfile(
+        email: String,
+        oldPassword: String,
+        newPassword: String,
+        callback: UpdateProfileCallback
+    ) {
+        EspressoIdlingResource.increment()
+        userHelper.updatePasswordProfile(
+            email,
+            oldPassword,
+            newPassword,
+            object : UpdateProfileCallback {
+                override fun onSuccess() {
+                    callback.onSuccess()
+                    EspressoIdlingResource.decrement()
+                }
+
+                override fun onFailure(message: String) {
+                    callback.onFailure(message)
+                    EspressoIdlingResource.decrement()
+                }
+            })
     }
 
     interface LoadUserProfileCallback {

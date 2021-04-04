@@ -96,4 +96,19 @@ class UserRepository private constructor(
         callback: UpdateProfileCallback
     ) = appExecutors.diskIO()
         .execute { remoteUserSource.updateEmailProfile(userId, email, password, callback) }
+
+    override fun updatePasswordProfile(
+        email: String,
+        oldPassword: String,
+        newPassword: String,
+        callback: UpdateProfileCallback
+    ) = appExecutors.diskIO()
+        .execute {
+            remoteUserSource.updatePasswordProfile(
+                email,
+                oldPassword,
+                newPassword,
+                callback
+            )
+        }
 }

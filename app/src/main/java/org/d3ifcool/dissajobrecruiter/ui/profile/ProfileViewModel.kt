@@ -24,4 +24,11 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
         userProfile: UserResponseEntity,
         callback: UpdateProfileCallback
     ) = userRepository.updateProfileData(userProfile, callback)
+
+    fun updatePasswordProfile(
+        email: String,
+        oldPassword: String,
+        newPassword: String,
+        callback: UpdateProfileCallback
+    ) = userRepository.updatePasswordProfile(email, oldPassword, newPassword, callback)
 }

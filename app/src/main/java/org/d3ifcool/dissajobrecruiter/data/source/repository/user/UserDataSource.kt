@@ -17,4 +17,5 @@ interface UserDataSource {
     fun getUserProfile(userId: String): LiveData<Resource<UserEntity>>
     fun updateProfileData(userProfile: UserResponseEntity, callback: UpdateProfileCallback)
     fun updateEmailProfile(userId: String, email: String, password: String, callback: UpdateProfileCallback)
+    fun updatePasswordProfile(email: String, oldPassword: String, newPassword: String, callback: UpdateProfileCallback)
 }

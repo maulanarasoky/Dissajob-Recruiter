@@ -89,14 +89,19 @@ object UserHelper {
         }
     }
 
-    fun updateEmailProfile(userId: String, email: String, password: String, callback: UpdateProfileCallback) {
+    fun updateEmailProfile(
+        userId: String,
+        newEmail: String,
+        password: String,
+        callback: UpdateProfileCallback
+    ) {
         val credential =
             EmailAuthProvider.getCredential(auth.currentUser?.email.toString(), password)
         auth.currentUser?.reauthenticate(credential)
             ?.addOnCompleteListener {
-                auth.currentUser!!.updateEmail(email)
+                auth.currentUser!!.updateEmail(newEmail)
                     .addOnSuccessListener {
-                        storeNewEmail(userId, email, callback)
+                        storeNewEmail(userId, newEmail, callback)
                     }
                     .addOnFailureListener {
                         callback.onFailure(it.message.toString())
@@ -105,11 +110,30 @@ object UserHelper {
 
     }
 
-    private fun storeNewEmail(userId: String, email: String, callback: UpdateProfileCallback) {
-        database.child(userId).child("email").setValue(email).addOnSuccessListener {
+    private fun storeNewEmail(userId: String, newEmail: String, callback: UpdateProfileCallback) {
+        database.child(userId).child("email").setValue(newEmail).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
             callback.onFailure(it.message.toString())
         }
+    }
+
+    fun updatePasswordProfile(
+        email: String,
+        oldPassword: String,
+        newPassword: String,
+        callback: UpdateProfileCallback
+    ) {
+        val credential = EmailAuthProvider.getCredential(email, oldPassword)
+        auth.currentUser?.reauthenticate(credential)
+            ?.addOnCompleteListener {
+                auth.currentUser?.updatePassword(newPassword)!!
+                    .addOnSuccessListener {
+                        callback.onSuccess()
+                    }
+                    .addOnFailureListener {
+                        callback.onFailure(it.message.toString())
+                    }
+            }
     }
 }
