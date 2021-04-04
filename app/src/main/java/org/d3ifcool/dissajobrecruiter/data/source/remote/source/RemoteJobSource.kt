@@ -71,6 +71,21 @@ class RemoteJobSource private constructor(
         return resultJob
     }
 
+    fun updateJob(job: JobDetailsResponseEntity, callback: JobPostCallback) {
+        EspressoIdlingResource.increment()
+        jobHelper.updateJob(job, object : JobPostCallback {
+            override fun onSuccess() {
+                callback.onSuccess()
+                EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailure(message: String) {
+                callback.onFailure(message)
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
+
     interface LoadJobsCallback {
         fun onAllJobsReceived(jobResponse: List<JobResponseEntity>): List<JobResponseEntity>
     }

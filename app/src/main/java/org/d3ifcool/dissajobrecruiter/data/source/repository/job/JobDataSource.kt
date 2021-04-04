@@ -12,4 +12,5 @@ interface JobDataSource {
     fun getJobs(): LiveData<Resource<PagedList<JobEntity>>>
     fun getJobDetails(jobId: String): LiveData<Resource<JobDetailsEntity>>
     fun createJob(jobResponse: JobDetailsResponseEntity, callback: JobPostCallback)
+    fun updateJob(jobResponse: JobDetailsResponseEntity, callback: JobPostCallback)
 }

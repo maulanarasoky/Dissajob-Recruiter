@@ -121,4 +121,7 @@ class JobRepository private constructor(
 
     override fun createJob(jobResponse: JobDetailsResponseEntity, callback: JobPostCallback) =
         appExecutors.diskIO().execute { remoteJobSource.createJob(jobResponse, callback) }
+
+    override fun updateJob(jobResponse: JobDetailsResponseEntity, callback: JobPostCallback) =
+        appExecutors.diskIO().execute { remoteJobSource.updateJob(jobResponse, callback) }
 }

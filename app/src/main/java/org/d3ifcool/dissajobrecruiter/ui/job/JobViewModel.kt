@@ -18,4 +18,9 @@ class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
         jobResponse: JobDetailsResponseEntity,
         callback: JobPostCallback
     ) = jobRepository.createJob(jobResponse, callback)
+
+    fun updateJob(
+        jobResponse: JobDetailsResponseEntity,
+        callback: JobPostCallback
+    ) = jobRepository.updateJob(jobResponse, callback)
 }

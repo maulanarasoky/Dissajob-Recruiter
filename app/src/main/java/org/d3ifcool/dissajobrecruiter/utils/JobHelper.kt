@@ -76,4 +76,12 @@ object JobHelper {
 
             })
     }
+
+    fun updateJob(job: JobDetailsResponseEntity, callback: JobPostCallback) {
+        database.child(job.id).setValue(job).addOnSuccessListener {
+            callback.onSuccess()
+        }.addOnFailureListener {
+            callback.onFailure(it.message.toString())
+        }
+    }
 }
