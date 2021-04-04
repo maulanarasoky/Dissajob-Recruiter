@@ -84,9 +84,15 @@ class UserRepository private constructor(
         }.asLiveData()
     }
 
+    override fun updateProfileData(
+        userProfile: UserResponseEntity,
+        callback: UpdateProfileCallback
+    ) = appExecutors.diskIO().execute { remoteUserSource.updateProfileData(userProfile, callback) }
+
     override fun updateEmailProfile(
         userId: String,
         email: String,
         callback: UpdateProfileCallback
-    ) = appExecutors.diskIO().execute { remoteUserSource.updateEmailProfile(userId, email, callback) }
+    ) = appExecutors.diskIO()
+        .execute { remoteUserSource.updateEmailProfile(userId, email, callback) }
 }

@@ -80,6 +80,14 @@ object UserHelper {
         })
     }
 
+    fun updateProfileData(user: UserResponseEntity, callback: UpdateProfileCallback) {
+        database.child(user.id.toString()).setValue(user).addOnSuccessListener {
+            callback.onSuccess()
+        }.addOnFailureListener {
+            callback.onFailure(it.message.toString())
+        }
+    }
+
     fun updateEmailProfile(userId: String, email: String, callback: UpdateProfileCallback) {
         database.child(userId).child("email").setValue(email).addOnSuccessListener {
             callback.onSuccess()

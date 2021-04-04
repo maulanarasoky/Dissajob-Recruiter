@@ -85,6 +85,21 @@ class RemoteUserSource private constructor(
         })
     }
 
+    fun updateProfileData(userProfile: UserResponseEntity, callback: UpdateProfileCallback) {
+        EspressoIdlingResource.increment()
+        userHelper.updateProfileData(userProfile, object : UpdateProfileCallback {
+            override fun onSuccess() {
+                callback.onSuccess()
+                EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailure(message: String) {
+                callback.onFailure(message)
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
+
     fun updateEmailProfile(userId: String, email: String, callback: UpdateProfileCallback) {
         EspressoIdlingResource.increment()
         userHelper.updateEmailProfile(userId, email, object : UpdateProfileCallback {

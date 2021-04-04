@@ -15,5 +15,6 @@ interface UserDataSource {
     fun createUser(email: String, password: String, user: UserResponseEntity, callback: SignUpCallback)
     fun signIn(email: String, password: String, callback: SignInCallback)
     fun getUserProfile(userId: String): LiveData<Resource<UserEntity>>
+    fun updateProfileData(userProfile: UserResponseEntity, callback: UpdateProfileCallback)
     fun updateEmailProfile(userId: String, email: String, callback: UpdateProfileCallback)
 }
