@@ -1,12 +1,17 @@
 package org.d3ifcool.dissajobrecruiter.data.source.repository.user
 
+import androidx.lifecycle.LiveData
+import org.d3ifcool.dissajobrecruiter.data.NetworkBoundResource
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalUserSource
+import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
+import org.d3ifcool.dissajobrecruiter.vo.Resource
 
 class UserRepository private constructor(
     private val remoteUserSource: RemoteUserSource,
@@ -40,4 +45,40 @@ class UserRepository private constructor(
     override fun signIn(email: String, password: String, callback: SignInCallback) =
         appExecutors.diskIO()
             .execute { remoteUserSource.signIn(email, password, callback) }
+
+    override fun getUserProfile(userId: String): LiveData<Resource<UserEntity>> {
+        return object :
+            NetworkBoundResource<UserEntity, UserResponseEntity>(
+                appExecutors
+            ) {
+            public override fun loadFromDB(): LiveData<UserEntity> =
+                localUserSource.getUserProfile(userId)
+
+            override fun shouldFetch(data: UserEntity?): Boolean =
+                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+
+            public override fun createCall(): LiveData<ApiResponse<UserResponseEntity>> =
+                remoteUserSource.getUserProfile(
+                    userId,
+                    object : RemoteUserSource.LoadUserProfileCallback {
+                        override fun onUserProfileReceived(userResponse: UserResponseEntity): UserResponseEntity {
+                            return userResponse
+                        }
+                    })
+
+            public override fun saveCallResult(data: UserResponseEntity) {
+                val userProfile = UserEntity(
+                    data.id.toString(),
+                    data.firstName,
+                    data.lastName,
+                    data.fullName,
+                    data.address,
+                    data.phoneNumber,
+                    data.role,
+                    data.imagePath,
+                )
+                localUserSource.insertUserProfile(userProfile)
+            }
+        }.asLiveData()
+    }
 }

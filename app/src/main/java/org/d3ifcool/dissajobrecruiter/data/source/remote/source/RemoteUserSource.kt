@@ -1,5 +1,10 @@
 package org.d3ifcool.dissajobrecruiter.data.source.remote.source
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
@@ -40,6 +45,24 @@ class RemoteUserSource private constructor(
         })
     }
 
+    fun getUserProfile(
+        userId: String,
+        callback: LoadUserProfileCallback
+    ): LiveData<ApiResponse<UserResponseEntity>> {
+        EspressoIdlingResource.increment()
+        val resultUser = MutableLiveData<ApiResponse<UserResponseEntity>>()
+        userHelper.getUserProfile(userId, object : LoadUserProfileCallback {
+            override fun onUserProfileReceived(userResponse: UserResponseEntity): UserResponseEntity {
+                resultUser.value = ApiResponse.success(callback.onUserProfileReceived(userResponse))
+                if (EspressoIdlingResource.espressoTestIdlingResource.isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
+                return userResponse
+            }
+        })
+        return resultUser
+    }
+
     fun signIn(email: String, password: String, callback: SignInCallback) {
         EspressoIdlingResource.increment()
         userHelper.signIn(email, password, object : SignInCallback {
@@ -58,5 +81,9 @@ class RemoteUserSource private constructor(
                 EspressoIdlingResource.decrement()
             }
         })
+    }
+
+    interface LoadUserProfileCallback {
+        fun onUserProfileReceived(userResponse: UserResponseEntity): UserResponseEntity
     }
 }
