@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.utils
 
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -88,7 +89,23 @@ object UserHelper {
         }
     }
 
-    fun updateEmailProfile(userId: String, email: String, callback: UpdateProfileCallback) {
+    fun updateEmailProfile(userId: String, email: String, password: String, callback: UpdateProfileCallback) {
+        val credential =
+            EmailAuthProvider.getCredential(auth.currentUser?.email.toString(), password)
+        auth.currentUser?.reauthenticate(credential)
+            ?.addOnCompleteListener {
+                auth.currentUser!!.updateEmail(email)
+                    .addOnSuccessListener {
+                        storeNewEmail(userId, email, callback)
+                    }
+                    .addOnFailureListener {
+                        callback.onFailure(it.message.toString())
+                    }
+            }
+
+    }
+
+    private fun storeNewEmail(userId: String, email: String, callback: UpdateProfileCallback) {
         database.child(userId).child("email").setValue(email).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
