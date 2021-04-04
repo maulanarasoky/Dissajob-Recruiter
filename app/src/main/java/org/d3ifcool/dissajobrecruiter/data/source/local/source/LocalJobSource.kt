@@ -25,5 +25,5 @@ class LocalJobSource private constructor(
 
     fun insertJobDetails(jobDetails: JobDetailsEntity) = mJobDao.insertJobDetails(jobDetails)
 
-    fun updateJobDetails(jobDetails: JobDetailsEntity) = mJobDao.updateJobDetails(jobDetails)
+//    fun updateJobDetails(jobDetails: JobDetailsEntity) = mJobDao.updateJobDetails(jobDetails)
 }

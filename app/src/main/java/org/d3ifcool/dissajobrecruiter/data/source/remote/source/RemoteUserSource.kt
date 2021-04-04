@@ -6,6 +6,8 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEnt
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
+import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
@@ -78,6 +80,21 @@ class RemoteUserSource private constructor(
 
             override fun onFailure() {
                 callback.onFailure()
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
+
+    fun updateEmailProfile(userId: String, email: String, callback: UpdateProfileCallback) {
+        EspressoIdlingResource.increment()
+        userHelper.updateEmailProfile(userId, email, object : UpdateProfileCallback {
+            override fun onSuccess() {
+                callback.onSuccess()
+                EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailure(message: String) {
+                callback.onFailure(message)
                 EspressoIdlingResource.decrement()
             }
         })

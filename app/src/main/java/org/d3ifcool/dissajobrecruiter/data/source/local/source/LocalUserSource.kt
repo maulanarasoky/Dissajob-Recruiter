@@ -1,6 +1,7 @@
 package org.d3ifcool.dissajobrecruiter.data.source.local.source
 
 import androidx.lifecycle.LiveData
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.room.UserDao
 
@@ -18,4 +19,6 @@ class LocalUserSource private constructor(
     fun getUserProfile(userId: String): LiveData<UserEntity> = mUserDao.getUserProfile(userId)
 
     fun insertUserProfile(userProfile: UserEntity) = mUserDao.insertUserProfile(userProfile)
+
+//    fun updateJobDetails(userProfile: UserEntity) = mUserDao.updateUserProfile(userProfile)
 }

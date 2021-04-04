@@ -8,6 +8,7 @@ data class UserResponseEntity(
     val firstName: String? = "-",
     val lastName: String? = "-",
     val fullName: String? = "-",
+    val email: String? = "-",
     val address: String? = "-",
     val phoneNumber: String? = "-",
     val role: String? = "-",

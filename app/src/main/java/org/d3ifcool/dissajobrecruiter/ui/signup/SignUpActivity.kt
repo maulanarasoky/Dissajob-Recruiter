@@ -64,6 +64,7 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
             firstName = firstName,
             lastName = lastName,
             fullName = fullName,
+            email = email,
             role = role
         )
 

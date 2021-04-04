@@ -7,6 +7,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalUserSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
+import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
@@ -72,6 +73,7 @@ class UserRepository private constructor(
                     data.firstName,
                     data.lastName,
                     data.fullName,
+                    data.email,
                     data.address,
                     data.phoneNumber,
                     data.role,
@@ -81,4 +83,10 @@ class UserRepository private constructor(
             }
         }.asLiveData()
     }
+
+    override fun updateEmailProfile(
+        userId: String,
+        email: String,
+        callback: UpdateProfileCallback
+    ) = appExecutors.diskIO().execute { remoteUserSource.updateEmailProfile(userId, email, callback) }
 }

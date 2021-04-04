@@ -21,6 +21,9 @@ data class UserEntity(
     @ColumnInfo(name = "full_name")
     val fullName: String? = "-",
 
+    @ColumnInfo(name = "email")
+    val email: String? = "-",
+
     @ColumnInfo(name = "address")
     val address: String? = "-",
 

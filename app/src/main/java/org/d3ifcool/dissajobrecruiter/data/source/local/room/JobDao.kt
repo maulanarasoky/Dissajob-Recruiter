@@ -20,6 +20,6 @@ interface JobDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJobDetails(jobDetails: JobDetailsEntity)
 
-    @Update
-    fun updateJobDetails(job: JobDetailsEntity)
+//    @Update
+//    fun updateJobDetails(job: JobDetailsEntity)
 }

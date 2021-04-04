@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
+import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 
@@ -77,5 +78,13 @@ object UserHelper {
             }
 
         })
+    }
+
+    fun updateEmailProfile(userId: String, email: String, callback: UpdateProfileCallback) {
+        database.child(userId).child("email").setValue(email).addOnSuccessListener {
+            callback.onSuccess()
+        }.addOnFailureListener {
+            callback.onFailure(it.message.toString())
+        }
     }
 }
