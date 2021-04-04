@@ -43,7 +43,7 @@ class AcceptedApplicantsFragment : Fragment(), ApplicantAdapter.LoadApplicantDet
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
             applicantAdapter = ApplicantAdapter(this)
-            viewModel.getApplicants().observe(viewLifecycleOwner) { applicants ->
+            viewModel.getAcceptedApplicants().observe(viewLifecycleOwner) { applicants ->
                 if (applicants != null) {
                     when (applicants.status) {
                         Status.LOADING -> showLoading(true)

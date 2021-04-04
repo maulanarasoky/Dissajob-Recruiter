@@ -11,5 +11,6 @@ interface ApplicantDataSource {
     fun getAcceptedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>>
     fun getRejectedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>>
     fun getMarkedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>>
+    fun getApplicantsByJob(jobId: String): LiveData<Resource<PagedList<ApplicantEntity>>>
     fun getApplicantDetails(applicantId: String): LiveData<Resource<ApplicantDetailsEntity>>
 }

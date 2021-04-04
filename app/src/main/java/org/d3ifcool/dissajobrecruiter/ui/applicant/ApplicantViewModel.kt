@@ -21,6 +21,9 @@ class ApplicantViewModel(private val applicantRepository: ApplicantRepository) :
     fun getMarkedApplicants(): LiveData<Resource<PagedList<ApplicantEntity>>> =
         applicantRepository.getMarkedApplicants()
 
+    fun getApplicantsByJob(jobId: String): LiveData<Resource<PagedList<ApplicantEntity>>> =
+        applicantRepository.getApplicantsByJob(jobId)
+
     fun getApplicantDetails(applicantId: String): LiveData<Resource<ApplicantDetailsEntity>> =
         applicantRepository.getApplicantDetails(applicantId)
 }

@@ -98,7 +98,10 @@ class ApplicantRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localApplicantSource.getAcceptedApplicants(), config).build()
+                return LivePagedListBuilder(
+                    localApplicantSource.getAcceptedApplicants(),
+                    config
+                ).build()
             }
 
             override fun shouldFetch(data: PagedList<ApplicantEntity>?): Boolean =
@@ -142,7 +145,10 @@ class ApplicantRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localApplicantSource.getRejectedApplicants(), config).build()
+                return LivePagedListBuilder(
+                    localApplicantSource.getRejectedApplicants(),
+                    config
+                ).build()
             }
 
             override fun shouldFetch(data: PagedList<ApplicantEntity>?): Boolean =
@@ -186,7 +192,10 @@ class ApplicantRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localApplicantSource.getMarkedApplicants(), config).build()
+                return LivePagedListBuilder(
+                    localApplicantSource.getMarkedApplicants(),
+                    config
+                ).build()
             }
 
             override fun shouldFetch(data: PagedList<ApplicantEntity>?): Boolean =
@@ -194,6 +203,53 @@ class ApplicantRepository private constructor(
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicantResponseEntity>>> =
                 remoteApplicantSource.getMarkedApplicants(object :
+                    RemoteApplicantSource.LoadAllApplicantsCallback {
+                    override fun onAllApplicantsReceived(applicantsResponse: List<ApplicantResponseEntity>): List<ApplicantResponseEntity> {
+                        return applicantsResponse
+                    }
+                })
+
+            public override fun saveCallResult(data: List<ApplicantResponseEntity>) {
+                val applicantList = ArrayList<ApplicantEntity>()
+                for (response in data) {
+                    val applicant = ApplicantEntity(
+                        response.id.toString(),
+                        response.applicantId,
+                        response.jobId,
+                        response.applyDate,
+                        response.status,
+                        response.isMarked
+                    )
+                    applicantList.add(applicant)
+                }
+
+                localApplicantSource.insertApplicant(applicantList)
+            }
+        }.asLiveData()
+    }
+
+    override fun getApplicantsByJob(jobId: String): LiveData<Resource<PagedList<ApplicantEntity>>> {
+        return object :
+            NetworkBoundResource<PagedList<ApplicantEntity>, List<ApplicantResponseEntity>>(
+                appExecutors
+            ) {
+            public override fun loadFromDB(): LiveData<PagedList<ApplicantEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(
+                    localApplicantSource.getApplicantsByJob(jobId),
+                    config
+                ).build()
+            }
+
+            override fun shouldFetch(data: PagedList<ApplicantEntity>?): Boolean =
+                networkCallback.hasConnectivity() && localApplicantSource.getApplicantsByJob(jobId) != createCall()
+
+            public override fun createCall(): LiveData<ApiResponse<List<ApplicantResponseEntity>>> =
+                remoteApplicantSource.getApplicantsByJob(jobId, object :
                     RemoteApplicantSource.LoadAllApplicantsCallback {
                     override fun onAllApplicantsReceived(applicantsResponse: List<ApplicantResponseEntity>): List<ApplicantResponseEntity> {
                         return applicantsResponse

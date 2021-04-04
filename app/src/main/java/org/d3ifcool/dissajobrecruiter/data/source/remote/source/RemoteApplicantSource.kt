@@ -85,6 +85,25 @@ class RemoteApplicantSource private constructor(
         return resultApplicant
     }
 
+    fun getApplicantsByJob(
+        jobId: String,
+        callback: LoadAllApplicantsCallback
+    ): LiveData<ApiResponse<List<ApplicantResponseEntity>>> {
+        EspressoIdlingResource.increment()
+        val resultApplicant = MutableLiveData<ApiResponse<List<ApplicantResponseEntity>>>()
+        applicantHelper.getApplicantsByJob(jobId, object : LoadAllApplicantsCallback {
+            override fun onAllApplicantsReceived(applicantsResponse: List<ApplicantResponseEntity>): List<ApplicantResponseEntity> {
+                resultApplicant.value =
+                    ApiResponse.success(callback.onAllApplicantsReceived(applicantsResponse))
+                if (EspressoIdlingResource.espressoTestIdlingResource.isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
+                return applicantsResponse
+            }
+        })
+        return resultApplicant
+    }
+
     fun getApplicantDetails(
         applicantId: String,
         callback: LoadApplicantDetailsCallback

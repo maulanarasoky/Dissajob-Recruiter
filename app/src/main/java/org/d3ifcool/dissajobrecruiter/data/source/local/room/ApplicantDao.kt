@@ -20,11 +20,11 @@ interface ApplicantDao {
     @Query("SELECT * FROM applicants WHERE is_marked = 1")
     fun getMarkedApplicants(): DataSource.Factory<Int, ApplicantEntity>
 
+    @Query("SELECT * FROM applicants WHERE job_id = :jobId")
+    fun getApplicantsByJob(jobId: String): DataSource.Factory<Int, ApplicantEntity>
+
     @Query("SELECT * FROM applicant_details WHERE id = :applicantId")
     fun getApplicantDetails(applicantId: String): LiveData<ApplicantDetailsEntity>
-
-    @Query("SELECT * FROM applicants WHERE job_id = :jobId")
-    fun getApplicantsByJob(jobId: String): LiveData<ApplicantEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertApplicants(applicants: List<ApplicantEntity>)

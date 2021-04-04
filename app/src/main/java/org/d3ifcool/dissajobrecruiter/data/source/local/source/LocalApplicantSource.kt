@@ -25,6 +25,8 @@ class LocalApplicantSource private constructor(
 
     fun getMarkedApplicants(): DataSource.Factory<Int, ApplicantEntity> = mApplicantDao.getMarkedApplicants()
 
+    fun getApplicantsByJob(jobId: String): DataSource.Factory<Int, ApplicantEntity> = mApplicantDao.getApplicantsByJob(jobId)
+
     fun getApplicantDetails(applicantId: String): LiveData<ApplicantDetailsEntity> =
         mApplicantDao.getApplicantDetails(applicantId)
 
