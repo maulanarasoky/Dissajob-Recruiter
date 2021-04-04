@@ -3,33 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:padding="@dimen/margin_16dp">
 
     <TextView
-        android:id="@+id/tv_job_title"
+        android:id="@+id/tvJobTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/softBlack"
-        android:textSize="14sp"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Job Title" />
 
     <TextView
-        android:id="@+id/tv_job_posted_date_and_applicants"
+        android:id="@+id/tvJobPostedDateAndApplicants"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_job_title"
+        app:layout_constraintTop_toBottomOf="@id/tvJobTitle"
         tools:text="Job Posted Date * 136 participants" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

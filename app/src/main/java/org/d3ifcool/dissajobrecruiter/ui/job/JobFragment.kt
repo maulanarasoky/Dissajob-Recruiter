@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.R
@@ -15,7 +16,7 @@ import org.d3ifcool.dissajobrecruiter.databinding.FragmentJobBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class JobFragment : Fragment(), View.OnClickListener {
+class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListener {
     private lateinit var fragmentJobBinding: FragmentJobBinding
 
     private lateinit var jobAdapter: JobAdapter
@@ -39,7 +40,7 @@ class JobFragment : Fragment(), View.OnClickListener {
             showLoading(true)
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
-            jobAdapter = JobAdapter()
+            jobAdapter = JobAdapter(this)
             viewModel.getJobs().observe(viewLifecycleOwner) { jobs ->
                 if (jobs != null) {
                     when (jobs.status) {
@@ -87,5 +88,11 @@ class JobFragment : Fragment(), View.OnClickListener {
         if (p0?.id == R.id.addJob) {
             startActivity(Intent(activity, CreateJobActivity::class.java))
         }
+    }
+
+    override fun onItemClicked(jobId: String) {
+        val intent = Intent(activity, JobDetailsActivity::class.java)
+        intent.putExtra(JobDetailsActivity.EXTRA_ID, jobId)
+        startActivity(intent)
     }
 }

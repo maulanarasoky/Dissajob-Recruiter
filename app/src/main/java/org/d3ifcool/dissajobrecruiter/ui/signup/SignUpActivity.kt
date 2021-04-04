@@ -58,8 +58,14 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
 
         val firstName = activitySignUpBinding.etFirstName.text.toString().trim()
         val lastName = activitySignUpBinding.etLastName.text.toString().trim()
+        val fullName = "$firstName $lastName"
         val role = activitySignUpBinding.etRole.text.toString().trim()
-        val user = UserResponseEntity(firstName = firstName, lastName = lastName, role = role)
+        val user = UserResponseEntity(
+            firstName = firstName,
+            lastName = lastName,
+            fullName = fullName,
+            role = role
+        )
 
         viewModel.signUp(email, password, user, this)
     }

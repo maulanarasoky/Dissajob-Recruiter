@@ -4,19 +4,30 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/margin_16dp"
+    android:elevation="@dimen/elevation_header"
     android:background="@color/white">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_regular"
-        android:text="@string/job_details"
-        android:textColor="@color/softBlack"
-        android:textSize="14sp"
-        android:textStyle="bold"
+    <ImageView
+        android:id="@+id/imgBackBtn"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_arrow_back_soft_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_regular"
+        android:textColor="@color/softBlack"
+        android:layout_marginStart="@dimen/margin_8dp"
+        android:textSize="16sp"
+        android:text="@string/job_details"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/imgBackBtn"
+        app:layout_constraintStart_toEndOf="@id/imgBackBtn"
+        app:layout_constraintTop_toTopOf="@id/imgBackBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,4 +46,5 @@
     <string name="job_details_title">Detail</string>
     <string name="applicants">Pelamar</string>
     <string name="job_details">Detail Pekerjaan</string>
+    <string name="job_details_date_format">%1$s \u2022 %2$d pelamar</string>
 </resources>

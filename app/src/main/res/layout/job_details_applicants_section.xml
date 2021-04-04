@@ -7,7 +7,7 @@
     android:padding="@dimen/margin_16dp">
 
     <TextView
-        android:id="@+id/tv_applicants_title"
+        android:id="@+id/tvApplicantsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_applicants_title" />
+        app:layout_constraintTop_toBottomOf="@id/tvApplicantsTitle" />
 
     <TextView
         android:id="@+id/tvNoData"

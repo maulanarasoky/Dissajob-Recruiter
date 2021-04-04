@@ -8,116 +8,116 @@
     android:padding="@dimen/margin_16dp">
 
     <TextView
-        android:id="@+id/tv_job_details_title"
+        android:id="@+id/tvJobDetailsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/job_details_title"
         android:textColor="@color/softBlack"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_qualification_title"
+        android:id="@+id/tvQualificationTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/qualification"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_job_details_title" />
+        app:layout_constraintTop_toBottomOf="@id/tvJobDetailsTitle" />
 
     <TextView
-        android:id="@+id/tv_qualification"
+        android:id="@+id/tvQualification"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/softBlack"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_qualification_title"
+        app:layout_constraintTop_toBottomOf="@id/tvQualificationTitle"
         tools:text="Qualification" />
 
     <TextView
-        android:id="@+id/tv_employment_title"
+        android:id="@+id/tvEmploymentTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/employment"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_qualification" />
+        app:layout_constraintTop_toBottomOf="@id/tvQualification" />
 
     <TextView
-        android:id="@+id/tv_employment"
+        android:id="@+id/tvEmployment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/softBlack"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_employment_title"
+        app:layout_constraintTop_toBottomOf="@id/tvEmploymentTitle"
         tools:text="Full-Time" />
 
     <TextView
-        android:id="@+id/tv_industry_title"
+        android:id="@+id/tvIndustryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/industry"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_employment" />
+        app:layout_constraintTop_toBottomOf="@id/tvEmployment" />
 
     <TextView
-        android:id="@+id/tv_industry"
+        android:id="@+id/tvIndustry"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/softBlack"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_industry_title"
+        app:layout_constraintTop_toBottomOf="@id/tvIndustryTitle"
         tools:text="Information Technology &amp; Services" />
 
     <TextView
-        android:id="@+id/tv_salary_title"
+        android:id="@+id/tvSalaryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/salary"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_industry" />
+        app:layout_constraintTop_toBottomOf="@id/tvIndustry" />
 
     <TextView
-        android:id="@+id/tv_salary"
+        android:id="@+id/tvSalary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
         android:textColor="@color/softBlack"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_salary_title"
+        app:layout_constraintTop_toBottomOf="@id/tvSalaryTitle"
         tools:text="Rp. 5.000.000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

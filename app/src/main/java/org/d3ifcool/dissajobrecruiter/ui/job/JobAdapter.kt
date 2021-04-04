@@ -13,7 +13,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class JobAdapter : PagedListAdapter<JobEntity, JobAdapter.JobViewHolder>(DIFF_CALLBACK) {
+class JobAdapter(private val callback: ItemClickListener) : PagedListAdapter<JobEntity, JobAdapter.JobViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<JobEntity>() {
@@ -67,7 +67,15 @@ class JobAdapter : PagedListAdapter<JobEntity, JobAdapter.JobViewHolder>(DIFF_CA
                     tvStatus.setBackgroundResource(R.drawable.bg_closed_status)
                     tvStatus.text = itemView.resources.getText(R.string.closed_status)
                 }
+
+                itemView.setOnClickListener {
+                    callback.onItemClicked(items.id)
+                }
             }
         }
+    }
+
+    interface ItemClickListener {
+        fun onItemClicked(jobId: String)
     }
 }

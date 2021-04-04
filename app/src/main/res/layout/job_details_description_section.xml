@@ -8,26 +8,28 @@
     android:padding="@dimen/margin_16dp">
 
     <TextView
-        android:id="@+id/tv_description_title"
+        android:id="@+id/tvDescriptionTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_regular"
         android:text="@string/job_description"
         android:textColor="@color/softBlack"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_description"
+        android:id="@+id/tvDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
+        android:textColor="@color/softBlack"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_description_title"
+        app:layout_constraintTop_toBottomOf="@id/tvDescriptionTitle"
         tools:text="Description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

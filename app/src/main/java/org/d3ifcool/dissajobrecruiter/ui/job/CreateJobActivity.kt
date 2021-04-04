@@ -18,7 +18,6 @@ import java.util.*
 class CreateJobActivity : AppCompatActivity(), JobPostCallback {
 
     private lateinit var activityJobPostBinding: ActivityCreateJobBinding
-    private lateinit var jobPostHeaderBinding: JobPostHeaderBinding
 
     private lateinit var viewModel: JobViewModel
 
@@ -28,10 +27,6 @@ class CreateJobActivity : AppCompatActivity(), JobPostCallback {
         super.onCreate(savedInstanceState)
         activityJobPostBinding = ActivityCreateJobBinding.inflate(layoutInflater)
         setContentView(activityJobPostBinding.root)
-        jobPostHeaderBinding = JobPostHeaderBinding.inflate(
-            layoutInflater,
-            activityJobPostBinding.root.parent as ViewGroup?, true
-        )
 
         spinnerInit()
 
@@ -40,7 +35,7 @@ class CreateJobActivity : AppCompatActivity(), JobPostCallback {
 
         dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 
-        jobPostHeaderBinding.imgBackBtn.setOnClickListener {
+        activityJobPostBinding.header.imgBackBtn.setOnClickListener {
             finish()
         }
 
