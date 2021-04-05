@@ -69,6 +69,7 @@ object UserHelper {
                         dataSnapshot.child("firstName").value.toString(),
                         dataSnapshot.child("lastName").value.toString(),
                         dataSnapshot.child("fullName").value.toString(),
+                        dataSnapshot.child("email").value.toString(),
                         dataSnapshot.child("address").value.toString(),
                         dataSnapshot.child("phoneNumber").value.toString(),
                         dataSnapshot.child("role").value.toString(),

@@ -9,6 +9,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.repository.user.UserRepository
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.di.Injection
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
+import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInViewModel
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpViewModel
 
@@ -45,6 +46,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(ApplicantViewModel::class.java) -> {
                 ApplicantViewModel(applicantRepository) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(userRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
