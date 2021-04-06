@@ -91,11 +91,11 @@ class UserRepository private constructor(
 
     override fun updateEmailProfile(
         userId: String,
-        email: String,
+        newEmail: String,
         password: String,
         callback: UpdateProfileCallback
     ) = appExecutors.diskIO()
-        .execute { remoteUserSource.updateEmailProfile(userId, email, password, callback) }
+    .execute { remoteUserSource.updateEmailProfile(userId, newEmail, password, callback) }
 
     override fun updatePasswordProfile(
         email: String,

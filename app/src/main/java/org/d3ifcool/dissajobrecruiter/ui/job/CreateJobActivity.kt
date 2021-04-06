@@ -130,7 +130,7 @@ class CreateJobActivity : AppCompatActivity(), JobPostCallback {
 
     override fun onFailure(message: String) {
         dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-        dialog.titleText = resources.getString(R.string.failure_post_job)
+        dialog.titleText = resources.getString(R.string.txt_failure_update_profile)
         dialog.setCancelable(false)
         dialog.show()
     }

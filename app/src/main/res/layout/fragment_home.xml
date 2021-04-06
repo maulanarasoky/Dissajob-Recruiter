@@ -24,8 +24,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-        app:tabIndicatorColor="@color/softBlack"
-        app:tabTextColor="@color/softBlack" />
+        app:tabIndicatorColor="@color/text_color"
+        app:tabTextColor="@color/text_color" />
 
     <View
         android:id="@+id/shadow"

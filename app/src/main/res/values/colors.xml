@@ -8,4 +8,5 @@
     <color name="gray">#868E96</color>
     <color name="red">#fc4747</color>
     <color name="colorStroke">#DFE5ED</color>
+    <color name="text_color">@android:color/black</color>
 </resources>

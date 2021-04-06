@@ -35,10 +35,10 @@
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/firasans_regular"
+            android:fontFamily="@font/roboto"
             android:inputType="textEmailAddress"
             android:padding="@dimen/margin_16dp"
-            android:textColor="@color/softBlack"
+            android:textColor="@color/text_color"
             android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp" />
 
@@ -62,10 +62,10 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/firasans_regular"
+            android:fontFamily="@font/roboto"
             android:inputType="textPassword"
             android:padding="@dimen/margin_16dp"
-            android:textColor="@color/softBlack"
+            android:textColor="@color/text_color"
             android:textCursorDrawable="@drawable/cursor_color"
             android:textSize="14sp" />
 
@@ -79,7 +79,7 @@
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginEnd="@dimen/margin_16dp"
         android:backgroundTint="@color/colorPrimary"
-        android:fontFamily="@font/firasans_regular"
+        android:fontFamily="@font/roboto"
         android:paddingTop="@dimen/margin_16dp"
         android:paddingBottom="@dimen/margin_16dp"
         android:text="@string/masuk"

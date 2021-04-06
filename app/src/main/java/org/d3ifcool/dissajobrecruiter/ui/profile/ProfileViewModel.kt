@@ -15,10 +15,10 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
 
     fun updateEmailProfile(
         userId: String,
-        email: String,
+        newEmail: String,
         password: String,
         callback: UpdateProfileCallback
-    ) = userRepository.updateEmailProfile(userId, email, password, callback)
+    ) = userRepository.updateEmailProfile(userId, newEmail, password, callback)
 
     fun updateUserProfile(
         userProfile: UserResponseEntity,

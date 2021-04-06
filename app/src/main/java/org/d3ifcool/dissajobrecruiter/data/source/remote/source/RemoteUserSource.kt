@@ -102,12 +102,12 @@ class RemoteUserSource private constructor(
 
     fun updateEmailProfile(
         userId: String,
-        email: String,
+        newEmail: String,
         password: String,
         callback: UpdateProfileCallback
     ) {
         EspressoIdlingResource.increment()
-        userHelper.updateEmailProfile(userId, email, password, object : UpdateProfileCallback {
+        userHelper.updateEmailProfile(userId, newEmail, password, object : UpdateProfileCallback {
             override fun onSuccess() {
                 callback.onSuccess()
                 EspressoIdlingResource.decrement()
