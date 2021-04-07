@@ -86,16 +86,16 @@ class CreateJobActivity : AppCompatActivity(), JobPostCallback {
 
     private fun storeToDatabase() {
 
-        val title = activityJobPostBinding.etTitle.text.toString()
-        val description = activityJobPostBinding.etDescription.text.toString()
-        val qualification = activityJobPostBinding.etQualification.text.toString()
-        val employment = activityJobPostBinding.spEmployment.selectedItem.toString()
-        val industry = activityJobPostBinding.spIndustry.selectedItem.toString()
+        val title = activityJobPostBinding.etTitle.text.toString().trim()
+        val description = activityJobPostBinding.etDescription.text.toString().trim()
+        val qualification = activityJobPostBinding.etQualification.text.toString().trim()
+        val employment = activityJobPostBinding.spEmployment.selectedItem.toString().trim()
+        val industry = activityJobPostBinding.spIndustry.selectedItem.toString().trim()
 
         var salary = 0
 
         if (!TextUtils.isEmpty(activityJobPostBinding.etSalary.text.toString().trim())) {
-            salary = activityJobPostBinding.etSalary.text.toString().toInt()
+            salary = activityJobPostBinding.etSalary.text.toString().trim().toInt()
         }
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())

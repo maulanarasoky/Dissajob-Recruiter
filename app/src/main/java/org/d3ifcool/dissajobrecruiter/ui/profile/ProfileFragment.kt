@@ -61,8 +61,6 @@ class ProfileFragment : Fragment() {
     private fun populateData(userProfile: UserEntity) {
         fragmentProfileBinding.tvRecruiterName.text = userProfile.fullName
         fragmentProfileBinding.tvRole.text = userProfile.role
-        fragmentProfileBinding.tvAddress.text = userProfile.address
-        fragmentProfileBinding.tvPhoneNumber.text = userProfile.phoneNumber
 
         if (userProfile.imagePath != "-") {
             val storageRef = Firebase.storage.reference

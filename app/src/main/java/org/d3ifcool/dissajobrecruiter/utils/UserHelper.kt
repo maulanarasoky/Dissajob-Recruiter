@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
@@ -86,7 +87,7 @@ object UserHelper {
         database.child(user.id.toString()).setValue(user).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
-            callback.onFailure(it.message.toString())
+            callback.onFailure(R.string.txt_failure_update_profile.toString())
         }
     }
 
@@ -105,7 +106,7 @@ object UserHelper {
                         storeNewEmail(userId, newEmail, callback)
                     }
                     .addOnFailureListener {
-                        callback.onFailure(it.message.toString())
+                        callback.onFailure(R.string.txt_failure_update_profile.toString())
                     }
             }
 
@@ -115,7 +116,7 @@ object UserHelper {
         database.child(userId).child("email").setValue(newEmail).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
-            callback.onFailure(it.message.toString())
+            callback.onFailure(R.string.txt_failure_update_profile.toString())
         }
     }
 
@@ -125,6 +126,19 @@ object UserHelper {
         newPassword: String,
         callback: UpdateProfileCallback
     ) {
+        auth.signInWithEmailAndPassword(auth.currentUser?.email.toString(), oldPassword)
+            .addOnSuccessListener {
+                storeNewPassword(email, oldPassword, newPassword, callback)
+            }
+            .addOnFailureListener {
+                callback.onFailure(R.string.wrong_password.toString())
+            }
+    }
+
+    private fun storeNewPassword(email: String,
+                                 oldPassword: String,
+                                 newPassword: String,
+                                 callback: UpdateProfileCallback) {
         val credential = EmailAuthProvider.getCredential(email, oldPassword)
         auth.currentUser?.reauthenticate(credential)
             ?.addOnCompleteListener {
@@ -133,7 +147,7 @@ object UserHelper {
                         callback.onSuccess()
                     }
                     .addOnFailureListener {
-                        callback.onFailure(it.message.toString())
+                        callback.onFailure(R.string.txt_failure_update_profile.toString())
                     }
             }
     }

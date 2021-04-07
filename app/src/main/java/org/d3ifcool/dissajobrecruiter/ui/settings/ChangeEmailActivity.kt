@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
@@ -12,6 +13,7 @@ import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
+import java.util.regex.Pattern
 
 class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdateProfileCallback {
 
@@ -54,12 +56,25 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
         dialog.titleText = resources.getString(R.string.loading)
         dialog.setCancelable(false)
         dialog.show()
+
+        storeToDatabase()
     }
 
     private fun storeToDatabase() {
         val newEmail = activityChangeEmailBinding.etNewEmail.text.toString().trim()
+        if (!isValidMail(newEmail)) {
+            Toast.makeText(this, resources.getString(R.string.email_invalid), Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val password = activityChangeEmailBinding.etPassword.text.toString().trim()
         viewModel.updateEmailProfile(AuthHelper.currentUser?.uid.toString(), newEmail, password, this)
+    }
+
+    private fun isValidMail(email: String): Boolean {
+        val emailString = ("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
+        return Pattern.compile(emailString).matcher(email).matches()
     }
 
     override fun onClick(v: View?) {
@@ -84,7 +99,7 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
 
     override fun onFailure(message: String) {
         dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-        dialog.titleText = resources.getString(R.string.failure_post_job)
+        dialog.titleText = message
         dialog.setCancelable(false)
         dialog.show()
     }

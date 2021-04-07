@@ -9,4 +9,8 @@
     <color name="red">#fc4747</color>
     <color name="colorStroke">#DFE5ED</color>
     <color name="text_color">@android:color/black</color>
+    <color name="preview_text_color">#1BA4EB</color>
+    <color name="sign_out_text_color">#FD2121</color>
+    <color name="preview_bg_btn">#E5F7FF</color>
+    <color name="sign_out_bg_btn">#FFE5E5</color>
 </resources>

@@ -11,23 +11,34 @@
         android:layout_height="match_parent"
         tools:context=".ui.profile.ProfileFragment">
 
-        <!--        <include-->
-        <!--            android:id="@+id/header"-->
-        <!--            layout="@layout/profile_header"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <View
-            android:id="@+id/squareBg"
+        <include
+            android:id="@+id/header"
+            layout="@layout/settings_header"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginStart="80dp"
-            android:background="@drawable/square_profile_header"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!--        <View-->
+        <!--            android:id="@+id/squareBg"-->
+        <!--            android:layout_width="100dp"-->
+        <!--            android:layout_height="100dp"-->
+        <!--            android:layout_marginStart="@dimen/margin_16dp"-->
+        <!--            android:layout_marginTop="@dimen/margin_16dp"-->
+        <!--            android:background="@drawable/ic_circle_img_profile"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/header" />-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginTop="@dimen/margin_32dp"
+            android:src="@drawable/example_photo_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <TextView
             android:id="@+id/tvRecruiterName"
@@ -37,181 +48,74 @@
             android:layout_marginTop="@dimen/margin_16dp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/imgProfile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/squareBg"
-            app:layout_constraintTop_toTopOf="@id/squareBg"
+            app:layout_constraintStart_toStartOf="@id/imgProfile"
+            app:layout_constraintTop_toBottomOf="@id/imgProfile"
             tools:text="Maulana Rasoky Nasution" />
-
-        <ImageView
-            android:id="@+id/imgProfile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@color/text_color"
-            app:layout_constraintBottom_toBottomOf="@id/squareBg"
-            app:layout_constraintEnd_toStartOf="@id/squareBg"
-            app:layout_constraintStart_toStartOf="@id/squareBg"
-            app:layout_constraintTop_toTopOf="@id/squareBg" />
 
         <TextView
             android:id="@+id/tvRole"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginEnd="@dimen/margin_16dp"
             android:ellipsize="end"
             android:fontFamily="@font/roboto"
             android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toTopOf="@id/imgAddress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/imgProfile"
-            app:layout_constraintTop_toTopOf="@id/imgProfile"
+            android:textColor="@color/gray"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tvRecruiterName"
+            app:layout_constraintTop_toBottomOf="@id/tvRecruiterName"
             tools:text="HRD" />
 
-        <ImageView
-            android:id="@+id/imgAddress"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:src="@drawable/ic_place_white_24dp"
-            app:layout_constraintBottom_toTopOf="@id/imgPhoneNumber"
-            app:layout_constraintStart_toEndOf="@id/imgProfile"
+        <include
+            android:id="@+id/profileMainMenu"
+            layout="@layout/profile_main_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvRole" />
 
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginEnd="@dimen/margin_16dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/roboto"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/imgAddress"
-            app:layout_constraintTop_toTopOf="@id/imgAddress"
-            tools:text="Jl. Telekomunikasi no. 01" />
-
-        <ImageView
-            android:id="@+id/imgPhoneNumber"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:src="@drawable/ic_phone_white_24dp"
-            app:layout_constraintBottom_toBottomOf="@id/imgProfile"
-            app:layout_constraintStart_toEndOf="@id/imgProfile"
-            app:layout_constraintTop_toBottomOf="@id/tvAddress" />
-
-        <TextView
-            android:id="@+id/tvPhoneNumber"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8dp"
-            android:layout_marginEnd="@dimen/margin_16dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/roboto"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/imgPhoneNumber"
-            app:layout_constraintTop_toTopOf="@id/imgPhoneNumber"
-            tools:text="0821-6004-9893" />
-
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnProfilePreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_32dp"
-            android:layout_marginEnd="@dimen/margin_32dp"
-            android:background="@drawable/profile_main_menu_bg"
-            android:elevation="@dimen/elevation_header"
-            android:orientation="horizontal"
-            android:padding="@dimen/margin_16dp"
-            app:layout_constraintBottom_toBottomOf="@id/squareBg"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:background="@drawable/bg_preview_btn"
+            android:drawableStart="@drawable/ic_preview_24dp"
+            android:drawablePadding="@dimen/margin_8dp"
+            android:paddingStart="@dimen/margin_16dp"
+            android:paddingTop="@dimen/margin_12dp"
+            android:paddingEnd="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/margin_12dp"
+            android:text="@string/preview"
+            android:textColor="@color/preview_text_color"
+            android:textSize="13.5sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/squareBg">
+            app:layout_constraintTop_toBottomOf="@id/profileMainMenu" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_16dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_job_color_primary_24dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8dp"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp"
-                    tools:text="5 pekerjaan" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_16dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_applicants_color_primary_24dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_8dp"
-                    android:fontFamily="@font/roboto"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp"
-                    tools:text="20 pelamar" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tvNoData"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="@dimen/margin_16dp"-->
-        <!--            android:fontFamily="@font/firasans_regular"-->
-        <!--            android:text="@string/tidak_ada_pekerjaan"-->
-        <!--            android:textColor="@android:color/black"-->
-        <!--            android:textSize="14sp"-->
-        <!--            android:visibility="gone"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/header" />-->
-
-        <!--        <ProgressBar-->
-        <!--            android:id="@+id/progressBar"-->
-        <!--            style="@android:style/Widget.Holo.Light.ProgressBar"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="@dimen/margin_16dp"-->
-        <!--            android:indeterminateTint="@color/colorPrimary"-->
-        <!--            android:visibility="gone"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/header" />-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSignOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:background="@drawable/bg_logout_btn"
+            android:drawableStart="@drawable/ic_logout_24dp"
+            android:drawablePadding="@dimen/margin_8dp"
+            android:paddingStart="@dimen/margin_16dp"
+            android:paddingTop="@dimen/margin_12dp"
+            android:paddingEnd="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/margin_12dp"
+            android:text="@string/logout"
+            android:textColor="@color/sign_out_text_color"
+            android:textSize="13.5sp"
+            app:layout_constraintStart_toEndOf="@id/btnProfilePreview"
+            app:layout_constraintTop_toBottomOf="@id/profileMainMenu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
