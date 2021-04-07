@@ -126,7 +126,7 @@ object UserHelper {
         newPassword: String,
         callback: UpdateProfileCallback
     ) {
-        auth.signInWithEmailAndPassword(auth.currentUser?.email.toString(), oldPassword)
+        auth.signInWithEmailAndPassword(email, oldPassword)
             .addOnSuccessListener {
                 storeNewPassword(email, oldPassword, newPassword, callback)
             }

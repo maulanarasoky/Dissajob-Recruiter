@@ -11,9 +11,11 @@ import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangeEmailBinding
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangePasswordBinding
 import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
+import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
+import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 
-class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
+class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, UpdateProfileCallback {
 
     private lateinit var activityChangePasswordBinding: ActivityChangePasswordBinding
 
@@ -26,7 +28,8 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
         activityChangePasswordBinding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(activityChangePasswordBinding.root)
 
-        activityChangePasswordBinding.activityHeader.tvHeaderTitle.text = resources.getString(R.string.change_password_title)
+        activityChangePasswordBinding.activityHeader.tvHeaderTitle.text =
+            resources.getString(R.string.change_password_title)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
@@ -46,7 +49,10 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        if (TextUtils.isEmpty(activityChangePasswordBinding.etConfirmPassword.text.toString().trim())) {
+        if (TextUtils.isEmpty(
+                activityChangePasswordBinding.etConfirmPassword.text.toString().trim()
+            )
+        ) {
             etConfirmPassword.error = getString(R.string.txt_error_form_text, "Re-type password")
             return
         }
@@ -57,15 +63,46 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        checkOldPassword()
+        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        dialog.titleText = resources.getString(R.string.loading)
+        dialog.setCancelable(false)
+        dialog.show()
+
+        updatePassword()
+    }
+
+    private fun updatePassword() {
+        val email = AuthHelper.currentUser?.email.toString()
+        val oldPassword = activityChangePasswordBinding.etOldPassword.text.toString().trim()
+        val newPassword = activityChangePasswordBinding.etNewPassword.text.toString().trim()
+
+        viewModel.updatePasswordProfile(email, oldPassword, newPassword, this)
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.imgBackBtn -> finish()
             R.id.btnUpdate -> {
                 formValidation()
             }
         }
+    }
+
+    override fun onSuccess() {
+        dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
+        dialog.titleText = resources.getString(R.string.txt_success_update_profile, "Password")
+        dialog.setCancelable(false)
+        dialog.setConfirmClickListener {
+            it.dismissWithAnimation()
+            finish()
+        }
+        dialog.show()
+    }
+
+    override fun onFailure(message: String) {
+        dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
+        dialog.titleText = message
+        dialog.setCancelable(false)
+        dialog.show()
     }
 }
