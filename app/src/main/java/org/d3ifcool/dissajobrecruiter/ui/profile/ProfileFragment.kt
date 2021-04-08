@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), View.OnClickListener {
 
     private lateinit var fragmentProfileBinding: FragmentProfileBinding
 
@@ -55,6 +56,8 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+
+            fragmentProfileBinding.profileMainMenu.btnSettingsMenu.setOnClickListener(this)
         }
     }
 
@@ -74,6 +77,14 @@ class ProfileFragment : Fragment() {
                 .apply(RequestOptions.placeholderOf(circularProgressDrawable))
                 .error(R.drawable.ic_profile_gray_24dp)
                 .into(fragmentProfileBinding.imgProfile)
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.btnSettingsMenu -> {
+//                activity?.startActivity(Intent(activity, Settings))
+            }
         }
     }
 }

@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DissajobRecruiter"
         tools:replace="android:icon">
-        <activity android:name=".ui.settings.ChangePhoneNumberActivity"></activity>
+        <activity android:name=".ui.settings.ChangeProfileActivity"></activity>
+        <activity android:name=".ui.settings.SettingsActivity" />
+        <activity android:name=".ui.settings.ChangePhoneNumberActivity" />
         <activity android:name=".ui.settings.ChangePasswordActivity" />
         <activity android:name=".ui.settings.ChangeEmailActivity" />
         <activity android:name=".ui.job.JobDetailsActivity" />

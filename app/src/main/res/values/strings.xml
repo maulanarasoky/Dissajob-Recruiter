@@ -65,4 +65,8 @@
     <string name="txt_old_phone_number">Nomor lama</string>
     <string name="txt_new_phone_number">Nomor baru</string>
     <string name="phone_number_invalid">Nomor telepon tidak valid</string>
+    <string name="edit_profile">Edit Profil</string>
+    <string name="phone_number">Nomor Telepon</string>
+    <string name="security">Keamanan</string>
+    <string name="settings">Pengaturan</string>
 </resources>
