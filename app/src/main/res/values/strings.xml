@@ -11,8 +11,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="daftar">Daftar</string>
     <string name="lupa_password">Lupa Password ?</string>
-    <string name="first_name">First name</string>
-    <string name="last_name">Last name (Opsional)</string>
+    <string name="first_name">Nama Depan</string>
+    <string name="last_name">Nama Belakang (Opsional)</string>
     <string name="email">Email</string>
     <string name="confirm_password">Confirm password</string>
     <string name="password">Password</string>
@@ -69,4 +69,7 @@
     <string name="phone_number">Nomor Telepon</string>
     <string name="security">Keamanan</string>
     <string name="settings">Pengaturan</string>
+    <string name="name">Nama</string>
+    <string name="address">Alamat</string>
+    <string name="txt_profile_role">Role :</string>
 </resources>

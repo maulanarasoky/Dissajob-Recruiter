@@ -20,6 +20,7 @@ import org.d3ifcool.dissajobrecruiter.databinding.FragmentProfileBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.JobAdapter
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
+import org.d3ifcool.dissajobrecruiter.ui.settings.SettingsActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
@@ -27,8 +28,6 @@ import org.d3ifcool.dissajobrecruiter.vo.Status
 class ProfileFragment : Fragment(), View.OnClickListener {
 
     private lateinit var fragmentProfileBinding: FragmentProfileBinding
-
-    private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,17 +44,19 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
-            viewModel.getUserProfile(AuthHelper.currentUser?.uid.toString()).observe(viewLifecycleOwner) { profile ->
-                if (profile.data != null) {
-                    when (profile.status) {
-                        Status.LOADING -> {}
-                        Status.SUCCESS -> populateData(profile.data)
-                        Status.ERROR -> {
-                            Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+            viewModel.getUserProfile(AuthHelper.currentUser?.uid.toString())
+                .observe(viewLifecycleOwner) { profile ->
+                    if (profile.data != null) {
+                        when (profile.status) {
+                            Status.LOADING -> {
+                            }
+                            Status.SUCCESS -> populateData(profile.data)
+                            Status.ERROR -> {
+                                Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
-            }
 
             fragmentProfileBinding.profileMainMenu.btnSettingsMenu.setOnClickListener(this)
         }
@@ -64,6 +65,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private fun populateData(userProfile: UserEntity) {
         fragmentProfileBinding.tvRecruiterName.text = userProfile.fullName
         fragmentProfileBinding.tvRole.text = userProfile.role
+        fragmentProfileBinding.tvEmail.text = userProfile.email
 
         if (userProfile.imagePath != "-") {
             val storageRef = Firebase.storage.reference
@@ -81,9 +83,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.btnSettingsMenu -> {
-//                activity?.startActivity(Intent(activity, Settings))
+                activity?.startActivity(Intent(activity, SettingsActivity::class.java))
             }
         }
     }

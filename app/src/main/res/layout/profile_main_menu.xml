@@ -7,16 +7,29 @@
 
     <ImageView
         android:id="@+id/imgJobMenu"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@color/softBlack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_job"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/job"
+        android:textColor="@color/text_color"
+        android:textSize="15.5sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgJobMenu"
+        app:layout_constraintEnd_toStartOf="@id/btnJobMenu"
+        app:layout_constraintStart_toEndOf="@id/imgJobMenu"
+        app:layout_constraintTop_toTopOf="@id/imgJobMenu" />
+
     <ImageButton
         android:id="@+id/btnJobMenu"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:background="@drawable/bg_profile_menu_btn"
         android:src="@drawable/ic_arrow_next_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/imgJobMenu"
@@ -25,17 +38,30 @@
 
     <ImageView
         android:id="@+id/imgApplicantMenu"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="@dimen/margin_32dp"
-        android:src="@color/softBlack"
+        android:src="@drawable/ic_applicant"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgJobMenu" />
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/applicants"
+        android:textColor="@color/text_color"
+        android:textSize="15.5sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgApplicantMenu"
+        app:layout_constraintEnd_toStartOf="@id/btnApplicantMenu"
+        app:layout_constraintStart_toEndOf="@id/imgApplicantMenu"
+        app:layout_constraintTop_toTopOf="@id/imgApplicantMenu" />
+
     <ImageButton
         android:id="@+id/btnApplicantMenu"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:background="@drawable/bg_profile_menu_btn"
         android:src="@drawable/ic_arrow_next_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/imgApplicantMenu"
@@ -44,17 +70,30 @@
 
     <ImageView
         android:id="@+id/imgSettingsMenu"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="@dimen/margin_32dp"
-        android:src="@color/softBlack"
+        android:src="@drawable/ic_settings"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgApplicantMenu" />
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/settings"
+        android:textColor="@color/text_color"
+        android:textSize="15.5sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgSettingsMenu"
+        app:layout_constraintEnd_toStartOf="@id/btnSettingsMenu"
+        app:layout_constraintStart_toEndOf="@id/imgSettingsMenu"
+        app:layout_constraintTop_toTopOf="@id/imgSettingsMenu" />
+
     <ImageButton
         android:id="@+id/btnSettingsMenu"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:background="@drawable/bg_profile_menu_btn"
         android:src="@drawable/ic_arrow_next_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/imgSettingsMenu"
