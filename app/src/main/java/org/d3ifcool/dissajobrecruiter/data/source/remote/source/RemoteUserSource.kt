@@ -120,6 +120,26 @@ class RemoteUserSource private constructor(
         })
     }
 
+    fun updatePhoneNumberProfile(
+        userId: String,
+        newPhoneNumber: String,
+        password: String,
+        callback: UpdateProfileCallback
+    ) {
+        EspressoIdlingResource.increment()
+        userHelper.updatePhoneNumberProfile(userId, newPhoneNumber, password, object : UpdateProfileCallback {
+            override fun onSuccess() {
+                callback.onSuccess()
+                EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailure(message: String) {
+                callback.onFailure(message)
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
+
     fun updatePasswordProfile(
         email: String,
         oldPassword: String,

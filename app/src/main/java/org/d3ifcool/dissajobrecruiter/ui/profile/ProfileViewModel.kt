@@ -13,6 +13,11 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
     fun getUserProfile(userId: String): LiveData<Resource<UserEntity>> =
         userRepository.getUserProfile(userId)
 
+    fun updateUserProfile(
+        userProfile: UserResponseEntity,
+        callback: UpdateProfileCallback
+    ) = userRepository.updateProfileData(userProfile, callback)
+
     fun updateEmailProfile(
         userId: String,
         newEmail: String,
@@ -20,10 +25,12 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
         callback: UpdateProfileCallback
     ) = userRepository.updateEmailProfile(userId, newEmail, password, callback)
 
-    fun updateUserProfile(
-        userProfile: UserResponseEntity,
+    fun updatePhoneNumberProfile(
+        userId: String,
+        newPhoneNumber: String,
+        password: String,
         callback: UpdateProfileCallback
-    ) = userRepository.updateProfileData(userProfile, callback)
+    ) = userRepository.updatePhoneNumberProfile(userId, newPhoneNumber, password, callback)
 
     fun updatePasswordProfile(
         email: String,

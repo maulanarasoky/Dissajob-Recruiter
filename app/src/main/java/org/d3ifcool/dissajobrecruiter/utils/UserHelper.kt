@@ -120,6 +120,24 @@ object UserHelper {
         }
     }
 
+    fun updatePhoneNumberProfile(userId: String, newPhoneNumber: String, password: String, callback: UpdateProfileCallback) {
+        auth.signInWithEmailAndPassword(auth.currentUser?.email.toString(), password)
+            .addOnSuccessListener {
+                storeNewPhoneNumber(userId, newPhoneNumber, callback)
+            }
+            .addOnFailureListener {
+                callback.onFailure(R.string.wrong_password.toString())
+            }
+    }
+
+    private fun storeNewPhoneNumber(userId: String, newPhoneNumber: String, callback: UpdateProfileCallback) {
+        database.child(userId).child("phoneNumber").setValue(newPhoneNumber).addOnSuccessListener {
+            callback.onSuccess()
+        }.addOnFailureListener {
+            callback.onFailure(R.string.txt_failure_update_profile.toString())
+        }
+    }
+
     fun updatePasswordProfile(
         email: String,
         oldPassword: String,

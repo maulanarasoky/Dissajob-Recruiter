@@ -62,4 +62,7 @@
     <string name="wrong_password">Password salah</string>
     <string name="logout">Keluar</string>
     <string name="preview">Preview</string>
+    <string name="txt_old_phone_number">Nomor lama</string>
+    <string name="txt_new_phone_number">Nomor baru</string>
+    <string name="phone_number_invalid">Nomor telepon tidak valid</string>
 </resources>

@@ -44,9 +44,7 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 viewModel.getJobDetails(jobId).observe(this) { jobDetails ->
                     if (jobDetails.data != null) {
                         when (jobDetails.status) {
-                            Status.LOADING -> {
-                            }
-
+                            Status.LOADING -> {}
                             Status.SUCCESS -> populateData(jobDetails.data)
                             Status.ERROR -> {
                                 Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
