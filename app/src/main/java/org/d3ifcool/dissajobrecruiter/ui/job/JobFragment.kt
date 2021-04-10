@@ -35,8 +35,6 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
 
         if (activity != null) {
 
-            fragmentJobBinding.header.addJob.setOnClickListener(this)
-
             showLoading(true)
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
@@ -74,6 +72,8 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
             )
             adapter = jobAdapter
         }
+
+        fragmentJobBinding.fabAddJob.setOnClickListener(this)
     }
 
     private fun showLoading(state: Boolean) {
@@ -84,9 +84,11 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
         }
     }
 
-    override fun onClick(p0: View?) {
-        if (p0?.id == R.id.addJob) {
-            startActivity(Intent(activity, CreateJobActivity::class.java))
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.fabAddJob -> {
+                startActivity(Intent(activity, CreateJobActivity::class.java))
+            }
         }
     }
 
