@@ -25,6 +25,7 @@ import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.settings.SettingsActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
+import org.d3ifcool.dissajobrecruiter.utils.LogoutDialog
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ProfileFragment : Fragment(), View.OnClickListener {
@@ -60,9 +61,13 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                     }
                 }
 
+            //Main menu
             fragmentProfileBinding.profileMainMenu.btnJobMenu.setOnClickListener(this)
             fragmentProfileBinding.profileMainMenu.btnApplicantMenu.setOnClickListener(this)
             fragmentProfileBinding.profileMainMenu.btnSettingsMenu.setOnClickListener(this)
+
+            //SignOut button
+            fragmentProfileBinding.btnSignOut.setOnClickListener(this)
         }
     }
 
@@ -96,6 +101,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
             R.id.btnSettingsMenu -> {
                 activity?.startActivity(Intent(activity, SettingsActivity::class.java))
+            }
+            R.id.btnSignOut -> {
+                LogoutDialog().show(parentFragmentManager, LogoutDialog::class.java.simpleName)
             }
         }
     }
