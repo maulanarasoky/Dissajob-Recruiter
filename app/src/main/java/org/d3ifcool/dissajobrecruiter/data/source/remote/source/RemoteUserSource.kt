@@ -7,6 +7,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
+import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
@@ -141,17 +142,21 @@ class RemoteUserSource private constructor(
         callback: UpdateProfileCallback
     ) {
         EspressoIdlingResource.increment()
-        userHelper.updatePhoneNumberProfile(userId, newPhoneNumber, password, object : UpdateProfileCallback {
-            override fun onSuccess() {
-                callback.onSuccess()
-                EspressoIdlingResource.decrement()
-            }
+        userHelper.updatePhoneNumberProfile(
+            userId,
+            newPhoneNumber,
+            password,
+            object : UpdateProfileCallback {
+                override fun onSuccess() {
+                    callback.onSuccess()
+                    EspressoIdlingResource.decrement()
+                }
 
-            override fun onFailure(messageId: Int) {
-                callback.onFailure(messageId)
-                EspressoIdlingResource.decrement()
-            }
-        })
+                override fun onFailure(messageId: Int) {
+                    callback.onFailure(messageId)
+                    EspressoIdlingResource.decrement()
+                }
+            })
     }
 
     fun updatePasswordProfile(
@@ -176,6 +181,24 @@ class RemoteUserSource private constructor(
                     EspressoIdlingResource.decrement()
                 }
             })
+    }
+
+    fun resetPassword(
+        email: String,
+        callback: ResetPasswordCallback
+    ) {
+        EspressoIdlingResource.increment()
+        userHelper.resetPassword(email, object : ResetPasswordCallback {
+            override fun onSuccess() {
+                callback.onSuccess()
+                EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailure(messageId: Int) {
+                callback.onFailure(messageId)
+                EspressoIdlingResource.decrement()
+            }
+        })
     }
 
     interface LoadUserProfileCallback {

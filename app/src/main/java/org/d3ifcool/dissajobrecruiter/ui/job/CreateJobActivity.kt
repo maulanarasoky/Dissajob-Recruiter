@@ -2,6 +2,7 @@ package org.d3ifcool.dissajobrecruiter.ui.job
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +16,7 @@ import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateJobActivity : AppCompatActivity(), JobPostCallback {
+class CreateJobActivity : AppCompatActivity(), JobPostCallback, View.OnClickListener {
 
     private lateinit var activityJobPostBinding: ActivityCreateJobBinding
 
@@ -35,13 +36,8 @@ class CreateJobActivity : AppCompatActivity(), JobPostCallback {
 
         dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 
-        activityJobPostBinding.header.imgBackBtn.setOnClickListener {
-            finish()
-        }
-
-        activityJobPostBinding.btnPost.setOnClickListener {
-            formValidation()
-        }
+        activityJobPostBinding.header.imgBackBtn.setOnClickListener(this)
+        activityJobPostBinding.btnPostJob.setOnClickListener(this)
     }
 
     private fun spinnerInit() {
@@ -133,5 +129,12 @@ class CreateJobActivity : AppCompatActivity(), JobPostCallback {
         dialog.titleText = resources.getString(R.string.txt_failure_update_profile)
         dialog.setCancelable(false)
         dialog.show()
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.imgBackBtn -> finish()
+            R.id.btnPostJob -> formValidation()
+        }
     }
 }

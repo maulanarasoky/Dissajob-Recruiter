@@ -3,22 +3,21 @@ package org.d3ifcool.dissajobrecruiter.ui.signin
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.ViewGroup
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivitySignInBinding
-import org.d3ifcool.dissajobrecruiter.databinding.SigninHeaderBinding
 import org.d3ifcool.dissajobrecruiter.ui.home.HomeActivity
+import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordActivity
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 
-class SignInActivity : AppCompatActivity(), SignInCallback {
+class SignInActivity : AppCompatActivity(), SignInCallback, View.OnClickListener {
 
     private lateinit var activitySignInBinding: ActivitySignInBinding
-    private lateinit var signInHeaderBinding: SigninHeaderBinding
 
     private lateinit var viewModel: SignInViewModel
 
@@ -27,23 +26,12 @@ class SignInActivity : AppCompatActivity(), SignInCallback {
         activitySignInBinding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(activitySignInBinding.root)
 
-        signInHeaderBinding =
-            SigninHeaderBinding.inflate(
-                layoutInflater,
-                activitySignInBinding.root.parent as ViewGroup?, true
-            )
-
-
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignInViewModel::class.java]
 
-        activitySignInBinding.signInBtn.setOnClickListener {
-            formValidation()
-        }
-
-        signInHeaderBinding.signUpBtn.setOnClickListener {
-            startActivity(Intent(this, SignUpActivity::class.java))
-        }
+        activitySignInBinding.header.btnSignUp.setOnClickListener(this)
+        activitySignInBinding.btnSignIn.setOnClickListener(this)
+        activitySignInBinding.tvResetPassword.setOnClickListener(this)
     }
 
     private fun checkLogin() {
@@ -85,5 +73,19 @@ class SignInActivity : AppCompatActivity(), SignInCallback {
 
     override fun onFailure() {
         Toast.makeText(this, resources.getString(R.string.error_login), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btnSignUp -> {
+                startActivity(Intent(this, SignUpActivity::class.java))
+            }
+            R.id.btnSignIn -> {
+                formValidation()
+            }
+            R.id.tvResetPassword -> {
+                startActivity(Intent(this, ResetPasswordActivity::class.java))
+            }
+        }
     }
 }

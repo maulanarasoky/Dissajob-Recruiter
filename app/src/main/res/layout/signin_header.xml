@@ -10,10 +10,10 @@
         android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_16dp"
         android:fontFamily="@font/roboto"
-        android:layout_marginStart="@dimen/margin_16dp"
         android:text="@string/masuk"
         android:textColor="@color/text_color"
         android:textSize="16sp"
@@ -23,16 +23,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/signUpBtn"
+        android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:fontFamily="@font/roboto"
         android:text="@string/daftar"
-        android:layout_marginEnd="@dimen/margin_16dp"
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/headerTitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/headerTitle" />
 
 

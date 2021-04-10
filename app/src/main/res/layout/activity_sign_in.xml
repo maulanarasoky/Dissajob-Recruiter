@@ -72,7 +72,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/signInBtn"
+        android:id="@+id/btnSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16dp"
@@ -92,16 +92,18 @@
         app:layout_constraintTop_toBottomOf="@+id/text_input_password" />
 
     <TextView
+        android:id="@+id/tvResetPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16dp"
         android:text="@string/lupa_password"
         android:textColor="@color/colorPrimary"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:textSize="14sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

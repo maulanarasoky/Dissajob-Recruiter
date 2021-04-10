@@ -183,7 +183,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvSalary" />
 
         <Button
-            android:id="@+id/btnPost"
+            android:id="@+id/btnPostJob"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginStart="@dimen/margin_16dp"

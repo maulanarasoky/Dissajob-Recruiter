@@ -11,6 +11,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="@dimen/margin_16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_arrow_back_black_24dp"
         app:layout_constraintBottom_toBottomOf="@id/headerTitle"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,10 +21,10 @@
         android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginBottom="@dimen/margin_16dp"
         android:fontFamily="@font/roboto"
-        android:layout_marginStart="@dimen/margin_16dp"
         android:text="@string/bergabung_sekarang_di_dissajob"
         android:textColor="@color/text_color"
         android:textSize="16sp"
@@ -33,16 +34,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/signInBtn"
+        android:id="@+id/btnSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:fontFamily="@font/roboto"
         android:text="@string/masuk"
-        android:layout_marginEnd="@dimen/margin_16dp"
         android:textColor="@color/colorPrimary"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/headerTitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/headerTitle" />
 
 

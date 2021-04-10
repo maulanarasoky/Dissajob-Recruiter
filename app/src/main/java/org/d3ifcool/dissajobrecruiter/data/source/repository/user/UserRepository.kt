@@ -10,6 +10,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruit
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
+import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
@@ -131,4 +132,13 @@ class UserRepository private constructor(
                 callback
             )
         }
+
+    override fun resetPassword(email: String, callback: ResetPasswordCallback) =
+        appExecutors.diskIO()
+            .execute {
+                remoteUserSource.resetPassword(
+                    email,
+                    callback
+                )
+            }
 }

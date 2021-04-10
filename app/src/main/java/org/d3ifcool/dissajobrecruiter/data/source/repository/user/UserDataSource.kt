@@ -9,6 +9,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruit
 import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
+import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
@@ -22,4 +23,5 @@ interface UserDataSource {
     fun updateEmailProfile(userId: String, newEmail: String, password: String, callback: UpdateProfileCallback)
     fun updatePhoneNumberProfile(userId: String, newPhoneNumber: String, password: String, callback: UpdateProfileCallback)
     fun updatePasswordProfile(email: String, oldPassword: String, newPassword: String, callback: UpdateProfileCallback)
+    fun resetPassword(email: String, callback: ResetPasswordCallback)
 }

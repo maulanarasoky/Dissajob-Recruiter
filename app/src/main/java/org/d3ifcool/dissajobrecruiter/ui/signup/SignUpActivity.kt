@@ -2,21 +2,19 @@ package org.d3ifcool.dissajobrecruiter.ui.signup
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.ViewGroup
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivitySignUpBinding
-import org.d3ifcool.dissajobrecruiter.databinding.SignupHeaderBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import java.util.regex.Pattern
 
-class SignUpActivity : AppCompatActivity(), SignUpCallback {
+class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener {
 
     private lateinit var activitySignUpBinding: ActivitySignUpBinding
-    private lateinit var signUpHeaderBinding: SignupHeaderBinding
 
     private lateinit var viewModel: SignUpViewModel
 
@@ -27,30 +25,16 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
         activitySignUpBinding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(activitySignUpBinding.root)
 
-        signUpHeaderBinding = SignupHeaderBinding.inflate(
-            layoutInflater,
-            activitySignUpBinding.root.parent as ViewGroup?, true
-        )
-
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignUpViewModel::class.java]
 
-        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-
-        signUpHeaderBinding.imgBackBtn.setOnClickListener {
-            finish()
-        }
-
-        signUpHeaderBinding.signInBtn.setOnClickListener {
-            finish()
-        }
-
-        activitySignUpBinding.btnSignUp.setOnClickListener {
-            formValidation()
-        }
+        activitySignUpBinding.header.imgBackBtn.setOnClickListener(this)
+        activitySignUpBinding.header.btnSignIn.setOnClickListener(this)
+        activitySignUpBinding.btnSignUp.setOnClickListener(this)
     }
 
     private fun signUp(email: String, password: String) {
+        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         dialog.titleText = resources.getString(R.string.loading)
         dialog.setCancelable(false)
         dialog.show()
@@ -77,12 +61,6 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
                 resources.getString(R.string.error_alert, "Nama depan")
             return
         }
-
-//        if (TextUtils.isEmpty(activitySignUpBinding.etLastName.text.toString().trim())) {
-//            activitySignUpBinding.etLastName.error =
-//                resources.getString(R.string.error_alert, "Nama belakang")
-//            return
-//        }
 
         if (TextUtils.isEmpty(activitySignUpBinding.etEmail.text.toString().trim())) {
             activitySignUpBinding.etEmail.error = resources.getString(R.string.error_alert, "Email")
@@ -142,5 +120,13 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback {
             it.dismissWithAnimation()
         }
         dialog.show()
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.imgBackBtn -> finish()
+            R.id.btnSignIn -> finish()
+            R.id.btnSignUp -> formValidation()
+        }
     }
 }

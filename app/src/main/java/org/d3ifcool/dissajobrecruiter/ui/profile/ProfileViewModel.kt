@@ -8,6 +8,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.Job
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.repository.user.UserRepository
 import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
+import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
 class ProfileViewModel(private val userRepository: UserRepository) : ViewModel() {
@@ -44,4 +45,9 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
         newPassword: String,
         callback: UpdateProfileCallback
     ) = userRepository.updatePasswordProfile(email, oldPassword, newPassword, callback)
+
+    fun resetPassword(
+        email: String,
+        callback: ResetPasswordCallback
+    ) = userRepository.resetPassword(email, callback)
 }

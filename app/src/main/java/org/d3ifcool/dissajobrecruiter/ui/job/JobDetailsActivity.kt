@@ -33,8 +33,6 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
         activityJobDetailsBinding = ActivityJobDetailsBinding.inflate(layoutInflater)
         setContentView(activityJobDetailsBinding.root)
 
-        activityJobDetailsBinding.jobDetailsHeader.imgBackBtn.setOnClickListener(this)
-
         val extras = intent.extras
         if (extras != null) {
             val factory = ViewModelFactory.getInstance(this)
@@ -54,6 +52,8 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 }
             }
         }
+
+        activityJobDetailsBinding.jobDetailsHeader.imgBackBtn.setOnClickListener(this)
     }
 
     private fun populateData(jobDetails: JobDetailsEntity) {
