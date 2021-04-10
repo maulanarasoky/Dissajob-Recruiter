@@ -17,6 +17,7 @@ import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentProfileBinding
+import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantActivity
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.JobActivity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobAdapter
@@ -60,6 +61,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 }
 
             fragmentProfileBinding.profileMainMenu.btnJobMenu.setOnClickListener(this)
+            fragmentProfileBinding.profileMainMenu.btnApplicantMenu.setOnClickListener(this)
             fragmentProfileBinding.profileMainMenu.btnSettingsMenu.setOnClickListener(this)
         }
     }
@@ -86,6 +88,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.btnApplicantMenu -> {
+                activity?.startActivity(Intent(activity, ApplicantActivity::class.java))
+            }
             R.id.btnJobMenu -> {
                 activity?.startActivity(Intent(activity, JobActivity::class.java))
             }
