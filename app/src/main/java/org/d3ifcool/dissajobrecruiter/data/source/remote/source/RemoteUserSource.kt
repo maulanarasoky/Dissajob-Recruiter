@@ -1,13 +1,12 @@
 package org.d3ifcool.dissajobrecruiter.data.source.remote.source
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
-import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
+import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
@@ -93,8 +92,23 @@ class RemoteUserSource private constructor(
                 EspressoIdlingResource.decrement()
             }
 
-            override fun onFailure(message: String) {
-                callback.onFailure(message)
+            override fun onFailure(messageId: Int) {
+                callback.onFailure(messageId)
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
+
+    fun uploadProfilePicture(image: Uri, callback: UploadProfilePictureCallback) {
+        EspressoIdlingResource.increment()
+        userHelper.uploadProfilePicture(image, object : UploadProfilePictureCallback {
+            override fun onSuccessUpload(imageId: String) {
+                callback.onSuccessUpload(imageId)
+                EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailureUpload(messageId: Int) {
+                callback.onFailureUpload(messageId)
                 EspressoIdlingResource.decrement()
             }
         })
@@ -113,8 +127,8 @@ class RemoteUserSource private constructor(
                 EspressoIdlingResource.decrement()
             }
 
-            override fun onFailure(message: String) {
-                callback.onFailure(message)
+            override fun onFailure(messageId: Int) {
+                callback.onFailure(messageId)
                 EspressoIdlingResource.decrement()
             }
         })
@@ -133,8 +147,8 @@ class RemoteUserSource private constructor(
                 EspressoIdlingResource.decrement()
             }
 
-            override fun onFailure(message: String) {
-                callback.onFailure(message)
+            override fun onFailure(messageId: Int) {
+                callback.onFailure(messageId)
                 EspressoIdlingResource.decrement()
             }
         })
@@ -157,8 +171,8 @@ class RemoteUserSource private constructor(
                     EspressoIdlingResource.decrement()
                 }
 
-                override fun onFailure(message: String) {
-                    callback.onFailure(message)
+                override fun onFailure(messageId: Int) {
+                    callback.onFailure(messageId)
                     EspressoIdlingResource.decrement()
                 }
             })

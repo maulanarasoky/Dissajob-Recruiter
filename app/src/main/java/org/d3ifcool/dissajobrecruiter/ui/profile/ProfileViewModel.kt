@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.ui.profile
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
@@ -17,6 +18,11 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
         userProfile: UserResponseEntity,
         callback: UpdateProfileCallback
     ) = userRepository.updateProfileData(userProfile, callback)
+
+    fun uploadProfilePicture(
+        image: Uri,
+        callback: UploadProfilePictureCallback
+    ) = userRepository.uploadProfilePicture(image, callback)
 
     fun updateEmailProfile(
         userId: String,

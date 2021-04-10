@@ -1,15 +1,19 @@
 package org.d3ifcool.dissajobrecruiter.utils
 
+import android.net.Uri
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
+import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 
@@ -87,11 +91,37 @@ object UserHelper {
         database.child(user.id.toString()).setValue(user).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
-            callback.onFailure(R.string.txt_failure_update_profile.toString())
+            callback.onFailure(R.string.txt_failure_update_profile)
+        }
+    }
+
+    fun uploadProfilePicture(image: Uri, callback: UploadProfilePictureCallback) {
+        val storageRef = Firebase.storage.reference
+        val imageId = database.push().key
+        val uploadImage = storageRef.child("recruiter/profile/images/${imageId}").putFile(image)
+        uploadImage.addOnSuccessListener {
+            callback.onSuccessUpload(imageId.toString())
+        }.addOnFailureListener {
+            callback.onFailureUpload(R.string.txt_failure_upload_profile_picture)
         }
     }
 
     fun updateEmailProfile(
+        userId: String,
+        newEmail: String,
+        password: String,
+        callback: UpdateProfileCallback
+    ) {
+        auth.signInWithEmailAndPassword(auth.currentUser?.email.toString(), password)
+            .addOnSuccessListener {
+                updateEmailAuthentication(userId, newEmail, password, callback)
+            }
+            .addOnFailureListener {
+                callback.onFailure(R.string.wrong_password)
+            }
+    }
+
+    private fun updateEmailAuthentication(
         userId: String,
         newEmail: String,
         password: String,
@@ -106,35 +136,43 @@ object UserHelper {
                         storeNewEmail(userId, newEmail, callback)
                     }
                     .addOnFailureListener {
-                        callback.onFailure(R.string.txt_failure_update_profile.toString())
+                        callback.onFailure(R.string.txt_failure_update_profile)
                     }
             }
-
     }
 
     private fun storeNewEmail(userId: String, newEmail: String, callback: UpdateProfileCallback) {
         database.child(userId).child("email").setValue(newEmail).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
-            callback.onFailure(R.string.txt_failure_update_profile.toString())
+            callback.onFailure(R.string.txt_failure_update_profile)
         }
     }
 
-    fun updatePhoneNumberProfile(userId: String, newPhoneNumber: String, password: String, callback: UpdateProfileCallback) {
+    fun updatePhoneNumberProfile(
+        userId: String,
+        newPhoneNumber: String,
+        password: String,
+        callback: UpdateProfileCallback
+    ) {
         auth.signInWithEmailAndPassword(auth.currentUser?.email.toString(), password)
             .addOnSuccessListener {
                 storeNewPhoneNumber(userId, newPhoneNumber, callback)
             }
             .addOnFailureListener {
-                callback.onFailure(R.string.wrong_password.toString())
+                callback.onFailure(R.string.wrong_password)
             }
     }
 
-    private fun storeNewPhoneNumber(userId: String, newPhoneNumber: String, callback: UpdateProfileCallback) {
+    private fun storeNewPhoneNumber(
+        userId: String,
+        newPhoneNumber: String,
+        callback: UpdateProfileCallback
+    ) {
         database.child(userId).child("phoneNumber").setValue(newPhoneNumber).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
-            callback.onFailure(R.string.txt_failure_update_profile.toString())
+            callback.onFailure(R.string.txt_failure_update_profile)
         }
     }
 
@@ -149,14 +187,16 @@ object UserHelper {
                 storeNewPassword(email, oldPassword, newPassword, callback)
             }
             .addOnFailureListener {
-                callback.onFailure(R.string.wrong_password.toString())
+                callback.onFailure(R.string.wrong_password)
             }
     }
 
-    private fun storeNewPassword(email: String,
-                                 oldPassword: String,
-                                 newPassword: String,
-                                 callback: UpdateProfileCallback) {
+    private fun storeNewPassword(
+        email: String,
+        oldPassword: String,
+        newPassword: String,
+        callback: UpdateProfileCallback
+    ) {
         val credential = EmailAuthProvider.getCredential(email, oldPassword)
         auth.currentUser?.reauthenticate(credential)
             ?.addOnCompleteListener {
@@ -165,7 +205,7 @@ object UserHelper {
                         callback.onSuccess()
                     }
                     .addOnFailureListener {
-                        callback.onFailure(R.string.txt_failure_update_profile.toString())
+                        callback.onFailure(R.string.txt_failure_update_profile)
                     }
             }
     }

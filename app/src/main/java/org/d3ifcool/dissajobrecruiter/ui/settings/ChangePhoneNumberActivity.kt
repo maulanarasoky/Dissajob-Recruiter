@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangeEmailBinding
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangePhoneNumberBinding
 import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
@@ -81,11 +80,6 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
             }
         }
 
-        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        dialog.titleText = resources.getString(R.string.loading)
-        dialog.setCancelable(false)
-        dialog.show()
-
         storeToDatabase()
     }
 
@@ -95,6 +89,11 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
             Toast.makeText(this, resources.getString(R.string.phone_number_invalid), Toast.LENGTH_SHORT).show()
             return
         }
+
+        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        dialog.titleText = resources.getString(R.string.loading)
+        dialog.setCancelable(false)
+        dialog.show()
 
         val password = activityChangePhoneNumberBinding.etPassword.text.toString().trim()
         viewModel.updatePhoneNumberProfile(AuthHelper.currentUser?.uid.toString(), newPhoneNumber, password, this)
@@ -117,7 +116,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
 
     override fun onSuccess() {
         dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
-        dialog.titleText = resources.getString(R.string.txt_success_update_profile, "Password")
+        dialog.titleText = resources.getString(R.string.txt_success_update_profile, "Nomor telepon")
         dialog.setCancelable(false)
         dialog.setConfirmClickListener {
             it.dismissWithAnimation()
@@ -126,9 +125,9 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
         dialog.show()
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailure(messageId: Int) {
         dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-        dialog.titleText = message
+        dialog.titleText = resources.getString(messageId)
         dialog.setCancelable(false)
         dialog.show()
     }

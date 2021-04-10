@@ -57,6 +57,7 @@
     <string name="txt_error_form_text">%1$s tidak boleh kosong</string>
     <string name="txt_success_update_profile">%1$s berhasil di update</string>
     <string name="txt_failure_update_profile">Update gagal</string>
+    <string name="txt_failure_upload_profile_picture">Gagal upload foto profil</string>
     <string name="txt_old_password">Password lama</string>
     <string name="txt_new_password">Password baru</string>
     <string name="txt_retype_password">Masukkan sekali lagi</string>

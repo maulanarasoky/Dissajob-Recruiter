@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.data.source.repository.user
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import org.d3ifcool.dissajobrecruiter.data.NetworkBoundResource
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
@@ -8,6 +9,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
+import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
@@ -83,6 +85,9 @@ class UserRepository private constructor(
             }
         }.asLiveData()
     }
+
+    override fun uploadProfilePicture(image: Uri, callback: UploadProfilePictureCallback) =
+        appExecutors.diskIO().execute { remoteUserSource.uploadProfilePicture(image, callback) }
 
     override fun updateProfileData(
         userProfile: UserResponseEntity,

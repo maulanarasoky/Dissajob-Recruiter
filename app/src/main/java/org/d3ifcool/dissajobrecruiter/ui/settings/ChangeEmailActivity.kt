@@ -52,10 +52,6 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
             activityChangeEmailBinding.etPassword.error = getString(R.string.txt_error_form_text, "Password")
             return
         }
-        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
-        dialog.titleText = resources.getString(R.string.loading)
-        dialog.setCancelable(false)
-        dialog.show()
 
         storeToDatabase()
     }
@@ -66,6 +62,11 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
             Toast.makeText(this, resources.getString(R.string.email_invalid), Toast.LENGTH_SHORT).show()
             return
         }
+
+        dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
+        dialog.titleText = resources.getString(R.string.loading)
+        dialog.setCancelable(false)
+        dialog.show()
 
         val password = activityChangeEmailBinding.etPassword.text.toString().trim()
         viewModel.updateEmailProfile(AuthHelper.currentUser?.uid.toString(), newEmail, password, this)
@@ -97,9 +98,9 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
         dialog.show()
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailure(messageId: Int) {
         dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-        dialog.titleText = message
+        dialog.titleText = resources.getString(messageId)
         dialog.setCancelable(false)
         dialog.show()
     }

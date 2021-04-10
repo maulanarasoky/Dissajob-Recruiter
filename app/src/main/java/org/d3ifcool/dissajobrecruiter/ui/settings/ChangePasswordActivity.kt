@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.activity_change_password.*
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangeEmailBinding
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangePasswordBinding
 import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
@@ -99,9 +98,9 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
         dialog.show()
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailure(messageId: Int) {
         dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-        dialog.titleText = message
+        dialog.titleText = resources.getString(messageId)
         dialog.setCancelable(false)
         dialog.show()
     }
