@@ -27,25 +27,32 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_phone_number)
+        activityChangePhoneNumberBinding = ActivityChangePhoneNumberBinding.inflate(layoutInflater)
+        setContentView(activityChangePhoneNumberBinding.root)
 
-        activityChangePhoneNumberBinding.activityHeader.tvHeaderTitle.text = resources.getString(R.string.change_email_title)
-
-        showCurrentPhoneNumber()
+        activityChangePhoneNumberBinding.activityHeader.tvHeaderTitle.text = resources.getString(R.string.change_phone_number_title)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+
+        showCurrentPhoneNumber()
 
         activityChangePhoneNumberBinding.activityHeader.imgBackBtn.setOnClickListener(this)
         activityChangePhoneNumberBinding.btnUpdate.setOnClickListener(this)
     }
 
     private fun showCurrentPhoneNumber() {
-        viewModel.getUserProfile(AuthHelper.currentUser?.uid.toString()).observe(this) { profileData ->
+        viewModel.getUserProfile(AuthHelper.currentUser?.uid.toString()).observe(this@ChangePhoneNumberActivity) { profileData ->
             if (profileData.data != null) {
                 when (profileData.status) {
                     Status.LOADING -> {}
-                    Status.SUCCESS -> activityChangePhoneNumberBinding.etOldPhoneNumber.setText(profileData.data.phoneNumber)
+                    Status.SUCCESS -> {
+                        if (profileData.data.phoneNumber != "-") {
+                            activityChangePhoneNumberBinding.tvOldPhoneNumber.visibility = View.VISIBLE
+                            activityChangePhoneNumberBinding.etOldPhoneNumber.visibility = View.VISIBLE
+                            activityChangePhoneNumberBinding.etOldPhoneNumber.setText(profileData.data.phoneNumber.toString())
+                        }
+                    }
                     Status.ERROR -> {
                         Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
                     }

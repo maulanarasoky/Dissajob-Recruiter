@@ -33,12 +33,12 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(activityChangeProfileBinding.root)
 
         activityChangeProfileBinding.activityHeader.tvHeaderTitle.text =
-            resources.getString(R.string.change_email_title)
-
-        showCurrentProfileData()
+            resources.getString(R.string.change_profile_title)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+
+        showCurrentProfileData()
 
         activityChangeProfileBinding.activityHeader.imgBackBtn.setOnClickListener(this)
         activityChangeProfileBinding.btnUpdate.setOnClickListener(this)
