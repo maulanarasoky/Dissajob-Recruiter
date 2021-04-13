@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.ui.job
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -24,9 +25,13 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     private lateinit var activityJobDetailsBinding: ActivityJobDetailsBinding
 
-    private lateinit var viewModel: ApplicantViewModel
+    private lateinit var jobViewModel: JobViewModel
+
+    private lateinit var applicantViewModel: ApplicantViewModel
 
     private lateinit var applicantAdapter: ApplicantAdapter
+
+    private lateinit var jobData: JobDetailsEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,24 +41,35 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
         val extras = intent.extras
         if (extras != null) {
             val factory = ViewModelFactory.getInstance(this)
-            val viewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
+            jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
             val jobId = extras.getString(EXTRA_ID)
             if (jobId != null) {
-                viewModel.getJobDetails(jobId).observe(this) { jobDetails ->
-                    if (jobDetails.data != null) {
-                        when (jobDetails.status) {
-                            Status.LOADING -> {}
-                            Status.SUCCESS -> populateData(jobDetails.data)
-                            Status.ERROR -> {
-                                Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
-                }
+                showJobDetails(jobId)
             }
         }
 
         activityJobDetailsBinding.jobDetailsHeader.imgBackBtn.setOnClickListener(this)
+        activityJobDetailsBinding.jobDetailsHeader.imgEditJobBtn.setOnClickListener(this)
+    }
+
+    private fun showJobDetails(jobId: String) {
+        jobViewModel.getJobDetails(jobId).observe(this) { jobDetails ->
+            if (jobDetails.data != null) {
+                when (jobDetails.status) {
+                    Status.LOADING -> {
+                    }
+                    Status.SUCCESS -> {
+                        jobData = jobDetails.data
+                        populateData(jobDetails.data)
+                        activityJobDetailsBinding.jobDetailsHeader.imgEditJobBtn.isClickable =
+                            true
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun populateData(jobDetails: JobDetailsEntity) {
@@ -113,6 +129,11 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.imgBackBtn -> finish()
+            R.id.imgEditJobBtn -> {
+                val intent = Intent(this, CreateEditJobActivity::class.java)
+                intent.putExtra(CreateEditJobActivity.JOB_EXTRA, jobData)
+                startActivityForResult(intent, CreateEditJobActivity.REQUEST_UPDATE)
+            }
         }
     }
 
@@ -120,7 +141,7 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
         applicantId: String,
         callback: ApplicantAdapter.LoadApplicantDetailsCallback
     ) {
-        viewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
+        applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
             if (applicantDetails.data != null) {
                 callback.onGetApplicantDetails(applicantDetails.data)
             }
@@ -128,5 +149,15 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity) {
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CreateEditJobActivity.REQUEST_UPDATE) {
+            if (resultCode == CreateEditJobActivity.RESULT_UPDATE) {
+                val jobId = intent.extras?.getString(EXTRA_ID)
+                showJobDetails(jobId.toString())
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@
     <string name="salary">Gaji</string>
     <string name="publish">Tambahkan</string>
     <string name="create_job">Tambahkan pekerjaan</string>
+    <string name="Edit_job">Ubah pekerjaan</string>
     <string name="role">Role</string>
     <string name="bergabung_sekarang_di_dissajob">Bergabung sekarang di Dissajob</string>
     <string name="masuk">Masuk</string>
@@ -38,6 +39,7 @@
     <string name="success_signup">Silahkan lakukan verifikasi email</string>
     <string name="email_is_not_verified">Silahkan lakukan verifikasi email terlebih dahulu</string>
     <string name="success_post_job">Pekerjaan berhasil ditambahkan</string>
+    <string name="success_update_job">Pekerjaan berhasil diubah</string>
     <string name="failure_post_job">Pekerjaan gagal ditambahkan</string>
     <string name="loading">Loading</string>
     <string name="open_status">Open</string>
@@ -83,4 +85,7 @@
     <string name="reset">Atur ulang</string>
     <string name="email_not_found">Email tidak ditemukan</string>
     <string name="success_alert_reset_password">Email reset password telah dikirimkan</string>
+    <string name="job_status">Status pekerjaan</string>
+    <string name="open_job">Buka rekrutasi</string>
+    <string name="closed_job">Tutup rekrutasi</string>
 </resources>

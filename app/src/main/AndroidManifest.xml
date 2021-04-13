@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DissajobRecruiter"
         tools:replace="android:icon">
-        <activity android:name=".ui.resetpassword.ResetPasswordActivity"></activity>
+        <activity android:name=".ui.job.CreateEditJobActivity"></activity>
+        <activity android:name=".ui.resetpassword.ResetPasswordActivity" />
         <activity android:name=".ui.applicant.ApplicantActivity" />
         <activity android:name=".ui.job.JobActivity" />
         <activity android:name=".ui.settings.ChangeProfileActivity" />
@@ -26,7 +27,6 @@
         <activity android:name=".ui.job.JobDetailsActivity" />
         <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.signin.SignInActivity" />
-        <activity android:name=".ui.job.CreateJobActivity" />
         <activity android:name=".ui.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

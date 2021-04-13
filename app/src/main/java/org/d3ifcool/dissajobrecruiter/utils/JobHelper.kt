@@ -78,6 +78,7 @@ object JobHelper {
     }
 
     fun updateJob(job: JobDetailsResponseEntity, callback: JobPostCallback) {
+        job.postedBy = AuthHelper.currentUser?.uid.toString()
         database.child(job.id).setValue(job).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {

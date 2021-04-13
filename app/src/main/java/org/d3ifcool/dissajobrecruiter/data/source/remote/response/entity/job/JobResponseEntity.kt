@@ -22,8 +22,8 @@ data class JobDetailsResponseEntity(
     val industry: String? = "-",
     val salary: Int? = 0,
     var postedBy: String? = "-",
-    val postedDate: String? = "-",
-    val updatedDate: String? = "-",
-    val closedDate: String? = "-",
-    val isOpen: Boolean? = true
+    var postedDate: String? = "-",
+    var updatedDate: String? = "-",
+    var closedDate: String? = "-",
+    var isOpen: Boolean? = true
 )

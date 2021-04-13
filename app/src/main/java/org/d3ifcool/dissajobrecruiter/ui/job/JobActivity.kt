@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityJobBinding
-import org.d3ifcool.dissajobrecruiter.ui.settings.SettingsActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
@@ -87,7 +86,7 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
         when(v?.id) {
             R.id.imgBackBtn -> finish()
             R.id.fabAddJob -> {
-                startActivity(Intent(this, CreateJobActivity::class.java))
+                startActivity(Intent(this, CreateEditJobActivity::class.java))
             }
         }
     }

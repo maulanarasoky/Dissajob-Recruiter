@@ -1,9 +1,11 @@
 package org.d3ifcool.dissajobrecruiter.data.source.local.entity.job
 
+import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "jobs")
 data class JobEntity(
@@ -28,6 +30,7 @@ data class JobEntity(
     val isOpen: Boolean? = true
 )
 
+@Parcelize
 @Entity(tableName = "job_details")
 data class JobDetailsEntity(
     @PrimaryKey
@@ -67,4 +70,4 @@ data class JobDetailsEntity(
 
     @ColumnInfo(name = "is_open")
     val isOpen: Boolean? = true
-)
+): Parcelable

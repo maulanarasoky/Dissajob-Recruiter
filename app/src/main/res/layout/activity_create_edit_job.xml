@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.job.CreateJobActivity">
+    tools:context=".ui.job.CreateEditJobActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -182,8 +182,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSalary" />
 
+        <TextView
+            android:id="@+id/tvJobStatusTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/job_status"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etSalary" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/scJobStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/tvJobStatusTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvJobStatusTitle" />
+
         <Button
-            android:id="@+id/btnPostJob"
+            android:id="@+id/btnSubmitJob"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginStart="@dimen/margin_16dp"
@@ -192,15 +214,14 @@
             android:layout_marginBottom="@dimen/margin_8dp"
             android:backgroundTint="@color/colorPrimary"
             android:fontFamily="@font/roboto"
-            android:text="@string/publish"
-            android:textSize="14sp"
             android:textAllCaps="false"
             android:textColor="@color/white"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etSalary" />
+            app:layout_constraintTop_toBottomOf="@id/scJobStatus" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
