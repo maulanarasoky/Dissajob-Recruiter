@@ -3,21 +3,25 @@ package org.d3ifcool.dissajobrecruiter.ui.job
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantDetailsEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.*
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantAdapter
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
-    ApplicantAdapter.LoadApplicantDetailsCallback {
+class JobDetailsActivity : AppCompatActivity(),
+    ApplicantAdapter.LoadApplicantDetailsCallback, DeleteJobCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -33,10 +37,16 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     private lateinit var jobData: JobDetailsEntity
 
+    private lateinit var dialog: SweetAlertDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityJobDetailsBinding = ActivityJobDetailsBinding.inflate(layoutInflater)
         setContentView(activityJobDetailsBinding.root)
+
+        setSupportActionBar(activityJobDetailsBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val extras = intent.extras
         if (extras != null) {
@@ -47,9 +57,6 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 showJobDetails(jobId)
             }
         }
-
-        activityJobDetailsBinding.jobDetailsHeader.imgBackBtn.setOnClickListener(this)
-        activityJobDetailsBinding.jobDetailsHeader.imgEditJobBtn.setOnClickListener(this)
     }
 
     private fun showJobDetails(jobId: String) {
@@ -61,8 +68,6 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     Status.SUCCESS -> {
                         jobData = jobDetails.data
                         populateData(jobDetails.data)
-                        activityJobDetailsBinding.jobDetailsHeader.imgEditJobBtn.isClickable =
-                            true
                     }
                     Status.ERROR -> {
                         Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
@@ -102,9 +107,9 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun getApplicantsByJob(jobId: String) {
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
+        applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
         applicantAdapter = ApplicantAdapter(this)
-        viewModel.getApplicantsByJob(jobId).observe(this) { applicants ->
+        applicantViewModel.getApplicantsByJob(jobId).observe(this) { applicants ->
             if (applicants.data != null) {
                 when (applicants.status) {
                     Status.LOADING -> {
@@ -126,14 +131,40 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.imgBackBtn -> finish()
-            R.id.imgEditJobBtn -> {
-                val intent = Intent(this, CreateEditJobActivity::class.java)
-                intent.putExtra(CreateEditJobActivity.JOB_EXTRA, jobData)
-                startActivityForResult(intent, CreateEditJobActivity.REQUEST_UPDATE)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.job_details_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
             }
+            R.id.editJob -> {
+                val intent = Intent(this, CreateEditCreateJobActivity::class.java)
+                intent.putExtra(CreateEditCreateJobActivity.JOB_EXTRA, jobData)
+                startActivityForResult(intent, CreateEditCreateJobActivity.REQUEST_UPDATE)
+                true
+            }
+            R.id.deleteJob -> {
+                dialog = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                dialog.titleText = resources.getString(R.string.confirm_alert_delete_job)
+                dialog.setCancelable(true)
+                dialog.cancelText = resources.getString(R.string.txt_cancel)
+                dialog.confirmText = resources.getString(R.string.delete_job)
+                dialog.setConfirmClickListener {
+                    dialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE)
+                    dialog.titleText = resources.getString(R.string.loading)
+                    dialog.showCancelButton(false)
+                    dialog.setCancelable(false)
+                    jobViewModel.deleteJob(jobData.id, this)
+                }
+                dialog.show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -153,11 +184,29 @@ class JobDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CreateEditJobActivity.REQUEST_UPDATE) {
-            if (resultCode == CreateEditJobActivity.RESULT_UPDATE) {
+        if (requestCode == CreateEditCreateJobActivity.REQUEST_UPDATE) {
+            if (resultCode == CreateEditCreateJobActivity.RESULT_UPDATE) {
                 val jobId = intent.extras?.getString(EXTRA_ID)
                 showJobDetails(jobId.toString())
             }
         }
+    }
+
+    override fun onDeleteSuccess() {
+        dialog.dismissWithAnimation()
+        Toast.makeText(
+            this,
+            resources.getString(R.string.success_alert_delete_job),
+            Toast.LENGTH_SHORT
+        ).show()
+        finish()
+    }
+
+    override fun onDeleteFailure(messageId: Int) {
+        Toast.makeText(
+            this,
+            resources.getString(messageId),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

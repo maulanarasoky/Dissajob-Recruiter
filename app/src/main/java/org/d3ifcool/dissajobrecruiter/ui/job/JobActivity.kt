@@ -86,7 +86,7 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
         when(v?.id) {
             R.id.imgBackBtn -> finish()
             R.id.fabAddJob -> {
-                startActivity(Intent(this, CreateEditJobActivity::class.java))
+                startActivity(Intent(this, CreateEditCreateJobActivity::class.java))
             }
         }
     }

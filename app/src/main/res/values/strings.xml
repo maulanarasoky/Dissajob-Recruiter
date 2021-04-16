@@ -88,4 +88,12 @@
     <string name="job_status">Status pekerjaan</string>
     <string name="open_job">Buka rekrutasi</string>
     <string name="closed_job">Tutup rekrutasi</string>
+    <string name="failure_alert_create_job">Gagal menambahkan lowongan pekerjaan</string>
+    <string name="failure_alert_update_job">Gagal mengubah lowongan pekerjaan</string>
+    <string name="confirm_alert_delete_job">Hapus lowongan pekerjaan ?</string>
+    <string name="success_alert_delete_job">Berhasil menghapus lowongan pekerjaan</string>
+    <string name="failure_alert_delete_job">Gagal menghapus lowongan pekerjaan</string>
+    <string name="delete_job">Hapus</string>
+    <string name="edit_job">Ubah</string>
+    <string name="txt_cancel">Batal</string>
 </resources>

@@ -4,10 +4,8 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.repository.user.UserRepository
-import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
 import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 

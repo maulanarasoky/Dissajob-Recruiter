@@ -11,7 +11,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
-import org.d3ifcool.dissajobrecruiter.ui.job.JobPostCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.*
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
@@ -54,7 +54,7 @@ class JobRepository private constructor(
 //                data == null || data.isEmpty()
 
             public override fun createCall(): LiveData<ApiResponse<List<JobResponseEntity>>> =
-                remoteJobSource.getJobs(object : RemoteJobSource.LoadJobsCallback {
+                remoteJobSource.getJobs(object : LoadJobsCallback {
                     override fun onAllJobsReceived(jobResponse: List<JobResponseEntity>): List<JobResponseEntity> {
                         return jobResponse
                     }
@@ -93,7 +93,7 @@ class JobRepository private constructor(
             public override fun createCall(): LiveData<ApiResponse<JobDetailsResponseEntity>> =
                 remoteJobSource.getJobDetails(
                     jobId,
-                    object : RemoteJobSource.LoadJobDetailsCallback {
+                    object : LoadJobDetailsCallback {
                         override fun onJobDetailsReceived(jobResponse: JobDetailsResponseEntity): JobDetailsResponseEntity {
                             return jobResponse
                         }
@@ -119,9 +119,16 @@ class JobRepository private constructor(
         }.asLiveData()
     }
 
-    override fun createJob(jobResponse: JobDetailsResponseEntity, callback: JobPostCallback) =
+    override fun createJob(jobResponse: JobDetailsResponseEntity, callback: CreateJobCallback) =
         appExecutors.diskIO().execute { remoteJobSource.createJob(jobResponse, callback) }
 
-    override fun updateJob(jobResponse: JobDetailsResponseEntity, callback: JobPostCallback) =
+    override fun updateJob(jobResponse: JobDetailsResponseEntity, callback: UpdateJobCallback) =
         appExecutors.diskIO().execute { remoteJobSource.updateJob(jobResponse, callback) }
+
+    override fun deleteJob(jobId: String, callback: DeleteJobCallback) =
+        appExecutors.diskIO().execute {
+            remoteJobSource.deleteJob(jobId, callback)
+            localJobSource.deleteJobItem(jobId)
+            localJobSource.deleteJobDetails(jobId)
+        }
 }

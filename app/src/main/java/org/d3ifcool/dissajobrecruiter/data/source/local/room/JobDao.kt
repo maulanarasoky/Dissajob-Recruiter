@@ -20,6 +20,9 @@ interface JobDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertJobDetails(jobDetails: JobDetailsEntity)
 
-//    @Update
-//    fun updateJobDetails(job: JobDetailsEntity)
+    @Query("DELETE FROM jobs WHERE id = :jobId")
+    fun deleteJobItem(jobId: String)
+
+    @Query("DELETE FROM job_details WHERE id = :jobId")
+    fun deleteJobDetails(jobId: String)
 }

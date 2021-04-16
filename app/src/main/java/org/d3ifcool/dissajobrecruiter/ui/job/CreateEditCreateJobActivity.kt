@@ -12,11 +12,13 @@ import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityCreateEditJobBinding
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.CreateJobCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.UpdateJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, JobPostCallback,
+class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, CreateJobCallback, UpdateJobCallback,
     CompoundButton.OnCheckedChangeListener {
 
     companion object {
@@ -194,9 +196,9 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, JobPost
         dialog.show()
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailure(messageId: Int) {
         dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-        dialog.titleText = resources.getString(R.string.failure_post_job)
+        dialog.titleText = resources.getString(messageId)
         dialog.setCancelable(false)
         dialog.show()
     }
