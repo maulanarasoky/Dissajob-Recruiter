@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.ui.settings
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -27,13 +28,14 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
         activityChangePasswordBinding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(activityChangePasswordBinding.root)
 
-        activityChangePasswordBinding.activityHeader.tvHeaderTitle.text =
-            resources.getString(R.string.change_password_title)
+        activityChangePasswordBinding.toolbar.title = resources.getString(R.string.change_password_title)
+        setSupportActionBar(activityChangePasswordBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
 
-        activityChangePasswordBinding.activityHeader.imgBackBtn.setOnClickListener(this)
         activityChangePasswordBinding.btnUpdate.setOnClickListener(this)
     }
 
@@ -78,9 +80,18 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
         viewModel.updatePasswordProfile(email, oldPassword, newPassword, this)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.imgBackBtn -> finish()
             R.id.btnUpdate -> {
                 formValidation()
             }

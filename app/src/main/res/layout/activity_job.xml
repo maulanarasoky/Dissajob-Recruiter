@@ -6,14 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.job.JobActivity">
 
-    <include
-        android:id="@+id/header"
-        layout="@layout/custom_header"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:theme="@style/JobDetailsToolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvJob"
@@ -22,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <TextView
         android:id="@+id/tvNoData"
@@ -36,7 +38,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -48,7 +50,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddJob"
@@ -56,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimary"
-        android:contentDescription="@string/create_job"
+        android:contentDescription="@string/create_job_title"
         android:src="@drawable/ic_add_job_gray_24dp"
         app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -44,6 +44,7 @@ class JobDetailsActivity : AppCompatActivity(),
         activityJobDetailsBinding = ActivityJobDetailsBinding.inflate(layoutInflater)
         setContentView(activityJobDetailsBinding.root)
 
+        activityJobDetailsBinding.toolbar.title = resources.getString(R.string.job_details)
         setSupportActionBar(activityJobDetailsBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

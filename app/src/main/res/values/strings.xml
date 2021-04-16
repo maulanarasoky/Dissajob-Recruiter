@@ -27,8 +27,8 @@
     <string name="industry">Industri</string>
     <string name="salary">Gaji</string>
     <string name="publish">Tambahkan</string>
-    <string name="create_job">Tambahkan pekerjaan</string>
-    <string name="Edit_job">Ubah pekerjaan</string>
+    <string name="create_job_title">Tambahkan pekerjaan</string>
+    <string name="edit_job_title">Ubah pekerjaan</string>
     <string name="role">Role</string>
     <string name="bergabung_sekarang_di_dissajob">Bergabung sekarang di Dissajob</string>
     <string name="masuk">Masuk</string>

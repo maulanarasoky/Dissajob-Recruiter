@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -58,15 +59,16 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         activityChangeProfileBinding = ActivityChangeProfileBinding.inflate(layoutInflater)
         setContentView(activityChangeProfileBinding.root)
 
-        activityChangeProfileBinding.activityHeader.tvHeaderTitle.text =
-            resources.getString(R.string.change_profile_title)
+        activityChangeProfileBinding.toolbar.title = resources.getString(R.string.change_profile_title)
+        setSupportActionBar(activityChangeProfileBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
 
         showCurrentProfileData()
 
-        activityChangeProfileBinding.activityHeader.imgBackBtn.setOnClickListener(this)
         activityChangeProfileBinding.imgProfilePic.setOnClickListener(this)
         activityChangeProfileBinding.btnUpdate.setOnClickListener(this)
     }
@@ -88,7 +90,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
                                 circularProgressDrawable.start()
 
                                 Glide.with(this)
-                                    .load(storageRef.child("profile/images/${profileData.data.imagePath}"))
+                                    .load(storageRef.child("recruiter/profile/images/${profileData.data.imagePath}"))
                                     .placeholder(circularProgressDrawable)
                                     .apply(RequestOptions.overrideOf(500, 500)).centerCrop()
                                     .into(activityChangeProfileBinding.imgProfilePic)
@@ -226,9 +228,18 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         viewModel.updateUserProfile(profileData, this)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.imgBackBtn -> finish()
             R.id.imgProfilePic -> checkPermission()
             R.id.btnUpdate -> {
                 formValidation()

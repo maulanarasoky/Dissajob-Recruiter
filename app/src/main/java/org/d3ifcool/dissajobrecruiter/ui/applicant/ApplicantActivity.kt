@@ -2,6 +2,8 @@ package org.d3ifcool.dissajobrecruiter.ui.applicant
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -27,8 +29,10 @@ class ApplicantActivity : AppCompatActivity(), ApplicantAdapter.LoadApplicantDet
         activityApplicantBinding = ActivityApplicantBinding.inflate(layoutInflater)
         setContentView(activityApplicantBinding.root)
 
-        activityApplicantBinding.header.tvHeaderTitle.text =
-            resources.getString(R.string.applicants)
+        activityApplicantBinding.toolbar.title = resources.getString(R.string.applicants)
+        setSupportActionBar(activityApplicantBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         showLoading(true)
         val factory = ViewModelFactory.getInstance(this)
@@ -66,8 +70,6 @@ class ApplicantActivity : AppCompatActivity(), ApplicantAdapter.LoadApplicantDet
             )
             adapter = applicantAdapter
         }
-
-        activityApplicantBinding.header.imgBackBtn.setOnClickListener(this)
     }
 
     private fun showLoading(state: Boolean) {
@@ -90,6 +92,16 @@ class ApplicantActivity : AppCompatActivity(), ApplicantAdapter.LoadApplicantDet
     }
 
     override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity) {
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onClick(v: View?) {

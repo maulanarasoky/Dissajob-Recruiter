@@ -3,6 +3,8 @@ package org.d3ifcool.dissajobrecruiter.ui.job
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -24,8 +26,10 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
         activityJobBinding = ActivityJobBinding.inflate(layoutInflater)
         setContentView(activityJobBinding.root)
 
-        activityJobBinding.header.tvHeaderTitle.text =
-            resources.getString(R.string.job)
+        activityJobBinding.toolbar.title = resources.getString(R.string.job)
+        setSupportActionBar(activityJobBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         showLoading(true)
         val factory = ViewModelFactory.getInstance(this)
@@ -64,7 +68,6 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
             adapter = jobAdapter
         }
 
-        activityJobBinding.header.imgBackBtn.setOnClickListener(this)
         activityJobBinding.fabAddJob.setOnClickListener(this)
     }
 
@@ -82,9 +85,18 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
         startActivity(intent)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onClick(v: View?) {
-        when(v?.id) {
-            R.id.imgBackBtn -> finish()
+        when (v?.id) {
             R.id.fabAddJob -> {
                 startActivity(Intent(this, CreateEditCreateJobActivity::class.java))
             }

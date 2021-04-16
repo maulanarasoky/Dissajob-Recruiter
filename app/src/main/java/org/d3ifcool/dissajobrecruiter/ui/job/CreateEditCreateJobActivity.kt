@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.ui.job
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
@@ -49,20 +50,23 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
         spinnerInit()
 
         if (intent.extras != null) {
-            activityCreateEditJobBinding.header.tvHeader.text = resources.getString(R.string.Edit_job)
             showPreviousJobData()
+            activityCreateEditJobBinding.toolbar.title = resources.getString(R.string.edit_job_title)
             activityCreateEditJobBinding.btnSubmitJob.text = resources.getString(R.string.update)
         } else {
-            activityCreateEditJobBinding.header.tvHeader.text = resources.getString(R.string.create_job)
+            activityCreateEditJobBinding.toolbar.title = resources.getString(R.string.create_job_title)
             activityCreateEditJobBinding.btnSubmitJob.text = resources.getString(R.string.publish)
         }
+
+        setSupportActionBar(activityCreateEditJobBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
 
         dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 
-        activityCreateEditJobBinding.header.imgBackBtn.setOnClickListener(this)
         activityCreateEditJobBinding.btnSubmitJob.setOnClickListener(this)
     }
 
@@ -203,9 +207,18 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
         dialog.show()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.imgBackBtn -> finish()
             R.id.btnSubmitJob -> formValidation()
         }
     }

@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.ui.settings
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -29,14 +30,16 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
         activityChangePhoneNumberBinding = ActivityChangePhoneNumberBinding.inflate(layoutInflater)
         setContentView(activityChangePhoneNumberBinding.root)
 
-        activityChangePhoneNumberBinding.activityHeader.tvHeaderTitle.text = resources.getString(R.string.change_phone_number_title)
+        activityChangePhoneNumberBinding.toolbar.title = resources.getString(R.string.change_phone_number_title)
+        setSupportActionBar(activityChangePhoneNumberBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
 
         showCurrentPhoneNumber()
 
-        activityChangePhoneNumberBinding.activityHeader.imgBackBtn.setOnClickListener(this)
         activityChangePhoneNumberBinding.btnUpdate.setOnClickListener(this)
     }
 
@@ -105,9 +108,18 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
         } else false
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onClick(v: View?) {
         when(v?.id) {
-            R.id.imgBackBtn -> finish()
             R.id.btnUpdate -> {
                 formValidation()
             }

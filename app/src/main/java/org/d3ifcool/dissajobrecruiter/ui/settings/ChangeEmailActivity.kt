@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.ui.settings
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -28,14 +29,16 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
         activityChangeEmailBinding = ActivityChangeEmailBinding.inflate(layoutInflater)
         setContentView(activityChangeEmailBinding.root)
 
-        activityChangeEmailBinding.activityHeader.tvHeaderTitle.text = resources.getString(R.string.change_email_title)
+        activityChangeEmailBinding.toolbar.title = resources.getString(R.string.change_email_title)
+        setSupportActionBar(activityChangeEmailBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         showCurrentEmail()
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
 
-        activityChangeEmailBinding.activityHeader.imgBackBtn.setOnClickListener(this)
         activityChangeEmailBinding.btnUpdate.setOnClickListener(this)
     }
 
@@ -78,9 +81,18 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
         return Pattern.compile(emailString).matcher(email).matches()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onClick(v: View?) {
         when(v?.id) {
-            R.id.imgBackBtn -> finish()
             R.id.btnUpdate -> {
                 formValidation()
             }
