@@ -2,7 +2,7 @@ package org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recrui
 
 import com.google.firebase.database.Exclude
 
-data class UserResponseEntity(
+data class RecruiterResponseEntity(
     @get:Exclude
     var id: String? = "-",
     val firstName: String? = "-",

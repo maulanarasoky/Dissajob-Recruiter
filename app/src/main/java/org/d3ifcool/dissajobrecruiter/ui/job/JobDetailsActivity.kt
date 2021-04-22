@@ -10,18 +10,19 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantDetailsEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.*
-import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantAdapter
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobDetailsActivity : AppCompatActivity(),
-    ApplicantAdapter.LoadApplicantDetailsCallback, DeleteJobCallback {
+    ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -31,9 +32,11 @@ class JobDetailsActivity : AppCompatActivity(),
 
     private lateinit var jobViewModel: JobViewModel
 
+    private lateinit var applicationViewModel: ApplicationViewModel
+
     private lateinit var applicantViewModel: ApplicantViewModel
 
-    private lateinit var applicantAdapter: ApplicantAdapter
+    private lateinit var applicationAdapter: ApplicationAdapter
 
     private lateinit var jobData: JobDetailsEntity
 
@@ -88,7 +91,7 @@ class JobDetailsActivity : AppCompatActivity(),
             resources.getString(
                 R.string.job_details_date_format,
                 postedDate,
-                applicantAdapter.itemCount
+                applicationAdapter.itemCount
             )
 
         //Description section
@@ -108,17 +111,20 @@ class JobDetailsActivity : AppCompatActivity(),
 
     private fun getApplicantsByJob(jobId: String) {
         val factory = ViewModelFactory.getInstance(this)
+
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
-        applicantAdapter = ApplicantAdapter(this)
-        applicantViewModel.getApplicantsByJob(jobId).observe(this) { applicants ->
+
+        applicationViewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
+        applicationAdapter = ApplicationAdapter(this)
+        applicationViewModel.getApplicationsByJob(jobId).observe(this) { applicants ->
             if (applicants.data != null) {
                 when (applicants.status) {
                     Status.LOADING -> {
                     }
                     Status.SUCCESS -> {
                         if (applicants.data.isNotEmpty()) {
-                            applicantAdapter.submitList(applicants.data)
-                            applicantAdapter.notifyDataSetChanged()
+                            applicationAdapter.submitList(applicants.data)
+                            applicationAdapter.notifyDataSetChanged()
                         } else {
                             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility =
                                 View.VISIBLE
@@ -171,7 +177,7 @@ class JobDetailsActivity : AppCompatActivity(),
 
     override fun onLoadApplicantDetailsCallback(
         applicantId: String,
-        callback: ApplicantAdapter.LoadApplicantDetailsCallback
+        callback: ApplicationAdapter.LoadApplicantDataCallback
     ) {
         applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
             if (applicantDetails.data != null) {
@@ -180,7 +186,7 @@ class JobDetailsActivity : AppCompatActivity(),
         }
     }
 
-    override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity) {
+    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

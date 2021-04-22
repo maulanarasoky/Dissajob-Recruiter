@@ -11,19 +11,3 @@ data class JobResponseEntity(
     val postedDate: String? = "-",
     val isOpen: Boolean? = true
 )
-
-data class JobDetailsResponseEntity(
-    @get:Exclude
-    var id: String,
-    val title: String? = "-",
-    val description: String? = "-",
-    val qualification: String? = "-",
-    val employment: String? = "-",
-    val industry: String? = "-",
-    val salary: Int? = 0,
-    var postedBy: String? = "-",
-    var postedDate: String? = "-",
-    var updatedDate: String? = "-",
-    var closedDate: String? = "-",
-    var isOpen: Boolean? = true
-)

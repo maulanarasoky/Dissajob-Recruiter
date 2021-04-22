@@ -1,12 +1,12 @@
 package org.d3ifcool.dissajobrecruiter.ui.signin
 
 import androidx.lifecycle.ViewModel
-import org.d3ifcool.dissajobrecruiter.data.source.repository.user.UserRepository
+import org.d3ifcool.dissajobrecruiter.data.source.repository.recruiter.RecruiterRepository
 
-class SignInViewModel(private val userRepository: UserRepository) : ViewModel() {
+class SignInViewModel(private val recruiterRepository: RecruiterRepository) : ViewModel() {
     fun signIn(
         email: String,
         password: String,
         callback: SignInCallback
-    ) = userRepository.signIn(email, password, callback)
+    ) = recruiterRepository.signIn(email, password, callback)
 }

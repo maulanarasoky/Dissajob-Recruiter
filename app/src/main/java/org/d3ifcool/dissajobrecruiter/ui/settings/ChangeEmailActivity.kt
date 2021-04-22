@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangeEmailBinding
-import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
+import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
@@ -20,7 +20,7 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
 
     private lateinit var activityChangeEmailBinding: ActivityChangeEmailBinding
 
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: RecruiterViewModel
 
     private lateinit var dialog: SweetAlertDialog
 
@@ -37,7 +37,7 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
         showCurrentEmail()
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
 
         activityChangeEmailBinding.btnUpdate.setOnClickListener(this)
     }
@@ -72,7 +72,7 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
         dialog.show()
 
         val password = activityChangeEmailBinding.etPassword.text.toString().trim()
-        viewModel.updateEmailProfile(AuthHelper.currentUser?.uid.toString(), newEmail, password, this)
+        viewModel.updateRecruiterEmail(AuthHelper.currentUser?.uid.toString(), newEmail, password, this)
     }
 
     private fun isValidMail(email: String): Boolean {

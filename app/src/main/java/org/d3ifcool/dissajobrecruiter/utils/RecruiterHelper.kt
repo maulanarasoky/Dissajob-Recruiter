@@ -10,30 +10,30 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
-import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteUserSource
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.RecruiterResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteRecruiterSource
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 
-object UserHelper {
+object RecruiterHelper {
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance().getReference("users").child("recruiters")
 
     fun signUp(
         email: String,
         password: String,
-        user: UserResponseEntity,
+        recruiter: RecruiterResponseEntity,
         callback: SignUpCallback
     ) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { insert ->
             if (insert.isSuccessful) {
                 auth.currentUser?.sendEmailVerification()?.addOnCompleteListener { verify ->
                     if (verify.isSuccessful) {
-                        user.id = auth.currentUser?.uid.toString()
-                        insertData(user, callback)
+                        recruiter.id = auth.currentUser?.uid.toString()
+                        insertData(recruiter, callback)
                         auth.signOut()
                     }
                 }
@@ -55,22 +55,22 @@ object UserHelper {
         }
     }
 
-    private fun insertData(user: UserResponseEntity, callback: SignUpCallback) {
-        database.child(user.id.toString()).setValue(user).addOnSuccessListener {
+    private fun insertData(recruiter: RecruiterResponseEntity, callback: SignUpCallback) {
+        database.child(recruiter.id.toString()).setValue(recruiter).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
             callback.onFailure(it.message.toString())
         }
     }
 
-    fun getUserProfile(userId: String, callback: RemoteUserSource.LoadUserProfileCallback) {
-        database.child(userId).addValueEventListener(object : ValueEventListener {
+    fun getRecruiterData(recruiterId: String, callback: RemoteRecruiterSource.LoadRecruiterDataCallback) {
+        database.child(recruiterId).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    val userProfile = UserResponseEntity(
+                    val userProfile = RecruiterResponseEntity(
                         dataSnapshot.key.toString(),
                         dataSnapshot.child("firstName").value.toString(),
                         dataSnapshot.child("lastName").value.toString(),
@@ -81,22 +81,22 @@ object UserHelper {
                         dataSnapshot.child("role").value.toString(),
                         dataSnapshot.child("imagePath").value.toString()
                     )
-                    callback.onUserProfileReceived(userProfile)
+                    callback.onRecruiterDataReceived(userProfile)
                 }
             }
 
         })
     }
 
-    fun updateProfileData(user: UserResponseEntity, callback: UpdateProfileCallback) {
-        database.child(user.id.toString()).setValue(user).addOnSuccessListener {
+    fun updateRecruiterData(recruiter: RecruiterResponseEntity, callback: UpdateProfileCallback) {
+        database.child(recruiter.id.toString()).setValue(recruiter).addOnSuccessListener {
             callback.onSuccess()
         }.addOnFailureListener {
             callback.onFailure(R.string.txt_failure_update_profile)
         }
     }
 
-    fun uploadProfilePicture(image: Uri, callback: UploadProfilePictureCallback) {
+    fun uploadRecruiterProfilePicture(image: Uri, callback: UploadProfilePictureCallback) {
         val storageRef = Firebase.storage.reference
         val imageId = database.push().key
         val uploadImage = storageRef.child("recruiter/profile/images/${imageId}").putFile(image)
@@ -107,7 +107,7 @@ object UserHelper {
         }
     }
 
-    fun updateEmailProfile(
+    fun updateRecruiterEmail(
         userId: String,
         newEmail: String,
         password: String,
@@ -150,7 +150,7 @@ object UserHelper {
         }
     }
 
-    fun updatePhoneNumberProfile(
+    fun updateRecruiterPhoneNumber(
         userId: String,
         newPhoneNumber: String,
         password: String,
@@ -177,7 +177,7 @@ object UserHelper {
         }
     }
 
-    fun updatePasswordProfile(
+    fun updateRecruiterPassword(
         email: String,
         oldPassword: String,
         newPassword: String,

@@ -21,10 +21,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.RecruiterEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.RecruiterResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangeProfileBinding
-import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
+import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
@@ -44,7 +44,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
 
     private lateinit var activityChangeProfileBinding: ActivityChangeProfileBinding
 
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: RecruiterViewModel
 
     private lateinit var dialog: SweetAlertDialog
 
@@ -52,7 +52,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
 
     private var isUpdateImage = false
 
-    private lateinit var userData: UserEntity
+    private lateinit var recruiterData: RecruiterEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +65,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
 
         showCurrentProfileData()
 
@@ -74,14 +74,14 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
     }
 
     private fun showCurrentProfileData() {
-        viewModel.getUserProfile(AuthHelper.currentUser?.uid.toString())
+        viewModel.getRecruiterData(AuthHelper.currentUser?.uid.toString())
             .observe(this) { profileData ->
                 if (profileData.data != null) {
                     when (profileData.status) {
                         Status.LOADING -> {
                         }
                         Status.SUCCESS -> {
-                            userData = profileData.data
+                            recruiterData = profileData.data
                             if (profileData.data.imagePath != "-") {
                                 val storageRef = Firebase.storage.reference
                                 val circularProgressDrawable = CircularProgressDrawable(this)
@@ -199,7 +199,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         dialog.show()
 
         if (isUpdateImage) {
-            viewModel.uploadProfilePicture(image, this)
+            viewModel.uploadRecruiterProfilePicture(image, this)
         } else {
             updateUserProfile("-")
         }
@@ -209,11 +209,11 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         val firstName = activityChangeProfileBinding.etFirstName.text.toString().trim()
         val lastName = activityChangeProfileBinding.etLastName.text.toString().trim()
         val fullName = "$firstName $lastName"
-        val email = userData.email.toString()
+        val email = recruiterData.email.toString()
         val address = activityChangeProfileBinding.etAddress.text.toString().trim()
-        val phoneNumber = userData.phoneNumber.toString()
+        val phoneNumber = recruiterData.phoneNumber.toString()
         val role = activityChangeProfileBinding.etRole.text.toString().trim()
-        val profileData = UserResponseEntity(
+        val profileData = RecruiterResponseEntity(
             AuthHelper.currentUser?.uid.toString(),
             firstName,
             lastName,
@@ -225,7 +225,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
             imageId
         )
 
-        viewModel.updateUserProfile(profileData, this)
+        viewModel.updateRecruiterData(profileData, this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

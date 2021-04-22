@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.RecruiterResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivitySignUpBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import java.util.regex.Pattern
@@ -44,7 +44,7 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
         val lastName = activitySignUpBinding.etLastName.text.toString().trim()
         val fullName = "$firstName $lastName"
         val role = activitySignUpBinding.etRole.text.toString().trim()
-        val user = UserResponseEntity(
+        val user = RecruiterResponseEntity(
             firstName = firstName,
             lastName = lastName,
             fullName = fullName,

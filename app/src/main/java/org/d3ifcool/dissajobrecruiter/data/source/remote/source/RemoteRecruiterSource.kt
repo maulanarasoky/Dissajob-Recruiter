@@ -4,37 +4,37 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.UserResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.RecruiterResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
-import org.d3ifcool.dissajobrecruiter.utils.UserHelper
+import org.d3ifcool.dissajobrecruiter.utils.RecruiterHelper
 
-class RemoteUserSource private constructor(
-    private val userHelper: UserHelper
+class RemoteRecruiterSource private constructor(
+    private val recruiterHelper: RecruiterHelper
 ) {
 
     companion object {
         @Volatile
-        private var instance: RemoteUserSource? = null
+        private var instance: RemoteRecruiterSource? = null
 
-        fun getInstance(userHelper: UserHelper): RemoteUserSource =
+        fun getInstance(userHelper: RecruiterHelper): RemoteRecruiterSource =
             instance ?: synchronized(this) {
-                instance ?: RemoteUserSource(userHelper)
+                instance ?: RemoteRecruiterSource(userHelper)
             }
     }
 
-    fun createUser(
+    fun signUp(
         email: String,
         password: String,
-        user: UserResponseEntity,
+        recruiter: RecruiterResponseEntity,
         callback: SignUpCallback
     ) {
         EspressoIdlingResource.increment()
-        userHelper.signUp(email, password, user, object : SignUpCallback {
+        recruiterHelper.signUp(email, password, recruiter, object : SignUpCallback {
             override fun onSuccess() {
                 callback.onSuccess()
                 EspressoIdlingResource.decrement()
@@ -47,19 +47,19 @@ class RemoteUserSource private constructor(
         })
     }
 
-    fun getUserProfile(
+    fun getRecruiterData(
         userId: String,
-        callback: LoadUserProfileCallback
-    ): LiveData<ApiResponse<UserResponseEntity>> {
+        callback: LoadRecruiterDataCallback
+    ): LiveData<ApiResponse<RecruiterResponseEntity>> {
         EspressoIdlingResource.increment()
-        val resultUser = MutableLiveData<ApiResponse<UserResponseEntity>>()
-        userHelper.getUserProfile(userId, object : LoadUserProfileCallback {
-            override fun onUserProfileReceived(userResponse: UserResponseEntity): UserResponseEntity {
-                resultUser.value = ApiResponse.success(callback.onUserProfileReceived(userResponse))
+        val resultUser = MutableLiveData<ApiResponse<RecruiterResponseEntity>>()
+        recruiterHelper.getRecruiterData(userId, object : LoadRecruiterDataCallback {
+            override fun onRecruiterDataReceived(recruiterResponse: RecruiterResponseEntity): RecruiterResponseEntity {
+                resultUser.value = ApiResponse.success(callback.onRecruiterDataReceived(recruiterResponse))
                 if (EspressoIdlingResource.espressoTestIdlingResource.isIdleNow) {
                     EspressoIdlingResource.decrement()
                 }
-                return userResponse
+                return recruiterResponse
             }
         })
         return resultUser
@@ -67,7 +67,7 @@ class RemoteUserSource private constructor(
 
     fun signIn(email: String, password: String, callback: SignInCallback) {
         EspressoIdlingResource.increment()
-        userHelper.signIn(email, password, object : SignInCallback {
+        recruiterHelper.signIn(email, password, object : SignInCallback {
             override fun onSuccess() {
                 callback.onSuccess()
                 EspressoIdlingResource.decrement()
@@ -85,9 +85,9 @@ class RemoteUserSource private constructor(
         })
     }
 
-    fun updateProfileData(userProfile: UserResponseEntity, callback: UpdateProfileCallback) {
+    fun updateProfileData(recruiterProfile: RecruiterResponseEntity, callback: UpdateProfileCallback) {
         EspressoIdlingResource.increment()
-        userHelper.updateProfileData(userProfile, object : UpdateProfileCallback {
+        recruiterHelper.updateRecruiterData(recruiterProfile, object : UpdateProfileCallback {
             override fun onSuccess() {
                 callback.onSuccess()
                 EspressoIdlingResource.decrement()
@@ -100,9 +100,9 @@ class RemoteUserSource private constructor(
         })
     }
 
-    fun uploadProfilePicture(image: Uri, callback: UploadProfilePictureCallback) {
+    fun uploadRecruiterProfilePicture(image: Uri, callback: UploadProfilePictureCallback) {
         EspressoIdlingResource.increment()
-        userHelper.uploadProfilePicture(image, object : UploadProfilePictureCallback {
+        recruiterHelper.uploadRecruiterProfilePicture(image, object : UploadProfilePictureCallback {
             override fun onSuccessUpload(imageId: String) {
                 callback.onSuccessUpload(imageId)
                 EspressoIdlingResource.decrement()
@@ -115,14 +115,14 @@ class RemoteUserSource private constructor(
         })
     }
 
-    fun updateEmailProfile(
+    fun updateRecruiterEmail(
         userId: String,
         newEmail: String,
         password: String,
         callback: UpdateProfileCallback
     ) {
         EspressoIdlingResource.increment()
-        userHelper.updateEmailProfile(userId, newEmail, password, object : UpdateProfileCallback {
+        recruiterHelper.updateRecruiterEmail(userId, newEmail, password, object : UpdateProfileCallback {
             override fun onSuccess() {
                 callback.onSuccess()
                 EspressoIdlingResource.decrement()
@@ -135,14 +135,14 @@ class RemoteUserSource private constructor(
         })
     }
 
-    fun updatePhoneNumberProfile(
+    fun updateRecruiterPhoneNumber(
         userId: String,
         newPhoneNumber: String,
         password: String,
         callback: UpdateProfileCallback
     ) {
         EspressoIdlingResource.increment()
-        userHelper.updatePhoneNumberProfile(
+        recruiterHelper.updateRecruiterPhoneNumber(
             userId,
             newPhoneNumber,
             password,
@@ -159,14 +159,14 @@ class RemoteUserSource private constructor(
             })
     }
 
-    fun updatePasswordProfile(
+    fun updateRecruiterPassword(
         email: String,
         oldPassword: String,
         newPassword: String,
         callback: UpdateProfileCallback
     ) {
         EspressoIdlingResource.increment()
-        userHelper.updatePasswordProfile(
+        recruiterHelper.updateRecruiterPassword(
             email,
             oldPassword,
             newPassword,
@@ -188,7 +188,7 @@ class RemoteUserSource private constructor(
         callback: ResetPasswordCallback
     ) {
         EspressoIdlingResource.increment()
-        userHelper.resetPassword(email, object : ResetPasswordCallback {
+        recruiterHelper.resetPassword(email, object : ResetPasswordCallback {
             override fun onSuccess() {
                 callback.onSuccess()
                 EspressoIdlingResource.decrement()
@@ -201,7 +201,7 @@ class RemoteUserSource private constructor(
         })
     }
 
-    interface LoadUserProfileCallback {
-        fun onUserProfileReceived(userResponse: UserResponseEntity): UserResponseEntity
+    interface LoadRecruiterDataCallback {
+        fun onRecruiterDataReceived(recruiterResponse: RecruiterResponseEntity): RecruiterResponseEntity
     }
 }

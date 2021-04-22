@@ -15,13 +15,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.UserEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.RecruiterEntity
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentProfileBinding
-import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantActivity
-import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationActivity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobActivity
-import org.d3ifcool.dissajobrecruiter.ui.job.JobAdapter
-import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.settings.SettingsActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
@@ -46,8 +43,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireContext())
-            val viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
-            viewModel.getUserProfile(AuthHelper.currentUser?.uid.toString())
+            val viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
+            viewModel.getRecruiterData(AuthHelper.currentUser?.uid.toString())
                 .observe(viewLifecycleOwner) { profile ->
                     if (profile.data != null) {
                         when (profile.status) {
@@ -71,19 +68,19 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun populateData(userProfile: UserEntity) {
-        fragmentProfileBinding.tvRecruiterName.text = userProfile.fullName
-        fragmentProfileBinding.tvRole.text = userProfile.role
-        fragmentProfileBinding.tvEmail.text = userProfile.email
+    private fun populateData(recruiterProfile: RecruiterEntity) {
+        fragmentProfileBinding.tvRecruiterName.text = recruiterProfile.fullName
+        fragmentProfileBinding.tvRole.text = recruiterProfile.role
+        fragmentProfileBinding.tvEmail.text = recruiterProfile.email
 
-        if (userProfile.imagePath != "-") {
+        if (recruiterProfile.imagePath != "-") {
             val storageRef = Firebase.storage.reference
             val circularProgressDrawable = CircularProgressDrawable(requireContext())
             circularProgressDrawable.strokeWidth = 5f
             circularProgressDrawable.centerRadius = 30f
             circularProgressDrawable.start()
             Glide.with(requireContext())
-                .load(storageRef.child("recruiter/profile/images/${userProfile.imagePath}"))
+                .load(storageRef.child("recruiter/profile/images/${recruiterProfile.imagePath}"))
                 .transform(RoundedCorners(20))
                 .apply(RequestOptions.placeholderOf(circularProgressDrawable))
                 .error(R.drawable.ic_profile_gray_24dp)
@@ -94,7 +91,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnApplicantMenu -> {
-                activity?.startActivity(Intent(activity, ApplicantActivity::class.java))
+                activity?.startActivity(Intent(activity, ApplicationActivity::class.java))
             }
             R.id.btnJobMenu -> {
                 activity?.startActivity(Intent(activity, JobActivity::class.java))

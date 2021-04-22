@@ -9,16 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_reset_password.*
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityResetPasswordBinding
-import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
+import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import java.util.regex.Pattern
 
 class ResetPasswordActivity : AppCompatActivity(), ResetPasswordCallback, View.OnClickListener {
 
     private lateinit var activityResetPasswordBinding: ActivityResetPasswordBinding
 
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: RecruiterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +25,7 @@ class ResetPasswordActivity : AppCompatActivity(), ResetPasswordCallback, View.O
         setContentView(activityResetPasswordBinding.root)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
 
         activityResetPasswordBinding.imgBackBtn.setOnClickListener(this)
         activityResetPasswordBinding.btnResetPassword.setOnClickListener(this)

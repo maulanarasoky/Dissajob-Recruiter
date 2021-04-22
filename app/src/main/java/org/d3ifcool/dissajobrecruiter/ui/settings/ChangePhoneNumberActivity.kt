@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangePhoneNumberBinding
-import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
+import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
@@ -21,7 +21,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
 
     private lateinit var activityChangePhoneNumberBinding: ActivityChangePhoneNumberBinding
 
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: RecruiterViewModel
 
     private lateinit var dialog: SweetAlertDialog
 
@@ -36,7 +36,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
 
         showCurrentPhoneNumber()
 
@@ -44,7 +44,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
     }
 
     private fun showCurrentPhoneNumber() {
-        viewModel.getUserProfile(AuthHelper.currentUser?.uid.toString()).observe(this@ChangePhoneNumberActivity) { profileData ->
+        viewModel.getRecruiterData(AuthHelper.currentUser?.uid.toString()).observe(this@ChangePhoneNumberActivity) { profileData ->
             if (profileData.data != null) {
                 when (profileData.status) {
                     Status.LOADING -> {}
@@ -99,7 +99,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
         dialog.show()
 
         val password = activityChangePhoneNumberBinding.etPassword.text.toString().trim()
-        viewModel.updatePhoneNumberProfile(AuthHelper.currentUser?.uid.toString(), newPhoneNumber, password, this)
+        viewModel.updateRecruiterPhoneNumber(AuthHelper.currentUser?.uid.toString(), newPhoneNumber, password, this)
     }
 
     private fun isValidMobile(phone: String): Boolean {

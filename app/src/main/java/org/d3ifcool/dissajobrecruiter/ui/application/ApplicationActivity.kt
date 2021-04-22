@@ -1,8 +1,7 @@
-package org.d3ifcool.dissajobrecruiter.ui.applicant
+package org.d3ifcool.dissajobrecruiter.ui.application
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -10,45 +9,46 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantDetailsEntity
-import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicantBinding
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
+import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationBinding
+import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class ApplicantActivity : AppCompatActivity(), ApplicantAdapter.LoadApplicantDetailsCallback,
+class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplicantDataCallback,
     View.OnClickListener {
 
-    private lateinit var activityApplicantBinding: ActivityApplicantBinding
+    private lateinit var activityApplicationBinding: ActivityApplicationBinding
 
     private lateinit var viewModel: ApplicantViewModel
 
-    private lateinit var applicantAdapter: ApplicantAdapter
+    private lateinit var applicationAdapter: ApplicationAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityApplicantBinding = ActivityApplicantBinding.inflate(layoutInflater)
-        setContentView(activityApplicantBinding.root)
+        activityApplicationBinding = ActivityApplicationBinding.inflate(layoutInflater)
+        setContentView(activityApplicationBinding.root)
 
-        activityApplicantBinding.toolbar.title = resources.getString(R.string.applicants)
-        setSupportActionBar(activityApplicantBinding.toolbar)
+        activityApplicationBinding.toolbar.title = resources.getString(R.string.applicants)
+        setSupportActionBar(activityApplicationBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         showLoading(true)
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
-        applicantAdapter = ApplicantAdapter(this)
-        viewModel.getApplicants().observe(this) { applicants ->
+        val viewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
+        applicationAdapter = ApplicationAdapter(this)
+        viewModel.getApplications().observe(this) { applicants ->
             if (applicants != null) {
                 when (applicants.status) {
                     Status.LOADING -> showLoading(true)
                     Status.SUCCESS -> {
                         showLoading(false)
                         if (applicants.data?.isNotEmpty() == true) {
-                            applicantAdapter.submitList(applicants.data)
-                            applicantAdapter.notifyDataSetChanged()
+                            applicationAdapter.submitList(applicants.data)
+                            applicationAdapter.notifyDataSetChanged()
                         } else {
-                            activityApplicantBinding.tvNoData.visibility = View.VISIBLE
+                            activityApplicationBinding.tvNoData.visibility = View.VISIBLE
                         }
                     }
                     Status.ERROR -> {
@@ -59,30 +59,30 @@ class ApplicantActivity : AppCompatActivity(), ApplicantAdapter.LoadApplicantDet
             }
         }
 
-        with(activityApplicantBinding.rvApplicant) {
-            layoutManager = LinearLayoutManager(this@ApplicantActivity)
+        with(activityApplicationBinding.rvApplication) {
+            layoutManager = LinearLayoutManager(this@ApplicationActivity)
             setHasFixedSize(true)
             addItemDecoration(
                 DividerItemDecoration(
-                    this@ApplicantActivity,
+                    this@ApplicationActivity,
                     DividerItemDecoration.VERTICAL
                 )
             )
-            adapter = applicantAdapter
+            adapter = applicationAdapter
         }
     }
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            activityApplicantBinding.progressBar.visibility = View.VISIBLE
+            activityApplicationBinding.progressBar.visibility = View.VISIBLE
         } else {
-            activityApplicantBinding.progressBar.visibility = View.GONE
+            activityApplicationBinding.progressBar.visibility = View.GONE
         }
     }
 
     override fun onLoadApplicantDetailsCallback(
         applicantId: String,
-        callback: ApplicantAdapter.LoadApplicantDetailsCallback
+        callback: ApplicationAdapter.LoadApplicantDataCallback
     ) {
         viewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
             if (applicantDetails != null) {
@@ -91,7 +91,8 @@ class ApplicantActivity : AppCompatActivity(), ApplicantAdapter.LoadApplicantDet
         }
     }
 
-    override fun onGetApplicantDetails(applicantDetails: ApplicantDetailsEntity) {
+    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

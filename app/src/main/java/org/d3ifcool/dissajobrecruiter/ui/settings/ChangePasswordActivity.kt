@@ -10,7 +10,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import kotlinx.android.synthetic.main.activity_change_password.*
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangePasswordBinding
-import org.d3ifcool.dissajobrecruiter.ui.profile.ProfileViewModel
+import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
@@ -19,7 +19,7 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
 
     private lateinit var activityChangePasswordBinding: ActivityChangePasswordBinding
 
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: RecruiterViewModel
 
     private lateinit var dialog: SweetAlertDialog
 
@@ -34,7 +34,7 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
 
         activityChangePasswordBinding.btnUpdate.setOnClickListener(this)
     }
@@ -77,7 +77,7 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
         val oldPassword = activityChangePasswordBinding.etOldPassword.text.toString().trim()
         val newPassword = activityChangePasswordBinding.etNewPassword.text.toString().trim()
 
-        viewModel.updatePasswordProfile(email, oldPassword, newPassword, this)
+        viewModel.updateRecruiterPassword(email, oldPassword, newPassword, this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
