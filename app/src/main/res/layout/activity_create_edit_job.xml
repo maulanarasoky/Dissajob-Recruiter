@@ -21,7 +21,7 @@
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvJobTitleTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -29,11 +29,11 @@
             android:text="@string/title"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etTitle"
+            app:layout_constraintStart_toStartOf="@id/etJobTitle"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <EditText
-            android:id="@+id/etTitle"
+            android:id="@+id/etJobTitle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="@dimen/margin_16dp"
@@ -47,10 +47,10 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@id/tvJobTitleTitle" />
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvJobDescriptionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -58,11 +58,11 @@
             android:text="@string/description"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etDescription"
-            app:layout_constraintTop_toBottomOf="@id/etTitle" />
+            app:layout_constraintStart_toStartOf="@id/etJobDescription"
+            app:layout_constraintTop_toBottomOf="@id/etJobTitle" />
 
         <EditText
-            android:id="@+id/etDescription"
+            android:id="@+id/etJobDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
@@ -76,10 +76,39 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+            app:layout_constraintTop_toBottomOf="@id/tvJobDescriptionTitle" />
 
         <TextView
-            android:id="@+id/tvQualification"
+            android:id="@+id/tvJobAddressTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/txt_job_address"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/etJobAddress"
+            app:layout_constraintTop_toBottomOf="@id/etJobDescription" />
+
+        <EditText
+            android:id="@+id/etJobAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:backgroundTint="@color/text_color"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/txt_job_address"
+            android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+            android:textColor="@color/text_color"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvJobAddressTitle" />
+
+        <TextView
+            android:id="@+id/tvJobQualificationTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -87,11 +116,11 @@
             android:text="@string/qualification"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etQualification"
-            app:layout_constraintTop_toBottomOf="@id/etDescription" />
+            app:layout_constraintStart_toStartOf="@id/etJobQualification"
+            app:layout_constraintTop_toBottomOf="@id/etJobAddress" />
 
         <EditText
-            android:id="@+id/etQualification"
+            android:id="@+id/etJobQualification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
@@ -105,10 +134,10 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvQualification" />
+            app:layout_constraintTop_toBottomOf="@id/tvJobQualificationTitle" />
 
         <TextView
-            android:id="@+id/tvEmployment"
+            android:id="@+id/tvJobEmploymentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -116,11 +145,11 @@
             android:text="@string/employment"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/spEmployment"
-            app:layout_constraintTop_toBottomOf="@id/etQualification" />
+            app:layout_constraintStart_toStartOf="@id/spJobEmployment"
+            app:layout_constraintTop_toBottomOf="@id/etJobQualification" />
 
         <Spinner
-            android:id="@+id/spEmployment"
+            android:id="@+id/spJobEmployment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
@@ -129,10 +158,34 @@
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEmployment" />
+            app:layout_constraintTop_toBottomOf="@id/tvJobEmploymentTitle" />
 
         <TextView
-            android:id="@+id/tvIndustry"
+            android:id="@+id/tvJobTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/txt_job_type"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/spJobType"
+            app:layout_constraintTop_toBottomOf="@id/spJobEmployment" />
+
+        <Spinner
+            android:id="@+id/spJobType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvJobTypeTitle" />
+
+        <TextView
+            android:id="@+id/tvJobIndustryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -140,11 +193,11 @@
             android:text="@string/industry"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/spIndustry"
-            app:layout_constraintTop_toBottomOf="@id/spEmployment" />
+            app:layout_constraintStart_toStartOf="@id/spJobIndustry"
+            app:layout_constraintTop_toBottomOf="@id/spJobType" />
 
         <Spinner
-            android:id="@+id/spIndustry"
+            android:id="@+id/spJobIndustry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
@@ -153,10 +206,10 @@
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvIndustry" />
+            app:layout_constraintTop_toBottomOf="@id/tvJobIndustryTitle" />
 
         <TextView
-            android:id="@+id/tvSalary"
+            android:id="@+id/tvJobSalaryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_16dp"
@@ -164,11 +217,11 @@
             android:text="@string/salary"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etSalary"
-            app:layout_constraintTop_toBottomOf="@id/spIndustry" />
+            app:layout_constraintStart_toStartOf="@id/etJobSalary"
+            app:layout_constraintTop_toBottomOf="@id/spJobIndustry" />
 
         <EditText
-            android:id="@+id/etSalary"
+            android:id="@+id/etJobSalary"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="@dimen/margin_16dp"
@@ -182,7 +235,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvSalary" />
+            app:layout_constraintTop_toBottomOf="@id/tvJobSalaryTitle" />
 
         <TextView
             android:id="@+id/tvJobStatusTitle"
@@ -196,7 +249,7 @@
             android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etSalary" />
+            app:layout_constraintTop_toBottomOf="@id/etJobSalary" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/scJobStatus"

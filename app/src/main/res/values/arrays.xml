@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string-array name="employment" tools:ignore="TypographyDashes">
+    <string-array name="arr_job_employment" tools:ignore="TypographyDashes">
         <item>Full-time</item>
         <item>Part-time</item>
         <item>Internship</item>
         <item>Contract</item>
     </string-array>
 
-    <string-array name="industry" tools:ignore="TypographyDashes">
+    <string-array name="arr_job_type" tools:ignore="TypographyDashes">
+        <item>Onsite</item>
+        <item>Remote</item>
+    </string-array>
+
+    <string-array name="arr_job_industry" tools:ignore="TypographyDashes">
         <item>Marketing &amp; Advertising</item>
         <item>Internet</item>
         <item>Computer Games</item>

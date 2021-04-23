@@ -34,9 +34,11 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
 
     private lateinit var dialog: SweetAlertDialog
 
-    private lateinit var spEmploymentAdapter: ArrayAdapter<CharSequence>
+    private lateinit var spJobEmploymentAdapter: ArrayAdapter<CharSequence>
 
-    private lateinit var spIndustryAdapter: ArrayAdapter<CharSequence>
+    private lateinit var spJobTypeAdapter: ArrayAdapter<CharSequence>
+
+    private lateinit var spJobIndustryAdapter: ArrayAdapter<CharSequence>
 
     private lateinit var jobId: String
 
@@ -79,12 +81,14 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
         jobId = jobData?.id.toString()
         jobLastPostedDate = jobData?.postedDate.toString()
 
-        activityCreateEditJobBinding.etTitle.setText(jobData?.title.toString())
-        activityCreateEditJobBinding.etDescription.setText(jobData?.description.toString())
-        activityCreateEditJobBinding.etQualification.setText(jobData?.qualification.toString())
-        activityCreateEditJobBinding.spEmployment.setSelection(spEmploymentAdapter.getPosition(jobData?.employment.toString()))
-        activityCreateEditJobBinding.spIndustry.setSelection(spIndustryAdapter.getPosition(jobData?.industry.toString()))
-        activityCreateEditJobBinding.etSalary.setText(jobData?.salary.toString())
+        activityCreateEditJobBinding.etJobTitle.setText(jobData?.title.toString())
+        activityCreateEditJobBinding.etJobDescription.setText(jobData?.description.toString())
+        activityCreateEditJobBinding.etJobAddress.setText(jobData?.address.toString())
+        activityCreateEditJobBinding.etJobQualification.setText(jobData?.qualification.toString())
+        activityCreateEditJobBinding.spJobEmployment.setSelection(spJobEmploymentAdapter.getPosition(jobData?.employment.toString()))
+        activityCreateEditJobBinding.spJobType.setSelection(spJobTypeAdapter.getPosition(jobData?.type.toString()))
+        activityCreateEditJobBinding.spJobIndustry.setSelection(spJobIndustryAdapter.getPosition(jobData?.industry.toString()))
+        activityCreateEditJobBinding.etJobSalary.setText(jobData?.salary.toString())
 
         activityCreateEditJobBinding.scJobStatus.isChecked = jobData?.isOpen.toString().toBoolean()
         if(jobData?.isOpen == true) {
@@ -97,36 +101,49 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
     }
 
     private fun spinnerInit() {
-        ArrayAdapter.createFromResource(this, R.array.employment, R.layout.spinner_items)
+        ArrayAdapter.createFromResource(this, R.array.arr_job_employment, R.layout.spinner_items)
             .also { adapter ->
-                spEmploymentAdapter = adapter
+                spJobEmploymentAdapter = adapter
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                activityCreateEditJobBinding.spEmployment.adapter = adapter
+                activityCreateEditJobBinding.spJobEmployment.adapter = adapter
             }
 
-        ArrayAdapter.createFromResource(this, R.array.industry, R.layout.spinner_items)
+        ArrayAdapter.createFromResource(this, R.array.arr_job_type, R.layout.spinner_items)
             .also { adapter ->
-                spIndustryAdapter = adapter
+                spJobTypeAdapter = adapter
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                activityCreateEditJobBinding.spIndustry.adapter = adapter
+                activityCreateEditJobBinding.spJobType.adapter = adapter
+            }
+
+        ArrayAdapter.createFromResource(this, R.array.arr_job_industry, R.layout.spinner_items)
+            .also { adapter ->
+                spJobIndustryAdapter = adapter
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                activityCreateEditJobBinding.spJobIndustry.adapter = adapter
             }
     }
 
     private fun formValidation() {
-        if (TextUtils.isEmpty(activityCreateEditJobBinding.etTitle.text.toString().trim())) {
-            activityCreateEditJobBinding.etTitle.error =
+        if (TextUtils.isEmpty(activityCreateEditJobBinding.etJobTitle.text.toString().trim())) {
+            activityCreateEditJobBinding.etJobTitle.error =
                 resources.getString(R.string.error_alert, "Title")
             return
         }
 
-        if (TextUtils.isEmpty(activityCreateEditJobBinding.etDescription.text.toString().trim())) {
-            activityCreateEditJobBinding.etDescription.error =
+        if (TextUtils.isEmpty(activityCreateEditJobBinding.etJobDescription.text.toString().trim())) {
+            activityCreateEditJobBinding.etJobDescription.error =
                 resources.getString(R.string.error_alert, "Deskripsi")
             return
         }
 
-        if (TextUtils.isEmpty(activityCreateEditJobBinding.etQualification.text.toString().trim())) {
-            activityCreateEditJobBinding.etQualification.error =
+        if (TextUtils.isEmpty(activityCreateEditJobBinding.etJobAddress.text.toString().trim())) {
+            activityCreateEditJobBinding.etJobAddress.error =
+                resources.getString(R.string.error_alert, "Alamat")
+            return
+        }
+
+        if (TextUtils.isEmpty(activityCreateEditJobBinding.etJobQualification.text.toString().trim())) {
+            activityCreateEditJobBinding.etJobQualification.error =
                 resources.getString(R.string.error_alert, "Kualifikasi")
             return
         }
@@ -140,16 +157,17 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
 
     private fun storeToDatabase() {
 
-        val title = activityCreateEditJobBinding.etTitle.text.toString().trim()
-        val description = activityCreateEditJobBinding.etDescription.text.toString().trim()
-        val qualification = activityCreateEditJobBinding.etQualification.text.toString().trim()
-        val employment = activityCreateEditJobBinding.spEmployment.selectedItem.toString().trim()
-        val industry = activityCreateEditJobBinding.spIndustry.selectedItem.toString().trim()
+        val title = activityCreateEditJobBinding.etJobTitle.text.toString().trim()
+        val description = activityCreateEditJobBinding.etJobDescription.text.toString().trim()
+        val address = activityCreateEditJobBinding.etJobAddress.text.toString().trim()
+        val qualification = activityCreateEditJobBinding.etJobQualification.text.toString().trim()
+        val employment = activityCreateEditJobBinding.spJobEmployment.selectedItem.toString().trim()
+        val industry = activityCreateEditJobBinding.spJobIndustry.selectedItem.toString().trim()
 
-        var salary = 0
+        var salary = resources.getString(R.string.txt_job_salary)
 
-        if (!TextUtils.isEmpty(activityCreateEditJobBinding.etSalary.text.toString().trim())) {
-            salary = activityCreateEditJobBinding.etSalary.text.toString().trim().toInt()
+        if (!TextUtils.isEmpty(activityCreateEditJobBinding.etJobSalary.text.toString().trim())) {
+            salary = activityCreateEditJobBinding.etJobSalary.text.toString().trim()
         }
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -159,6 +177,7 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
             id = "",
             title = title,
             description = description,
+            address = address,
             qualification = qualification,
             employment = employment,
             industry = industry,
