@@ -165,7 +165,7 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
         val type = activityCreateEditJobBinding.spJobType.selectedItem.toString().trim()
         val industry = activityCreateEditJobBinding.spJobIndustry.selectedItem.toString().trim()
 
-        var salary = resources.getString(R.string.txt_job_salary)
+        var salary = resources.getString(R.string.txt_job_salary_value)
 
         if (!TextUtils.isEmpty(activityCreateEditJobBinding.etJobSalary.text.toString().trim())) {
             salary = activityCreateEditJobBinding.etJobSalary.text.toString().trim()

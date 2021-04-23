@@ -85,6 +85,15 @@ class JobDetailsActivity : AppCompatActivity(),
         //Title section
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobTitle.text =
             jobDetails.title.toString()
+
+        activityJobDetailsBinding.jobDetailsTitleSection.tvJobAddress.text = jobDetails.address.toString()
+
+        activityJobDetailsBinding.jobDetailsTitleSection.tvJobType.text = resources.getString(
+            R.string.txt_job_type,
+            jobDetails.employment.toString(),
+            jobDetails.type.toString()
+        )
+
         val postedDate = DateUtils.getPostedDate(jobDetails.postedDate.toString())
         getApplicantsByJob(jobDetails.id)
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobPostedDateAndApplicants.text =
@@ -101,8 +110,6 @@ class JobDetailsActivity : AppCompatActivity(),
         //Details section
         activityJobDetailsBinding.jobDetailsDetailsSection.tvQualification.text =
             jobDetails.qualification.toString()
-        activityJobDetailsBinding.jobDetailsDetailsSection.tvEmployment.text =
-            jobDetails.employment.toString()
         activityJobDetailsBinding.jobDetailsDetailsSection.tvIndustry.text =
             jobDetails.industry.toString()
         activityJobDetailsBinding.jobDetailsDetailsSection.tvSalary.text =

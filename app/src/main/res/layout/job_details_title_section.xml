@@ -22,16 +22,44 @@
         tools:text="Job Title" />
 
     <TextView
+        android:id="@+id/tvJobAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/text_color"
+        android:textSize="13.5sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvJobTitle"
+        tools:text="Jl. Telekomunikasi no 1" />
+
+    <TextView
+        android:id="@+id/tvJobType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/colorPrimary"
+        android:textSize="13.5sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvJobAddress"
+        tools:text="Full time \u2022 Remote" />
+
+    <TextView
         android:id="@+id/tvJobPostedDateAndApplicants"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginTop="@dimen/margin_16dp"
         android:fontFamily="@font/roboto"
         android:textColor="@color/gray"
         android:textSize="13.5sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvJobTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvJobType"
         tools:text="Job Posted Date * 136 participants" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

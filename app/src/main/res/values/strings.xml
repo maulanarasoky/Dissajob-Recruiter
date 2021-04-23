@@ -96,7 +96,8 @@
     <string name="delete_job">Hapus</string>
     <string name="edit_job">Ubah</string>
     <string name="txt_cancel">Batal</string>
-    <string name="txt_job_type">Tipe</string>
-    <string name="txt_job_salary">Tidak ditentukan</string>
-    <string name="txt_job_address">Alamat</string>
+    <string name="txt_job_type_title">Tipe</string>
+    <string name="txt_job_salary_value">Tidak ditentukan</string>
+    <string name="txt_job_address_title">Alamat</string>
+    <string name="txt_job_type">%1$s \u2022 %2$s</string>
 </resources>

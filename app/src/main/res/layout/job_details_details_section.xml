@@ -46,31 +46,6 @@
         tools:text="Qualification" />
 
     <TextView
-        android:id="@+id/tvEmploymentTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/employment"
-        android:textColor="@color/gray"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvQualification" />
-
-    <TextView
-        android:id="@+id/tvEmployment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto"
-        android:textColor="@color/text_color"
-        android:textSize="13.5sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEmploymentTitle"
-        tools:text="Full-Time" />
-
-    <TextView
         android:id="@+id/tvIndustryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -81,7 +56,7 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvEmployment" />
+        app:layout_constraintTop_toBottomOf="@id/tvQualification" />
 
     <TextView
         android:id="@+id/tvIndustry"
