@@ -162,6 +162,7 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
         val address = activityCreateEditJobBinding.etJobAddress.text.toString().trim()
         val qualification = activityCreateEditJobBinding.etJobQualification.text.toString().trim()
         val employment = activityCreateEditJobBinding.spJobEmployment.selectedItem.toString().trim()
+        val type = activityCreateEditJobBinding.spJobType.selectedItem.toString().trim()
         val industry = activityCreateEditJobBinding.spJobIndustry.selectedItem.toString().trim()
 
         var salary = resources.getString(R.string.txt_job_salary)
@@ -180,6 +181,7 @@ class CreateEditCreateJobActivity : AppCompatActivity(), View.OnClickListener, C
             address = address,
             qualification = qualification,
             employment = employment,
+            type = type,
             industry = industry,
             salary = salary,
             updatedDate = currentDate
