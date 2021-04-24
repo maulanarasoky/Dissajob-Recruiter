@@ -42,6 +42,22 @@ object RecruiterHelper {
     }
 
     fun signIn(email: String, password: String, callback: SignInCallback) {
+        database.orderByChild("email").equalTo(email).limitToFirst(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        checkSignIn(email, password, callback)
+                    } else {
+                        callback.onFailure()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+    }
+
+    private fun checkSignIn(email: String, password: String, callback: SignInCallback) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { check ->
             if (check.isSuccessful) {
                 if (auth.currentUser?.isEmailVerified!!) {
@@ -63,7 +79,10 @@ object RecruiterHelper {
         }
     }
 
-    fun getRecruiterData(recruiterId: String, callback: RemoteRecruiterSource.LoadRecruiterDataCallback) {
+    fun getRecruiterData(
+        recruiterId: String,
+        callback: RemoteRecruiterSource.LoadRecruiterDataCallback
+    ) {
         database.child(recruiterId).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }
@@ -212,6 +231,22 @@ object RecruiterHelper {
     }
 
     fun resetPassword(email: String, callback: ResetPasswordCallback) {
+        database.orderByChild("email").equalTo(email).limitToFirst(1)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        sendResetPasswordEmail(email, callback)
+                    } else {
+                        callback.onFailure(R.string.email_not_found)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+    }
+
+    private fun sendResetPasswordEmail(email: String, callback: ResetPasswordCallback) {
         auth.sendPasswordResetEmail(email)
             .addOnSuccessListener {
                 callback.onSuccess()

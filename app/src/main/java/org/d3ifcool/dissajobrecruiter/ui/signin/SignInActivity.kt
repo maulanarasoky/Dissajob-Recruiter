@@ -35,7 +35,6 @@ class SignInActivity : AppCompatActivity(), SignInCallback, View.OnClickListener
     }
 
     private fun checkLogin() {
-
         val email = activitySignInBinding.etEmail.text.toString().trim()
         val password = activitySignInBinding.etPassword.text.toString().trim()
 

@@ -50,7 +50,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
                     Status.LOADING -> {}
                     Status.SUCCESS -> {
                         if (profileData.data.phoneNumber != "-") {
-                            activityChangePhoneNumberBinding.tvOldPhoneNumber.visibility = View.VISIBLE
+                            activityChangePhoneNumberBinding.textInputOldPhoneNumber.visibility = View.VISIBLE
                             activityChangePhoneNumberBinding.etOldPhoneNumber.visibility = View.VISIBLE
                             activityChangePhoneNumberBinding.etOldPhoneNumber.setText(profileData.data.phoneNumber.toString())
                         }
@@ -88,7 +88,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
 
     private fun storeToDatabase() {
         val newPhoneNumber = activityChangePhoneNumberBinding.etNewPhoneNumber.text.toString().trim()
-        if (!isValidMobile(newPhoneNumber)) {
+        if (!isValidPhoneNumber(newPhoneNumber)) {
             Toast.makeText(this, resources.getString(R.string.phone_number_invalid), Toast.LENGTH_SHORT).show()
             return
         }
@@ -102,7 +102,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
         viewModel.updateRecruiterPhoneNumber(AuthHelper.currentUser?.uid.toString(), newPhoneNumber, password, this)
     }
 
-    private fun isValidMobile(phone: String): Boolean {
+    private fun isValidPhoneNumber(phone: String): Boolean {
         return if (!Pattern.matches("[a-zA-Z]+", phone)) {
             phone.length in 7..13
         } else false

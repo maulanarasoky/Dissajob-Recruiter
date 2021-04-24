@@ -21,91 +21,88 @@
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-        <TextView
-            android:id="@+id/tvOldEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/txt_old_email"
-            android:textColor="@color/text_color"
-            app:layout_constraintStart_toStartOf="@id/etOldEmail"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-        <EditText
-            android:id="@+id/etOldEmail"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_old_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:backgroundTint="@color/text_color"
-            android:enabled="false"
-            android:fontFamily="@font/roboto"
             android:hint="@string/txt_old_email"
-            android:inputType="textEmailAddress"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"
+            app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvOldEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <TextView
-            android:id="@+id/tvNewEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/txt_new_email"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etNewEmail"
-            app:layout_constraintTop_toBottomOf="@id/etOldEmail" />
+            <EditText
+                android:id="@+id/etOldEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:fontFamily="@font/roboto"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/margin_16dp"
+                android:textColor="@color/gray"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp" />
 
-        <EditText
-            android:id="@+id/etNewEmail"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_new_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:backgroundTint="@color/text_color"
-            android:fontFamily="@font/roboto"
             android:hint="@string/txt_new_email"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/text_color"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"
+            app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNewEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/text_input_old_email">
 
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/password"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etPassword"
-            app:layout_constraintTop_toBottomOf="@id/etNewEmail" />
+            <EditText
+                android:id="@+id/etNewEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/margin_16dp"
+                android:textColor="@color/text_color"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp" />
 
-        <EditText
-            android:id="@+id/etPassword"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:backgroundTint="@color/text_color"
-            android:fontFamily="@font/roboto"
             android:hint="@string/password"
-            android:inputType="textPassword"
-            android:textColor="@color/text_color"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"
+            app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/text_input_new_email"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="textPassword"
+                android:padding="@dimen/margin_16dp"
+                android:textColor="@color/text_color"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnUpdate"
@@ -121,12 +118,12 @@
             android:paddingBottom="@dimen/margin_16dp"
             android:text="@string/update"
             android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etPassword" />
+            app:layout_constraintTop_toBottomOf="@id/text_input_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

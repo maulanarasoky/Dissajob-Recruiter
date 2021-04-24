@@ -21,93 +21,89 @@
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-        <TextView
-            android:id="@+id/tvOldPhoneNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/txt_old_phone_number"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@id/etOldPhoneNumber"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-        <EditText
-            android:id="@+id/etOldPhoneNumber"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_old_phone_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:backgroundTint="@color/text_color"
-            android:enabled="false"
-            android:fontFamily="@font/roboto"
             android:hint="@string/txt_old_phone_number"
-            android:inputType="phone"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"
             android:visibility="gone"
+            app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvOldPhoneNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <TextView
-            android:id="@+id/tvNewPhoneNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/txt_new_phone_number"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etNewPhoneNumber"
-            app:layout_constraintTop_toBottomOf="@id/etOldPhoneNumber" />
+            <EditText
+                android:id="@+id/etOldPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:fontFamily="@font/roboto"
+                android:inputType="phone"
+                android:padding="@dimen/margin_16dp"
+                android:textColor="@color/gray"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp" />
 
-        <EditText
-            android:id="@+id/etNewPhoneNumber"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_new_phone_number"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:backgroundTint="@color/text_color"
-            android:fontFamily="@font/roboto"
             android:hint="@string/txt_new_phone_number"
-            android:inputType="phone"
-            android:maxLength="13"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"
+            app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNewPhoneNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/text_input_old_phone_number">
 
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/password"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etPassword"
-            app:layout_constraintTop_toBottomOf="@id/etNewPhoneNumber" />
+            <EditText
+                android:id="@+id/etNewPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="phone"
+                android:padding="@dimen/margin_16dp"
+                android:textColor="@color/text_color"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp" />
 
-        <EditText
-            android:id="@+id/etPassword"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:backgroundTint="@color/text_color"
-            android:fontFamily="@font/roboto"
             android:hint="@string/password"
-            android:inputType="textPassword"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"
+            app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPassword" />
+            app:layout_constraintTop_toBottomOf="@+id/text_input_new_phone_number"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto"
+                android:inputType="textPassword"
+                android:padding="@dimen/margin_16dp"
+                android:textColor="@color/text_color"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnUpdate"
@@ -128,7 +124,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etPassword" />
+            app:layout_constraintTop_toBottomOf="@id/text_input_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
