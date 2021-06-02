@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.utils
+package org.d3ifcool.dissajobrecruiter.utils.database
 
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue

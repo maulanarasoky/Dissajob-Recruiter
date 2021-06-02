@@ -16,41 +16,47 @@ data class JobDetailsEntity(
     var id: String,
 
     @ColumnInfo(name = "title")
-    val title: String? = "-",
+    var title: String,
 
     @ColumnInfo(name = "description")
-    val description: String? = "-",
+    var description: String,
 
     @ColumnInfo(name = "address")
-    val address: String? = "-",
+    var address: String,
 
     @ColumnInfo(name = "qualification")
-    val qualification: String? = "-",
+    var qualification: String? = "-",
 
     @ColumnInfo(name = "employment")
-    val employment: String? = "-",
+    var employment: String,
 
     @ColumnInfo(name = "type")
-    val type: String? = "-",
+    var type: String,
 
     @ColumnInfo(name = "industry")
-    val industry: String? = "-",
+    var industry: String,
 
     @ColumnInfo(name = "salary")
-    val salary: String? = "-",
+    var salary: String? = "-",
 
     @ColumnInfo(name = "posted_by")
-    var postedBy: String? = "-",
+    var postedBy: String,
 
     @ColumnInfo(name = "posted_date")
-    val postedDate: String? = "-",
+    var postedDate: String,
 
     @ColumnInfo(name = "updated_date")
-    val updatedDate: String? = "-",
+    var updatedDate: String? = "-",
 
     @ColumnInfo(name = "closed_date")
-    val closedDate: String? = "-",
+    var closedDate: String? = "-",
 
     @ColumnInfo(name = "is_open")
-    val isOpen: Boolean? = true
+    var isOpen: Boolean,
+
+    @ColumnInfo(name = "is_open_for_disability")
+    var isOpenForDisability: Boolean,
+
+    @ColumnInfo(name = "additional_information")
+    var additionalInformation: String? = "-"
 ): Parcelable

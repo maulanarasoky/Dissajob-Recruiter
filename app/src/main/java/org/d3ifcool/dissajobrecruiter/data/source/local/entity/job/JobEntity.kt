@@ -13,17 +13,20 @@ data class JobEntity(
     var id: String,
 
     @ColumnInfo(name = "title")
-    val title: String? = "-",
+    var title: String,
 
     @ColumnInfo(name = "description")
-    val description: String? = "-",
+    var description: String,
 
     @ColumnInfo(name = "posted_by")
-    val postedBy: String? = "-",
+    var postedBy: String,
 
     @ColumnInfo(name = "posted_date")
-    val postedDate: String? = "-",
+    var postedDate: String,
 
     @ColumnInfo(name = "is_open")
-    val isOpen: Boolean? = true
+    var isOpen: Boolean,
+
+    @ColumnInfo(name = "is_open_for_disability")
+    var isOpenForDisability: Boolean
 )

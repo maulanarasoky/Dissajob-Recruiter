@@ -1,9 +1,7 @@
-package org.d3ifcool.dissajobrecruiter.utils
+package org.d3ifcool.dissajobrecruiter.utils.database
 
 import com.google.firebase.database.*
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.notification.NotificationResponseEntity
-import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteNotificationSource
 
 object NotificationHelper {

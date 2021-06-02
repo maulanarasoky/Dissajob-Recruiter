@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.applicant.ApplicantResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.applicant.LoadApplicantDetailsCallback
-import org.d3ifcool.dissajobrecruiter.utils.ApplicantHelper
+import org.d3ifcool.dissajobrecruiter.utils.database.ApplicantHelper
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
 
 class RemoteApplicantSource private constructor(

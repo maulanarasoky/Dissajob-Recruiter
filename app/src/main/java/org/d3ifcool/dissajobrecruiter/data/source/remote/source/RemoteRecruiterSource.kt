@@ -11,7 +11,7 @@ import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
 import org.d3ifcool.dissajobrecruiter.ui.signin.SignInCallback
 import org.d3ifcool.dissajobrecruiter.ui.signup.SignUpCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
-import org.d3ifcool.dissajobrecruiter.utils.RecruiterHelper
+import org.d3ifcool.dissajobrecruiter.utils.database.RecruiterHelper
 
 class RemoteRecruiterSource private constructor(
     private val recruiterHelper: RecruiterHelper

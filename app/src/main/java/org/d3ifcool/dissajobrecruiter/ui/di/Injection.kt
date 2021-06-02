@@ -17,6 +17,10 @@ import org.d3ifcool.dissajobrecruiter.data.source.repository.application.Applica
 import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.recruiter.RecruiterRepository
 import org.d3ifcool.dissajobrecruiter.utils.*
+import org.d3ifcool.dissajobrecruiter.utils.database.ApplicantHelper
+import org.d3ifcool.dissajobrecruiter.utils.database.ApplicationHelper
+import org.d3ifcool.dissajobrecruiter.utils.database.JobHelper
+import org.d3ifcool.dissajobrecruiter.utils.database.RecruiterHelper
 
 object Injection {
 

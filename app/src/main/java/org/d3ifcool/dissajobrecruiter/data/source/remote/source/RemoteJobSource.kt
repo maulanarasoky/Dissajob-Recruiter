@@ -7,7 +7,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.Job
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.*
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
-import org.d3ifcool.dissajobrecruiter.utils.JobHelper
+import org.d3ifcool.dissajobrecruiter.utils.database.JobHelper
 
 class RemoteJobSource private constructor(
     private val jobHelper: JobHelper

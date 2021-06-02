@@ -87,7 +87,7 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
     override fun onClick(v: View?) {
         when(v?.id) {
             R.id.fabAddJob -> {
-                startActivity(Intent(activity, CreateEditCreateJobActivity::class.java))
+                startActivity(Intent(activity, CreateEditJobActivity::class.java))
             }
         }
     }

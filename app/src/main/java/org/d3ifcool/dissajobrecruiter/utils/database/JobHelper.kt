@@ -1,11 +1,11 @@
-package org.d3ifcool.dissajobrecruiter.utils
+package org.d3ifcool.dissajobrecruiter.utils.database
 
 import com.google.firebase.database.*
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.*
+import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 
 object JobHelper {
 
@@ -39,7 +39,8 @@ object JobHelper {
                                 data.child("description").value.toString(),
                                 data.child("postedBy").value.toString(),
                                 data.child("postedDate").value.toString(),
-                                data.child("open").value.toString().toBoolean()
+                                data.child("open").value.toString().toBoolean(),
+                                data.child("openForDisability").value.toString().toBoolean()
                             )
                             arrJob.add(job)
                         }
@@ -71,7 +72,9 @@ object JobHelper {
                         dataSnapshot.child("postedDate").value.toString(),
                         dataSnapshot.child("updatedDate").value.toString(),
                         dataSnapshot.child("closedDate").value.toString(),
-                        dataSnapshot.child("open").value.toString().toBoolean()
+                        dataSnapshot.child("open").value.toString().toBoolean(),
+                        dataSnapshot.child("openForDisability").value.toString().toBoolean(),
+                        dataSnapshot.child("additionalInformation").value.toString()
                     )
                     callback.onJobDetailsReceived(jobDetails)
                 }

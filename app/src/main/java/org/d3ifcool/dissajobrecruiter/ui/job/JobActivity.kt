@@ -97,7 +97,7 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fabAddJob -> {
-                startActivity(Intent(this, CreateEditCreateJobActivity::class.java))
+                startActivity(Intent(this, CreateEditJobActivity::class.java))
             }
         }
     }

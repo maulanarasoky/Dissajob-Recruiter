@@ -5,9 +5,10 @@ import com.google.firebase.database.Exclude
 data class JobResponseEntity(
     @get:Exclude
     var id: String,
-    val title: String? = "-",
-    val description: String? = "-",
-    val postedBy: String? = "-",
-    val postedDate: String? = "-",
-    val isOpen: Boolean? = true
+    var title: String,
+    var description: String,
+    var postedBy: String,
+    var postedDate: String,
+    var isOpen: Boolean,
+    var isOpenForDisability: Boolean
 )

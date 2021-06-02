@@ -15,8 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DissajobRecruiter"
         tools:replace="android:icon">
+        <activity android:name=".ui.job.JobTypeActivity"></activity>
+        <activity android:name=".ui.job.IndustryTypeActivity" />
+        <activity android:name=".ui.job.EmploymentTypeActivity" />
         <activity android:name=".ui.application.ApplicationActivity" />
-        <activity android:name=".ui.job.CreateEditCreateJobActivity" />
+        <activity android:name=".ui.job.CreateEditJobActivity" />
         <activity android:name=".ui.resetpassword.ResetPasswordActivity" />
         <activity android:name=".ui.job.JobActivity" />
         <activity android:name=".ui.settings.ChangeProfileActivity" />

@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
-import kotlinx.android.synthetic.main.activity_change_password.*
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangePasswordBinding
 import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
@@ -41,12 +40,12 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
 
     private fun formValidation() {
         if (TextUtils.isEmpty(activityChangePasswordBinding.etOldPassword.text.toString().trim())) {
-            etOldPassword.error = getString(R.string.txt_error_form_text, "Password lama")
+            activityChangePasswordBinding.etOldPassword.error = getString(R.string.txt_error_form_text, "Password lama")
             return
         }
 
         if (TextUtils.isEmpty(activityChangePasswordBinding.etNewPassword.text.toString().trim())) {
-            etNewPassword.error = getString(R.string.txt_error_form_text, "Password baru")
+            activityChangePasswordBinding.etNewPassword.error = getString(R.string.txt_error_form_text, "Password baru")
             return
         }
 
@@ -54,13 +53,13 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
                 activityChangePasswordBinding.etConfirmPassword.text.toString().trim()
             )
         ) {
-            etConfirmPassword.error = getString(R.string.txt_error_form_text, "Re-type password")
+            activityChangePasswordBinding.etConfirmPassword.error = getString(R.string.txt_error_form_text, "Re-type password")
             return
         }
 
-        if (etNewPassword.text.toString() != etConfirmPassword.text.toString()) {
-            etNewPassword.error = getString(R.string.password_confirm_password_not_match)
-            etConfirmPassword.error = getString(R.string.password_confirm_password_not_match)
+        if (activityChangePasswordBinding.etNewPassword.text.toString() != activityChangePasswordBinding.etConfirmPassword.text.toString()) {
+            activityChangePasswordBinding.etNewPassword.error = getString(R.string.password_confirm_password_not_match)
+            activityChangePasswordBinding.etConfirmPassword.error = getString(R.string.password_confirm_password_not_match)
             return
         }
 

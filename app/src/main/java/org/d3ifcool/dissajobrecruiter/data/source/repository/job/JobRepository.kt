@@ -5,12 +5,12 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import org.d3ifcool.dissajobrecruiter.data.NetworkBoundResource
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
-import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.*
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
@@ -69,7 +69,8 @@ class JobRepository private constructor(
                         response.description,
                         response.postedBy,
                         response.postedDate,
-                        response.isOpen
+                        response.isOpen,
+                        response.isOpenForDisability
                     )
                     jobList.add(job)
                 }
@@ -114,7 +115,9 @@ class JobRepository private constructor(
                     data.postedDate,
                     data.updatedDate,
                     data.closedDate,
-                    data.isOpen
+                    data.isOpen,
+                    data.isOpenForDisability,
+                    data.additionalInformation
                 )
                 localJobSource.insertJobDetails(jobDetails)
             }

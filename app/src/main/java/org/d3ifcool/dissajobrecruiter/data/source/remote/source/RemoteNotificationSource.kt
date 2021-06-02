@@ -3,11 +3,9 @@ package org.d3ifcool.dissajobrecruiter.data.source.remote.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.notification.NotificationResponseEntity
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
-import org.d3ifcool.dissajobrecruiter.utils.JobHelper
-import org.d3ifcool.dissajobrecruiter.utils.NotificationHelper
+import org.d3ifcool.dissajobrecruiter.utils.database.NotificationHelper
 
 class RemoteNotificationSource private constructor(
     private val notificationHelper: NotificationHelper

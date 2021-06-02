@@ -89,7 +89,7 @@ class JobDetailsActivity : AppCompatActivity(),
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobAddress.text = jobDetails.address.toString()
 
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobType.text = resources.getString(
-            R.string.txt_job_type,
+            R.string.txt_job_type_value,
             jobDetails.employment.toString(),
             jobDetails.type.toString()
         )
@@ -157,9 +157,9 @@ class JobDetailsActivity : AppCompatActivity(),
                 true
             }
             R.id.editJob -> {
-                val intent = Intent(this, CreateEditCreateJobActivity::class.java)
-                intent.putExtra(CreateEditCreateJobActivity.JOB_EXTRA, jobData)
-                startActivityForResult(intent, CreateEditCreateJobActivity.REQUEST_UPDATE)
+                val intent = Intent(this, CreateEditJobActivity::class.java)
+                intent.putExtra(CreateEditJobActivity.JOB_EXTRA, jobData)
+                startActivityForResult(intent, CreateEditJobActivity.REQUEST_UPDATE)
                 true
             }
             R.id.deleteJob -> {
@@ -198,8 +198,8 @@ class JobDetailsActivity : AppCompatActivity(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CreateEditCreateJobActivity.REQUEST_UPDATE) {
-            if (resultCode == CreateEditCreateJobActivity.RESULT_UPDATE) {
+        if (requestCode == CreateEditJobActivity.REQUEST_UPDATE) {
+            if (resultCode == CreateEditJobActivity.RESULT_UPDATE) {
                 val jobId = intent.extras?.getString(EXTRA_ID)
                 showJobDetails(jobId.toString())
             }
