@@ -139,6 +139,17 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
             return
         }
 
+        if (activityCreateEditJobBinding.etAdditionalInformation.visibility == View.VISIBLE) {
+            if (TextUtils.isEmpty(
+                    activityCreateEditJobBinding.etAdditionalInformation.text.toString().trim()
+                )
+            ) {
+                activityCreateEditJobBinding.etAdditionalInformation.error =
+                    resources.getString(R.string.error_alert, "Data")
+                return
+            }
+        }
+
         storeToDatabase()
 
         dialog.titleText = resources.getString(R.string.loading)

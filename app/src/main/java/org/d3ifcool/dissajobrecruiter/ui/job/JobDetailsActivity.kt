@@ -1,20 +1,20 @@
 package org.d3ifcool.dissajobrecruiter.ui.job
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
-import org.d3ifcool.dissajobrecruiter.databinding.*
-import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
+import org.d3ifcool.dissajobrecruiter.databinding.ActivityJobDetailsBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
@@ -84,17 +84,18 @@ class JobDetailsActivity : AppCompatActivity(),
     private fun populateData(jobDetails: JobDetailsEntity) {
         //Title section
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobTitle.text =
-            jobDetails.title.toString()
+            jobDetails.title
 
-        activityJobDetailsBinding.jobDetailsTitleSection.tvJobAddress.text = jobDetails.address.toString()
+        activityJobDetailsBinding.jobDetailsTitleSection.tvJobAddress.text =
+            jobDetails.address.toString()
 
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobType.text = resources.getString(
             R.string.txt_job_type_value,
-            jobDetails.employment.toString(),
-            jobDetails.type.toString()
+            jobDetails.employment,
+            jobDetails.type
         )
 
-        val postedDate = DateUtils.getPostedDate(jobDetails.postedDate.toString())
+        val postedDate = DateUtils.getPostedDate(jobDetails.postedDate)
         getApplicantsByJob(jobDetails.id)
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobPostedDateAndApplicants.text =
             resources.getString(
@@ -105,15 +106,29 @@ class JobDetailsActivity : AppCompatActivity(),
 
         //Description section
         activityJobDetailsBinding.jobDetailsDescriptionSection.tvDescription.text =
-            jobDetails.description.toString()
+            jobDetails.description
 
         //Details section
         activityJobDetailsBinding.jobDetailsDetailsSection.tvQualification.text =
             jobDetails.qualification.toString()
         activityJobDetailsBinding.jobDetailsDetailsSection.tvIndustry.text =
-            jobDetails.industry.toString()
+            jobDetails.industry
         activityJobDetailsBinding.jobDetailsDetailsSection.tvSalary.text =
             jobDetails.salary.toString()
+
+        if (jobDetails.isOpenForDisability) {
+            activityJobDetailsBinding.jobDetailsDescriptionSection.tvAdditionalInformation.visibility =
+                View.VISIBLE
+
+            activityJobDetailsBinding.jobDetailsDescriptionSection.tvAdditionalInformation.text =
+                resources.getString(
+                    R.string.job_details_additional_information,
+                    jobData.additionalInformation
+                )
+        } else {
+            activityJobDetailsBinding.jobDetailsDescriptionSection.tvAdditionalInformation.visibility =
+                View.GONE
+        }
     }
 
     private fun getApplicantsByJob(jobId: String) {

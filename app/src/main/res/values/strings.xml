@@ -128,4 +128,5 @@
     <string name="txt_yes">Iya</string>
     <string name="txt_no">Tidak</string>
     <string name="txt_additional_information">Keterangan tambahan</string>
+    <string name="job_details_additional_information">Keterangan tambahan : %1$s</string>
 </resources>
