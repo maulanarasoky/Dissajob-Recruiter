@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context=".ui.settings.ChangeEmailActivity">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_16dp"
+        tools:context=".ui.settings.ChangeEmailActivity">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -21,6 +21,21 @@
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
+        <TextView
+            android:id="@+id/tvChangeEmailTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/txt_change_email_description"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_old_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -29,11 +44,11 @@
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:hint="@string/txt_old_email"
+            android:hint="@string/txt_current_email"
             app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/tvChangeEmailTitle">
 
             <EditText
                 android:id="@+id/etOldEmail"
@@ -43,7 +58,7 @@
                 android:fontFamily="@font/roboto"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/margin_16dp"
-                android:textColor="@color/gray"
+                android:textColor="@color/darkGray"
                 android:textCursorDrawable="@drawable/cursor_color"
                 android:textSize="14sp" />
 
@@ -61,7 +76,7 @@
             app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_old_email">
+            app:layout_constraintTop_toBottomOf="@id/text_input_old_email">
 
             <EditText
                 android:id="@+id/etNewEmail"
@@ -70,7 +85,7 @@
                 android:fontFamily="@font/roboto"
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/margin_16dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black"
                 android:textCursorDrawable="@drawable/cursor_color"
                 android:textSize="14sp" />
 
@@ -84,11 +99,11 @@
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:hint="@string/txt_password"
+            android:hint="@string/txt_current_password"
             app:boxStrokeColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_input_new_email"
+            app:layout_constraintTop_toBottomOf="@id/text_input_new_email"
             app:passwordToggleEnabled="true">
 
             <EditText
@@ -98,7 +113,7 @@
                 android:fontFamily="@font/roboto"
                 android:inputType="textPassword"
                 android:padding="@dimen/margin_16dp"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black"
                 android:textCursorDrawable="@drawable/cursor_color"
                 android:textSize="14sp" />
 
@@ -111,19 +126,16 @@
             android:layout_marginStart="@dimen/margin_16dp"
             android:layout_marginTop="@dimen/margin_16dp"
             android:layout_marginEnd="@dimen/margin_16dp"
-            android:layout_marginBottom="@dimen/margin_8dp"
             android:backgroundTint="@color/colorPrimary"
             android:fontFamily="@font/roboto"
-            android:paddingTop="@dimen/margin_16dp"
-            android:paddingBottom="@dimen/margin_16dp"
-            android:text="@string/update"
+            android:padding="@dimen/margin_16dp"
+            android:text="@string/txt_update"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_input_password" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

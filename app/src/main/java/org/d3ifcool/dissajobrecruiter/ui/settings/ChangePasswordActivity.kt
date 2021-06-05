@@ -1,10 +1,12 @@
 package org.d3ifcool.dissajobrecruiter.ui.settings
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
@@ -13,6 +15,7 @@ import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
+import java.util.regex.Pattern
 
 class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, UpdateProfileCallback {
 
@@ -22,15 +25,21 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
 
     private lateinit var dialog: SweetAlertDialog
 
+    private var isFirstRuleValid = false
+    private var isSecondRuleValid = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityChangePasswordBinding = ActivityChangePasswordBinding.inflate(layoutInflater)
         setContentView(activityChangePasswordBinding.root)
 
-        activityChangePasswordBinding.toolbar.title = resources.getString(R.string.change_password_title)
+        activityChangePasswordBinding.toolbar.title =
+            resources.getString(R.string.change_password_title)
         setSupportActionBar(activityChangePasswordBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        textWatcher()
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
@@ -39,27 +48,37 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
     }
 
     private fun formValidation() {
-        if (TextUtils.isEmpty(activityChangePasswordBinding.etOldPassword.text.toString().trim())) {
-            activityChangePasswordBinding.etOldPassword.error = getString(R.string.txt_error_form_text, "Password lama")
+        val oldPassword = activityChangePasswordBinding.etOldPassword.text.toString().trim()
+        val newPassword = activityChangePasswordBinding.etNewPassword.text.toString().trim()
+        val confirmPassword =
+            activityChangePasswordBinding.etConfirmPassword.text.toString().trim()
+        if (TextUtils.isEmpty(oldPassword)) {
+            activityChangePasswordBinding.etOldPassword.error =
+                getString(R.string.txt_edit_text_error_alert, "Password lama")
             return
         }
 
-        if (TextUtils.isEmpty(activityChangePasswordBinding.etNewPassword.text.toString().trim())) {
-            activityChangePasswordBinding.etNewPassword.error = getString(R.string.txt_error_form_text, "Password baru")
+        if (TextUtils.isEmpty(newPassword)) {
+            activityChangePasswordBinding.etNewPassword.error =
+                getString(R.string.txt_edit_text_error_alert, "Password baru")
             return
         }
 
-        if (TextUtils.isEmpty(
-                activityChangePasswordBinding.etConfirmPassword.text.toString().trim()
-            )
-        ) {
-            activityChangePasswordBinding.etConfirmPassword.error = getString(R.string.txt_error_form_text, "Re-type password")
+        if (TextUtils.isEmpty(confirmPassword)) {
+            activityChangePasswordBinding.etConfirmPassword.error =
+                getString(R.string.txt_edit_text_error_alert, "Re-type password")
             return
         }
 
-        if (activityChangePasswordBinding.etNewPassword.text.toString() != activityChangePasswordBinding.etConfirmPassword.text.toString()) {
-            activityChangePasswordBinding.etNewPassword.error = getString(R.string.password_confirm_password_not_match)
-            activityChangePasswordBinding.etConfirmPassword.error = getString(R.string.password_confirm_password_not_match)
+        if (newPassword != confirmPassword) {
+            activityChangePasswordBinding.etNewPassword.error =
+                getString(R.string.txt_password_doesnt_match, "Password")
+            activityChangePasswordBinding.etConfirmPassword.error =
+                getString(R.string.txt_password_doesnt_match, "Password")
+            return
+        }
+
+        if (!isFirstRuleValid || !isSecondRuleValid) {
             return
         }
 
@@ -68,15 +87,57 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
         dialog.setCancelable(false)
         dialog.show()
 
-        updatePassword()
+        updatePassword(oldPassword, newPassword)
     }
 
-    private fun updatePassword() {
+    private fun updatePassword(oldPassword: String, newPassword: String) {
+        isEnable(false)
         val email = AuthHelper.currentUser?.email.toString()
-        val oldPassword = activityChangePasswordBinding.etOldPassword.text.toString().trim()
-        val newPassword = activityChangePasswordBinding.etNewPassword.text.toString().trim()
-
         viewModel.updateRecruiterPassword(email, oldPassword, newPassword, this)
+    }
+
+    private fun textWatcher() {
+        activityChangePasswordBinding.etNewPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (activityChangePasswordBinding.etNewPassword.text.trim().length >= 8) {
+                    activityChangePasswordBinding.imgPasswordFirstRule.setImageResource(R.drawable.ic_check_circle_color_primary_24dp)
+                    isFirstRuleValid = true
+                } else {
+                    activityChangePasswordBinding.imgPasswordFirstRule.setImageResource(R.drawable.ic_check_circle_gray_24dp)
+                    isFirstRuleValid = false
+                }
+
+                if (isValidPassword(
+                        activityChangePasswordBinding.etNewPassword.text.toString().trim()
+                    )
+                ) {
+                    activityChangePasswordBinding.imgPasswordSecondRule.setImageResource(R.drawable.ic_check_circle_color_primary_24dp)
+                    isSecondRuleValid = true
+                } else {
+                    activityChangePasswordBinding.imgPasswordSecondRule.setImageResource(R.drawable.ic_check_circle_gray_24dp)
+                    isSecondRuleValid = false
+                }
+            }
+
+        })
+    }
+
+    private fun isEnable(state: Boolean) {
+        activityChangePasswordBinding.etOldPassword.isEnabled = state
+        activityChangePasswordBinding.etNewPassword.isEnabled = state
+        activityChangePasswordBinding.etConfirmPassword.isEnabled = state
+        activityChangePasswordBinding.btnUpdate.isEnabled = state
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        val regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!?$%^&+=])(?=\\S+$).{8,}$"
+        return Pattern.compile(regex).matcher(password).matches()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -110,8 +171,10 @@ class ChangePasswordActivity : AppCompatActivity(), View.OnClickListener, Update
 
     override fun onFailure(messageId: Int) {
         dialog.changeAlertType(SweetAlertDialog.WARNING_TYPE)
-        dialog.titleText = resources.getString(messageId)
+        dialog.titleText = resources.getString(messageId, "Password")
         dialog.setCancelable(false)
         dialog.show()
+
+        isEnable(true)
     }
 }

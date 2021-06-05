@@ -47,7 +47,8 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
             showPreviousJobData()
             activityCreateEditJobBinding.toolbar.title =
                 resources.getString(R.string.edit_job_title)
-            activityCreateEditJobBinding.btnSubmitJob.text = resources.getString(R.string.update)
+            activityCreateEditJobBinding.btnSubmitJob.text =
+                resources.getString(R.string.txt_update)
         } else {
             activityCreateEditJobBinding.toolbar.title =
                 resources.getString(R.string.create_job_title)

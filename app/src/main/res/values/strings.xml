@@ -50,9 +50,9 @@
     <string name="applicants">Pelamar</string>
     <string name="job_details">Detail Pekerjaan</string>
     <string name="job_details_date_format">%1$s \u2022 %2$d pelamar</string>
-    <string name="txt_old_email">Email lama</string>
+    <string name="txt_current_email">Email saat ini</string>
     <string name="txt_new_email">Email baru</string>
-    <string name="update">Update</string>
+    <string name="txt_update">Update</string>
     <string name="change_profile_title">Ubah Profil</string>
     <string name="change_email_title">Ubah Email</string>
     <string name="change_phone_number_title">Ubah Nomor Telepon</string>
@@ -61,8 +61,7 @@
     <string name="txt_success_update_profile">%1$s berhasil di update</string>
     <string name="txt_failure_update_profile">Update gagal</string>
     <string name="txt_failure_upload_profile_picture">Gagal upload foto profil</string>
-    <string name="txt_old_password">Password lama</string>
-    <string name="txt_new_password">Password baru</string>
+    <string name="txt_current_password">Password saat ini</string>
     <string name="txt_retype_password">Masukkan sekali lagi</string>
     <string name="password_confirm_password_not_match">Password tidak cocok</string>
     <string name="wrong_password">Password salah</string>
@@ -134,4 +133,13 @@
     <string name="txt_sign_in">Masuk</string>
     <string name="txt_sign_up">Daftar</string>
     <string name="txt_lupa_password">Lupa password ?</string>
+
+    <string name="txt_change_email_description">Masukkan alamat email aktif</string>
+
+    <string name="txt_change_password_title">Ganti kata sandi</string>
+    <string name="txt_change_password_description">Masukkan kata sandi yang kuat</string>
+    <string name="txt_new_password">Password baru</string>
+    <string name="txt_change_password_note">*Mohon tidak menggunakan password yang lama</string>
+    <string name="txt_change_password_first_rule">8 karakter atau lebih</string>
+    <string name="txt_change_password_second_rule">Kombinasi huruf besar, kecil, angka dan simbol</string>
 </resources>
