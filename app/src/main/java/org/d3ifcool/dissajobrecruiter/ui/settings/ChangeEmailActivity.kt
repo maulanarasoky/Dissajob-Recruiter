@@ -1,11 +1,11 @@
 package org.d3ifcool.dissajobrecruiter.ui.settings
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
@@ -48,11 +48,13 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
 
     private fun formValidation() {
         if (TextUtils.isEmpty(activityChangeEmailBinding.etNewEmail.text.toString().trim())) {
-            activityChangeEmailBinding.etNewEmail.error = getString(R.string.txt_error_form_text, "Email")
+            activityChangeEmailBinding.etNewEmail.error =
+                getString(R.string.txt_error_form_text, "Email")
             return
         }
         if (TextUtils.isEmpty(activityChangeEmailBinding.etPassword.text.toString().trim())) {
-            activityChangeEmailBinding.etPassword.error = getString(R.string.txt_error_form_text, "Password")
+            activityChangeEmailBinding.etPassword.error =
+                getString(R.string.txt_error_form_text, "Password")
             return
         }
 
@@ -62,7 +64,8 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
     private fun storeToDatabase() {
         val newEmail = activityChangeEmailBinding.etNewEmail.text.toString().trim()
         if (!isValidMail(newEmail)) {
-            Toast.makeText(this, resources.getString(R.string.email_invalid), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, resources.getString(R.string.email_invalid), Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
@@ -72,7 +75,12 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
         dialog.show()
 
         val password = activityChangeEmailBinding.etPassword.text.toString().trim()
-        viewModel.updateRecruiterEmail(AuthHelper.currentUser?.uid.toString(), newEmail, password, this)
+        viewModel.updateRecruiterEmail(
+            AuthHelper.currentUser?.uid.toString(),
+            newEmail,
+            password,
+            this
+        )
     }
 
     private fun isValidMail(email: String): Boolean {
@@ -92,7 +100,7 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.btnUpdate -> {
                 formValidation()
             }

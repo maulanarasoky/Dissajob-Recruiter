@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_16dp"
             android:fontFamily="@font/roboto"
-            android:text="@string/email"
+            android:text="@string/txt_email"
             android:textColor="@color/text_color"
             android:textSize="14sp" />
     </LinearLayout>

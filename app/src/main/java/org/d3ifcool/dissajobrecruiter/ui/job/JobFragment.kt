@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.R
@@ -40,12 +39,12 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
             val viewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
             jobAdapter = JobAdapter(this)
             viewModel.getJobs().observe(viewLifecycleOwner) { jobs ->
-                if (jobs != null) {
+                if (jobs.data != null) {
                     when (jobs.status) {
                         Status.LOADING -> showLoading(true)
                         Status.SUCCESS -> {
                             showLoading(false)
-                            if (jobs.data?.isNotEmpty() == true) {
+                            if (jobs.data.isNotEmpty()) {
                                 jobAdapter.submitList(jobs.data)
                                 jobAdapter.notifyDataSetChanged()
                             } else {
@@ -85,7 +84,7 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.fabAddJob -> {
                 startActivity(Intent(activity, CreateEditJobActivity::class.java))
             }

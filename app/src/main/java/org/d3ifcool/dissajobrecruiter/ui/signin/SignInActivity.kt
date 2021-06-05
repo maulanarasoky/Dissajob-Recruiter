@@ -29,9 +29,9 @@ class SignInActivity : AppCompatActivity(), SignInCallback, View.OnClickListener
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignInViewModel::class.java]
 
-        activitySignInBinding.header.btnSignUp.setOnClickListener(this)
         activitySignInBinding.btnSignIn.setOnClickListener(this)
         activitySignInBinding.tvResetPassword.setOnClickListener(this)
+        activitySignInBinding.footer.btnSignUp.setOnClickListener(this)
     }
 
     private fun checkLogin() {
@@ -43,13 +43,14 @@ class SignInActivity : AppCompatActivity(), SignInCallback, View.OnClickListener
 
     private fun formValidation() {
         if (TextUtils.isEmpty(activitySignInBinding.etEmail.text.toString().trim())) {
-            activitySignInBinding.etEmail.error = resources.getString(R.string.error_alert, "Email")
+            activitySignInBinding.etEmail.error =
+                resources.getString(R.string.txt_edit_text_error_alert, "Email")
             return
         }
 
         if (TextUtils.isEmpty(activitySignInBinding.etPassword.text.toString().trim())) {
             activitySignInBinding.etPassword.error =
-                resources.getString(R.string.error_alert, "Password")
+                resources.getString(R.string.txt_edit_text_error_alert, "Password")
             return
         }
 
@@ -76,14 +77,14 @@ class SignInActivity : AppCompatActivity(), SignInCallback, View.OnClickListener
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnSignUp -> {
-                startActivity(Intent(this, SignUpActivity::class.java))
-            }
             R.id.btnSignIn -> {
                 formValidation()
             }
             R.id.tvResetPassword -> {
                 startActivity(Intent(this, ResetPasswordActivity::class.java))
+            }
+            R.id.btnSignUp -> {
+                startActivity(Intent(this, SignUpActivity::class.java))
             }
         }
     }

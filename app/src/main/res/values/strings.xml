@@ -14,12 +14,12 @@
     <string name="sub_heading_forgot_password">Untuk mengatur ulang kata sandi, silahkan masukkan email Anda :</string>
     <string name="first_name">Nama Depan</string>
     <string name="last_name">Nama Belakang (Opsional)</string>
-    <string name="email">Email</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="password">Password</string>
-    <string name="error_alert">%1$s tidak boleh kosong</string>
-    <string name="password_doesnt_match">%1$s tidak cocok</string>
-    <string name="tidak_ada_pekerjaan">Tidak ada pekerjaan</string>
+    <string name="txt_email">Email</string>
+    <string name="txt_confirm_password">Confirm password</string>
+    <string name="txt_password">Password</string>
+    <string name="txt_edit_text_error_alert">%1$s tidak boleh kosong</string>
+    <string name="txt_password_doesnt_match">%1$s tidak cocok</string>
+    <string name="txt_no_job">Tidak ada pekerjaan</string>
     <string name="title">Judul</string>
     <string name="description">Deskripsi</string>
     <string name="qualification">Kualifikasi</string>
@@ -129,4 +129,9 @@
     <string name="txt_no">Tidak</string>
     <string name="txt_additional_information">Keterangan tambahan</string>
     <string name="job_details_additional_information">Keterangan tambahan : %1$s</string>
+
+    <string name="txt_sign_in_header">Selamat Datang Di Dissajob</string>
+    <string name="txt_sign_in">Masuk</string>
+    <string name="txt_sign_up">Daftar</string>
+    <string name="txt_lupa_password">Lupa password ?</string>
 </resources>

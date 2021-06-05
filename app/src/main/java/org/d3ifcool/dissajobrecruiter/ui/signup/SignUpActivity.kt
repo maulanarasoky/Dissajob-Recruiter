@@ -58,12 +58,13 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
     private fun formValidation() {
         if (TextUtils.isEmpty(activitySignUpBinding.etFirstName.text.toString().trim())) {
             activitySignUpBinding.etFirstName.error =
-                resources.getString(R.string.error_alert, "Nama depan")
+                resources.getString(R.string.txt_edit_text_error_alert, "Nama depan")
             return
         }
 
         if (TextUtils.isEmpty(activitySignUpBinding.etEmail.text.toString().trim())) {
-            activitySignUpBinding.etEmail.error = resources.getString(R.string.error_alert, "Email")
+            activitySignUpBinding.etEmail.error =
+                resources.getString(R.string.txt_edit_text_error_alert, "Email")
             return
         }
 
@@ -74,21 +75,27 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
 
         if (TextUtils.isEmpty(activitySignUpBinding.etPassword.text.toString().trim())) {
             activitySignUpBinding.etPassword.error =
-                resources.getString(R.string.error_alert, "Password")
+                resources.getString(R.string.txt_edit_text_error_alert, "Password")
             return
         }
 
         if (TextUtils.isEmpty(activitySignUpBinding.etConfirmPassword.text.toString().trim())) {
             activitySignUpBinding.etConfirmPassword.error =
-                resources.getString(R.string.error_alert, "Confirm password")
+                resources.getString(R.string.txt_edit_text_error_alert, "Confirm password")
             return
         }
 
         if (activitySignUpBinding.etPassword.text.toString() != activitySignUpBinding.etConfirmPassword.text.toString()) {
             activitySignUpBinding.etPassword.error =
-                resources.getString(R.string.password_doesnt_match, "Password dan confirm password")
+                resources.getString(
+                    R.string.txt_password_doesnt_match,
+                    "Password dan confirm password"
+                )
             activitySignUpBinding.etConfirmPassword.error =
-                resources.getString(R.string.password_doesnt_match, "Password dan confirm password")
+                resources.getString(
+                    R.string.txt_password_doesnt_match,
+                    "Password dan confirm password"
+                )
             return
         }
 
