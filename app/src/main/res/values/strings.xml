@@ -30,7 +30,7 @@
     <string name="create_job_title">Tambahkan pekerjaan</string>
     <string name="edit_job_title">Ubah pekerjaan</string>
     <string name="role">Role</string>
-    <string name="bergabung_sekarang_di_dissajob">Bergabung sekarang di Dissajob</string>
+    <string name="txt_sign_up_headline">Bergabung sekarang di Dissajob</string>
     <string name="masuk">Masuk</string>
     <string name="email_invalid">Email tidak valid</string>
     <string name="error_login">Email/Password anda salah</string>
