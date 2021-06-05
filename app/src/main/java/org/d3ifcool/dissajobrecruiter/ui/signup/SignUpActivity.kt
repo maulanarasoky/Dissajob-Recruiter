@@ -28,8 +28,8 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignUpViewModel::class.java]
 
-        activitySignUpBinding.header.imgBackBtn.setOnClickListener(this)
-        activitySignUpBinding.header.btnSignIn.setOnClickListener(this)
+//        activitySignUpBinding.header.imgBackBtn.setOnClickListener(this)
+//        activitySignUpBinding.header.btnSignIn.setOnClickListener(this)
         activitySignUpBinding.btnSignUp.setOnClickListener(this)
     }
 
