@@ -4,7 +4,6 @@ import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.firebase.database.Exclude
 
 @Entity(tableName = "applicants")
 data class ApplicantEntity(
@@ -18,6 +17,12 @@ data class ApplicantEntity(
 
     @ColumnInfo(name = "last_name")
     var lastName: String? = "-",
+
+    @ColumnInfo(name = "full_name")
+    var fullName: String? = "-",
+
+    @ColumnInfo(name = "email")
+    var email: String? = "-",
 
     @ColumnInfo(name = "about_me")
     var aboutMe: String? = "-",

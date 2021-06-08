@@ -22,6 +22,7 @@ object ApplicationHelper {
                                 data.child("applicantId").value.toString(),
                                 data.child("jobId").value.toString(),
                                 data.child("applyDate").value.toString(),
+                                data.child("updatedDate").value.toString(),
                                 data.child("status").value.toString(),
                                 data.child("marked").value.toString().toBoolean()
                             )
@@ -49,6 +50,7 @@ object ApplicationHelper {
                                 data.child("applicantId").value.toString(),
                                 data.child("jobId").value.toString(),
                                 data.child("applyDate").value.toString(),
+                                data.child("updatedDate").value.toString(),
                                 data.child("status").value.toString(),
                                 data.child("marked").value.toString().toBoolean()
                             )
@@ -76,6 +78,7 @@ object ApplicationHelper {
                                 data.child("applicantId").value.toString(),
                                 data.child("jobId").value.toString(),
                                 data.child("applyDate").value.toString(),
+                                data.child("updatedDate").value.toString(),
                                 data.child("status").value.toString(),
                                 data.child("marked").value.toString().toBoolean()
                             )
@@ -103,6 +106,7 @@ object ApplicationHelper {
                                 data.child("applicantId").value.toString(),
                                 data.child("jobId").value.toString(),
                                 data.child("applyDate").value.toString(),
+                                data.child("updatedDate").value.toString(),
                                 data.child("status").value.toString(),
                                 data.child("marked").value.toString().toBoolean()
                             )

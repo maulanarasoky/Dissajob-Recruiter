@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.pager.RejectedApplicantsFragment">
+    tools:context=".ui.application.AcceptedApplicationFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvApplicant"
+        android:id="@+id/rvApplication"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
-import org.d3ifcool.dissajobrecruiter.databinding.ApplicantItemsBinding
+import org.d3ifcool.dissajobrecruiter.databinding.ApplicationItemBinding
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,9 +36,9 @@ class ApplicationAdapter(private val callback: LoadApplicantDataCallback) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApplicationViewHolder {
-        val itemsApplicantBinding =
-            ApplicantItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ApplicationViewHolder(itemsApplicantBinding)
+        val itemsApplicationBinding =
+            ApplicationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ApplicationViewHolder(itemsApplicationBinding)
     }
 
     override fun onBindViewHolder(holder: ApplicationViewHolder, position: Int) {
@@ -48,11 +48,11 @@ class ApplicationAdapter(private val callback: LoadApplicantDataCallback) :
         }
     }
 
-    inner class ApplicationViewHolder(private val binding: ApplicantItemsBinding) :
+    inner class ApplicationViewHolder(private val binding: ApplicationItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindItem(items: ApplicationEntity) {
             with(binding) {
-                val applicantDetails = callback.onLoadApplicantDetailsCallback(items.applicantId.toString(), object :
+                callback.onLoadApplicantDetailsCallback(items.applicantId.toString(), object :
                     LoadApplicantDataCallback {
                     override fun onLoadApplicantDetailsCallback(
                         applicantId: String,
@@ -62,7 +62,7 @@ class ApplicationAdapter(private val callback: LoadApplicantDataCallback) :
                     }
 
                     override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
-                        tvApplicantName.text = applicantDetails.firstName
+                        tvApplicantName.text = applicantDetails.fullName
                         tvAboutMe.text = applicantDetails.aboutMe
                         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                         sdf.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
@@ -70,7 +70,11 @@ class ApplicationAdapter(private val callback: LoadApplicantDataCallback) :
                             val time: Long = sdf.parse(items.applyDate).time
                             val now = System.currentTimeMillis()
                             val ago =
-                                DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS)
+                                DateUtils.getRelativeTimeSpanString(
+                                    time,
+                                    now,
+                                    DateUtils.MINUTE_IN_MILLIS
+                                )
                             tvPostedDate.text = ago
                         } catch (e: ParseException) {
                             e.printStackTrace()

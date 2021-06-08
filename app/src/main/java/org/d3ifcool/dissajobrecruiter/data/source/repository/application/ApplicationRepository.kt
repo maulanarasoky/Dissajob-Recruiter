@@ -53,7 +53,10 @@ class ApplicationRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localApplicationSource.getApplications(), config).build()
+                return LivePagedListBuilder(
+                    localApplicationSource.getApplications(),
+                    config
+                ).build()
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
@@ -74,6 +77,7 @@ class ApplicationRepository private constructor(
                         response.applicantId,
                         response.jobId,
                         response.applyDate,
+                        response.updatedDate,
                         response.status,
                         response.isMarked
                     )
@@ -106,7 +110,8 @@ class ApplicationRepository private constructor(
                 networkCallback.hasConnectivity() && loadFromDB() != createCall()
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
-                remoteApplicationSource.getAcceptedApplications(object : LoadAllApplicationsCallback {
+                remoteApplicationSource.getAcceptedApplications(object :
+                    LoadAllApplicationsCallback {
                     override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
                         return applicationsResponse
                     }
@@ -120,6 +125,7 @@ class ApplicationRepository private constructor(
                         response.applicantId,
                         response.jobId,
                         response.applyDate,
+                        response.updatedDate,
                         response.status,
                         response.isMarked
                     )
@@ -152,7 +158,8 @@ class ApplicationRepository private constructor(
                 networkCallback.hasConnectivity() && localApplicationSource.getRejectedApplications() != createCall()
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
-                remoteApplicationSource.getRejectedApplications(object : LoadAllApplicationsCallback {
+                remoteApplicationSource.getRejectedApplications(object :
+                    LoadAllApplicationsCallback {
                     override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
                         return applicationsResponse
                     }
@@ -166,6 +173,7 @@ class ApplicationRepository private constructor(
                         response.applicantId,
                         response.jobId,
                         response.applyDate,
+                        response.updatedDate,
                         response.status,
                         response.isMarked
                     )
@@ -212,6 +220,7 @@ class ApplicationRepository private constructor(
                         response.applicantId,
                         response.jobId,
                         response.applyDate,
+                        response.updatedDate,
                         response.status,
                         response.isMarked
                     )
@@ -241,14 +250,18 @@ class ApplicationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity() && localApplicationSource.getApplicationsByJob(jobId) != createCall()
+                networkCallback.hasConnectivity() && localApplicationSource.getApplicationsByJob(
+                    jobId
+                ) != createCall()
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
-                remoteApplicationSource.getApplicationsByJob(jobId, object : LoadAllApplicationsCallback {
-                    override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
-                        return applicationsResponse
-                    }
-                })
+                remoteApplicationSource.getApplicationsByJob(
+                    jobId,
+                    object : LoadAllApplicationsCallback {
+                        override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
+                            return applicationsResponse
+                        }
+                    })
 
             public override fun saveCallResult(data: List<ApplicationResponseEntity>) {
                 val applicationList = ArrayList<ApplicationEntity>()
@@ -258,6 +271,7 @@ class ApplicationRepository private constructor(
                         response.applicantId,
                         response.jobId,
                         response.applyDate,
+                        response.updatedDate,
                         response.status,
                         response.isMarked
                     )

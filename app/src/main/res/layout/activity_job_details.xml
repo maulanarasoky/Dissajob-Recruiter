@@ -52,9 +52,9 @@
 
         <include
             android:id="@+id/jobDetailsApplicantsSection"
-            layout="@layout/job_details_applicants_section"
+            layout="@layout/job_details_application_section"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

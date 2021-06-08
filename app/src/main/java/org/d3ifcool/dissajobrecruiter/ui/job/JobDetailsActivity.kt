@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
@@ -96,7 +98,7 @@ class JobDetailsActivity : AppCompatActivity(),
         )
 
         val postedDate = DateUtils.getPostedDate(jobDetails.postedDate)
-        getApplicantsByJob(jobDetails.id)
+        getApplicationsByJob(jobDetails.id)
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobPostedDateAndApplicants.text =
             resources.getString(
                 R.string.job_details_date_format,
@@ -131,21 +133,21 @@ class JobDetailsActivity : AppCompatActivity(),
         }
     }
 
-    private fun getApplicantsByJob(jobId: String) {
+    private fun getApplicationsByJob(jobId: String) {
         val factory = ViewModelFactory.getInstance(this)
 
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
 
         applicationViewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
         applicationAdapter = ApplicationAdapter(this)
-        applicationViewModel.getApplicationsByJob(jobId).observe(this) { applicants ->
-            if (applicants.data != null) {
-                when (applicants.status) {
+        applicationViewModel.getApplicationsByJob(jobId).observe(this) { applications ->
+            if (applications.data != null) {
+                when (applications.status) {
                     Status.LOADING -> {
                     }
                     Status.SUCCESS -> {
-                        if (applicants.data.isNotEmpty()) {
-                            applicationAdapter.submitList(applicants.data)
+                        if (applications.data.isNotEmpty()) {
+                            applicationAdapter.submitList(applications.data)
                             applicationAdapter.notifyDataSetChanged()
                         } else {
                             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility =
@@ -157,6 +159,18 @@ class JobDetailsActivity : AppCompatActivity(),
                     }
                 }
             }
+        }
+
+        with(activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication) {
+            layoutManager = LinearLayoutManager(this@JobDetailsActivity)
+            setHasFixedSize(true)
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@JobDetailsActivity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+            adapter = applicationAdapter
         }
     }
 

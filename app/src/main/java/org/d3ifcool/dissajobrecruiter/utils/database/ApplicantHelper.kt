@@ -16,12 +16,19 @@ object ApplicantHelper {
     ) {
         database.child(applicantId)
             .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        val applicant =
-                            snapshot.getValue<ApplicantResponseEntity>() ?: return
-                        applicant.id = snapshot.key ?: return
-                        callback.onApplicantDetailsReceived(applicant)
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        val applicantDetails = ApplicantResponseEntity(
+                            dataSnapshot.key.toString(),
+                            dataSnapshot.child("firstName").value.toString(),
+                            dataSnapshot.child("lastName").value.toString(),
+                            dataSnapshot.child("fullName").value.toString(),
+                            dataSnapshot.child("email").value.toString(),
+                            dataSnapshot.child("aboutMe").value.toString(),
+                            dataSnapshot.child("phoneNumber").value.toString(),
+                            dataSnapshot.child("imagePath").value.toString()
+                        )
+                        callback.onApplicantDetailsReceived(applicantDetails)
                     }
                 }
 

@@ -2,15 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="@dimen/margin_16dp">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/tvApplicantsTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
         android:fontFamily="@font/roboto"
         android:text="@string/applicants"
         android:textColor="@color/text_color"
@@ -21,9 +22,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvApplicant"
+        android:id="@+id/rvApplication"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="250dp"
         android:layout_marginTop="@dimen/margin_8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
