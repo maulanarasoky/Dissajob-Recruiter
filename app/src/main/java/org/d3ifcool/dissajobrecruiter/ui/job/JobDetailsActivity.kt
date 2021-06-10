@@ -17,14 +17,16 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEnt
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityJobDetailsBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobDetailsActivity : AppCompatActivity(),
-    ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback {
+    ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -139,7 +141,7 @@ class JobDetailsActivity : AppCompatActivity(),
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
 
         applicationViewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
-        applicationAdapter = ApplicationAdapter(this)
+        applicationAdapter = ApplicationAdapter(this, this)
         applicationViewModel.getApplicationsByJob(jobId).observe(this) { applications ->
             if (applications.data != null) {
                 when (applications.status) {
@@ -251,5 +253,13 @@ class JobDetailsActivity : AppCompatActivity(),
             resources.getString(messageId),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onItemClick(applicationId: String, jobId: String, applicantId: String) {
+        val intent = Intent(this, ApplicationDetailsActivity::class.java)
+        intent.putExtra(ApplicationDetailsActivity.APPLICATION_ID, applicationId)
+        intent.putExtra(ApplicationDetailsActivity.JOB_ID, jobId)
+        intent.putExtra(ApplicationDetailsActivity.APPLICANT_ID, applicantId)
+        startActivity(intent)
     }
 }

@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.ui.application
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,8 @@ import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback {
+class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
+    OnApplicationClickCallback {
 
     private lateinit var fragmentRejectedApplicationBinding: FragmentRejectedApplicationBinding
 
@@ -28,7 +30,7 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         fragmentRejectedApplicationBinding =
             FragmentRejectedApplicationBinding.inflate(layoutInflater, container, false)
@@ -47,7 +49,7 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
 
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
-            applicationAdapter = ApplicationAdapter(this)
+            applicationAdapter = ApplicationAdapter(this, this)
             applicationViewModel.getRejectedApplications()
                 .observe(viewLifecycleOwner) { applications ->
                     if (applications != null) {
@@ -106,5 +108,13 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
     }
 
     override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
+    }
+
+    override fun onItemClick(applicationId: String, jobId: String, applicantId: String) {
+        val intent = Intent(activity, ApplicationDetailsActivity::class.java)
+        intent.putExtra(ApplicationDetailsActivity.APPLICATION_ID, applicationId)
+        intent.putExtra(ApplicationDetailsActivity.JOB_ID, jobId)
+        intent.putExtra(ApplicationDetailsActivity.APPLICANT_ID, applicantId)
+        activity?.startActivity(intent)
     }
 }

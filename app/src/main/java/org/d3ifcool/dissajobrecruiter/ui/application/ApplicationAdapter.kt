@@ -13,7 +13,10 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ApplicationAdapter(private val callback: LoadApplicantDataCallback) :
+class ApplicationAdapter(
+    private val onItemClickCallback: OnApplicationClickCallback,
+    private val loadApplicantDataCallback: LoadApplicantDataCallback
+) :
     PagedListAdapter<ApplicationEntity, ApplicationAdapter.ApplicationViewHolder>(DIFF_CALLBACK) {
 
     companion object {
@@ -52,37 +55,47 @@ class ApplicationAdapter(private val callback: LoadApplicantDataCallback) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindItem(items: ApplicationEntity) {
             with(binding) {
-                callback.onLoadApplicantDetailsCallback(items.applicantId.toString(), object :
-                    LoadApplicantDataCallback {
-                    override fun onLoadApplicantDetailsCallback(
-                        applicantId: String,
-                        callback: LoadApplicantDataCallback
-                    ) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
-                        tvApplicantName.text = applicantDetails.fullName
-                        tvAboutMe.text = applicantDetails.aboutMe
-                        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                        sdf.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
-                        try {
-                            val time: Long = sdf.parse(items.applyDate).time
-                            val now = System.currentTimeMillis()
-                            val ago =
-                                DateUtils.getRelativeTimeSpanString(
-                                    time,
-                                    now,
-                                    DateUtils.MINUTE_IN_MILLIS
-                                )
-                            tvPostedDate.text = ago
-                        } catch (e: ParseException) {
-                            e.printStackTrace()
+                loadApplicantDataCallback.onLoadApplicantDetailsCallback(
+                    items.applicantId,
+                    object :
+                        LoadApplicantDataCallback {
+                        override fun onLoadApplicantDetailsCallback(
+                            applicantId: String,
+                            callback: LoadApplicantDataCallback
+                        ) {
+                            TODO("Not yet implemented")
                         }
 
-                        tvStatus.text = items.status
-                    }
-                })
+                        override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
+                            tvApplicantName.text = applicantDetails.fullName
+                            tvAboutMe.text = applicantDetails.aboutMe
+                            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                            sdf.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
+                            try {
+                                val time: Long = sdf.parse(items.applyDate).time
+                                val now = System.currentTimeMillis()
+                                val ago =
+                                    DateUtils.getRelativeTimeSpanString(
+                                        time,
+                                        now,
+                                        DateUtils.MINUTE_IN_MILLIS
+                                    )
+                                tvPostedDate.text = ago
+                            } catch (e: ParseException) {
+                                e.printStackTrace()
+                            }
+
+                            tvStatus.text = items.status
+
+                            itemView.setOnClickListener {
+                                onItemClickCallback.onItemClick(
+                                    items.id,
+                                    items.jobId,
+                                    items.applicantId
+                                )
+                            }
+                        }
+                    })
             }
         }
     }

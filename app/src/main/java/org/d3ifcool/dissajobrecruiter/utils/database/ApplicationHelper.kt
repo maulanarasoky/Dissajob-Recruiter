@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.utils.database
 import com.google.firebase.database.*
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.application.LoadAllApplicationsCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.LoadApplicationDataCallback
 
 object ApplicationHelper {
 
@@ -36,6 +37,29 @@ object ApplicationHelper {
                 }
 
             })
+    }
+
+    fun getApplicationById(applicationId: String, callback: LoadApplicationDataCallback) {
+        database.child(applicationId).addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(dataSnapshot: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val application = ApplicationResponseEntity(
+                        dataSnapshot.key.toString(),
+                        dataSnapshot.child("applicantId").value.toString(),
+                        dataSnapshot.child("jobId").value.toString(),
+                        dataSnapshot.child("applyDate").value.toString(),
+                        dataSnapshot.child("updatedDate").value.toString(),
+                        dataSnapshot.child("status").value.toString(),
+                        dataSnapshot.child("marked").value.toString().toBoolean()
+                    )
+                    callback.onApplicationDataReceived(application)
+                }
+            }
+
+        })
     }
 
     fun getAllApplicationsByStatus(status: String, callback: LoadAllApplicationsCallback) {

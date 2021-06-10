@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.application.LoadAllApplicationsCallback
-import org.d3ifcool.dissajobrecruiter.utils.database.ApplicationHelper
+import org.d3ifcool.dissajobrecruiter.ui.application.LoadApplicationDataCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
+import org.d3ifcool.dissajobrecruiter.utils.database.ApplicationHelper
 
 class RemoteApplicationSource private constructor(
     private val applicationHelper: ApplicationHelper
@@ -32,6 +33,25 @@ class RemoteApplicationSource private constructor(
                     EspressoIdlingResource.decrement()
                 }
                 return applicationsResponse
+            }
+        })
+        return resultApplication
+    }
+
+    fun getApplicationById(
+        applicationId: String,
+        callback: LoadApplicationDataCallback
+    ): LiveData<ApiResponse<ApplicationResponseEntity>> {
+        EspressoIdlingResource.increment()
+        val resultApplication = MutableLiveData<ApiResponse<ApplicationResponseEntity>>()
+        applicationHelper.getApplicationById(applicationId, object : LoadApplicationDataCallback {
+            override fun onApplicationDataReceived(applicationResponse: ApplicationResponseEntity): ApplicationResponseEntity {
+                resultApplication.value =
+                    ApiResponse.success(callback.onApplicationDataReceived(applicationResponse))
+                if (EspressoIdlingResource.espressoTestIdlingResource.isIdleNow) {
+                    EspressoIdlingResource.decrement()
+                }
+                return applicationResponse
             }
         })
         return resultApplication

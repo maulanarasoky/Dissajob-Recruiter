@@ -126,7 +126,7 @@
     <string name="txt_open_for_disability">Terbuka untuk penyandang disabilitas ?</string>
     <string name="txt_yes">Iya</string>
     <string name="txt_no">Tidak</string>
-    <string name="txt_additional_information">Keterangan tambahan</string>
+    <string name="txt_additional_description">Keterangan tambahan</string>
     <string name="job_details_additional_information">Keterangan tambahan : %1$s</string>
 
     <string name="txt_sign_in_header">Selamat Datang Di Dissajob</string>
@@ -142,4 +142,13 @@
     <string name="txt_change_password_note">*Mohon tidak menggunakan password yang lama</string>
     <string name="txt_change_password_first_rule">8 karakter atau lebih</string>
     <string name="txt_change_password_second_rule">Kombinasi huruf besar, kecil, angka dan simbol</string>
+    <string name="txt_show_profile">Lihat profil</string>
+    <string name="txt_additional_information">Informasi Tambahan</string>
+    <string name="txt_first_question">Deskripsikan diri Anda secara singkat</string>
+    <string name="txt_second_question">Alasan Anda melamar di perusahaan kami</string>
+    <string name="txt_third_question">Mengapa kami harus menerima Anda</string>
+    <string name="txt_application_details">Detail Lamaran</string>
+    <string name="txt_apply_at">Dilamar pada</string>
+    <string name="txt_application_status">Status Lamaran</string>
+    <string name="txt_lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
 </resources>
