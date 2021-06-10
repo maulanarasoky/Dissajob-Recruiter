@@ -6,7 +6,8 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadAllApplicationsCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadApplicationDataCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationMarkCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationStatusCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
 import org.d3ifcool.dissajobrecruiter.utils.database.ApplicationHelper
 
@@ -129,23 +130,45 @@ class RemoteApplicationSource private constructor(
         return resultApplication
     }
 
+    fun updateApplicationMark(
+        applicationId: String,
+        isMarked: Boolean,
+        callback: UpdateApplicationMarkCallback
+    ) {
+        EspressoIdlingResource.increment()
+        applicationHelper.updateApplicationMark(
+            applicationId,
+            isMarked,
+            object : UpdateApplicationMarkCallback {
+                override fun onSuccessUpdateMark() {
+                    callback.onSuccessUpdateMark()
+                    EspressoIdlingResource.decrement()
+                }
+
+                override fun onFailureUpdateMark(messageId: Int) {
+                    callback.onFailureUpdateMark(messageId)
+                    EspressoIdlingResource.decrement()
+                }
+            })
+    }
+
     fun updateApplicationStatus(
         applicationId: String,
         status: String,
-        callback: UpdateApplicationCallback
+        callback: UpdateApplicationStatusCallback
     ) {
         EspressoIdlingResource.increment()
         applicationHelper.updateApplicationStatus(
             applicationId,
             status,
-            object : UpdateApplicationCallback {
-                override fun onSuccessUpdate() {
-                    callback.onSuccessUpdate()
+            object : UpdateApplicationStatusCallback {
+                override fun onSuccessUpdateStatus() {
+                    callback.onSuccessUpdateStatus()
                     EspressoIdlingResource.decrement()
                 }
 
-                override fun onFailureUpdate(messageId: Int) {
-                    callback.onFailureUpdate(messageId)
+                override fun onFailureUpdateStatus(messageId: Int) {
+                    callback.onFailureUpdateStatus(messageId)
                     EspressoIdlingResource.decrement()
                 }
             })

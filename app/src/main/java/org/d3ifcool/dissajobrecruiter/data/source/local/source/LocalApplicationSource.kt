@@ -34,6 +34,9 @@ class LocalApplicationSource private constructor(
     fun getApplicationsByJob(jobId: String): DataSource.Factory<Int, ApplicationEntity> =
         mApplicationDao.getApplicationsByJob(jobId)
 
+    fun updateApplicationMark(applicationId: String, isMarked: Boolean) =
+        mApplicationDao.updateApplicationMark(applicationId, isMarked)
+
     fun updateApplicationStatus(applicationId: String, status: String) =
         mApplicationDao.updateApplicationStatus(applicationId, status)
 

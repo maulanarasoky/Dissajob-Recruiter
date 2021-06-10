@@ -5,7 +5,8 @@ import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadAllApplicationsCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadApplicationDataCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationMarkCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationStatusCallback
 
 object ApplicationHelper {
 
@@ -148,11 +149,27 @@ object ApplicationHelper {
             })
     }
 
-    fun updateApplicationStatus(applicationId: String, status: String, callback: UpdateApplicationCallback) {
-        database.child(applicationId).child("status").setValue(status).addOnSuccessListener {
-            callback.onSuccessUpdate()
+    fun updateApplicationMark(
+        applicationId: String,
+        isMarked: Boolean,
+        callback: UpdateApplicationMarkCallback
+    ) {
+        database.child(applicationId).child("marked").setValue(isMarked).addOnSuccessListener {
+            callback.onSuccessUpdateMark()
         }.addOnFailureListener {
-            callback.onFailureUpdate(R.string.txt_error_occurred)
+            callback.onFailureUpdateMark(R.string.txt_error_occurred)
+        }
+    }
+
+    fun updateApplicationStatus(
+        applicationId: String,
+        status: String,
+        callback: UpdateApplicationStatusCallback
+    ) {
+        database.child(applicationId).child("status").setValue(status).addOnSuccessListener {
+            callback.onSuccessUpdateStatus()
+        }.addOnFailureListener {
+            callback.onFailureUpdateStatus(R.string.txt_error_occurred)
         }
     }
 }

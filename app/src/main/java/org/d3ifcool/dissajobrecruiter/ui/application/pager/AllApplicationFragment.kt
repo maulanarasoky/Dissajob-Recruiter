@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentAllApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel

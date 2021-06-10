@@ -1,10 +1,11 @@
 package org.d3ifcool.dissajobrecruiter.ui.application
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,11 +13,12 @@ import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplicantDataCallback,
-    View.OnClickListener {
+    View.OnClickListener, OnApplicationClickCallback {
 
     private lateinit var activityApplicationBinding: ActivityApplicationBinding
 
@@ -37,7 +39,7 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         showLoading(true)
         val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
-        applicationAdapter = ApplicationAdapter(this)
+        applicationAdapter = ApplicationAdapter(this, this)
         viewModel.getApplications().observe(this) { applicants ->
             if (applicants != null) {
                 when (applicants.status) {
@@ -109,5 +111,13 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         when (v?.id) {
             R.id.imgBackBtn -> finish()
         }
+    }
+
+    override fun onItemClick(applicationId: String, jobId: String, applicantId: String) {
+        val intent = Intent(this, ApplicationDetailsActivity::class.java)
+        intent.putExtra(ApplicationDetailsActivity.APPLICATION_ID, applicationId)
+        intent.putExtra(ApplicationDetailsActivity.JOB_ID, jobId)
+        intent.putExtra(ApplicationDetailsActivity.APPLICANT_ID, applicantId)
+        startActivity(intent)
     }
 }

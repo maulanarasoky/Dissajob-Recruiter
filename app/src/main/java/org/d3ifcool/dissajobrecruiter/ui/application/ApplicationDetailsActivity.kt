@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.ui.application
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -19,7 +20,8 @@ import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationDetailsBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationMarkCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationStatusCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.question.InterviewViewModel
@@ -27,7 +29,7 @@ import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
-    UpdateApplicationCallback {
+    UpdateApplicationStatusCallback, UpdateApplicationMarkCallback {
 
     companion object {
         const val APPLICATION_ID = "application_id"
@@ -51,6 +53,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
     private lateinit var applicantId: String
     private lateinit var jobId: String
 
+    private var isApplicationMarked = false
     private var isApplicationAccepted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -217,6 +220,10 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         )
     }
 
+    private fun updateApplicationMark() {
+        applicationViewModel.updateApplicationMark(applicationId, !isApplicationMarked, this)
+    }
+
     private fun updateApplicationStatus(status: String) {
         activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
         activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
@@ -249,7 +256,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onSuccessUpdate() {
+    override fun onSuccessUpdateStatus() {
         dialog.dismissWithAnimation()
         if (isApplicationAccepted) {
             showToast(resources.getString(R.string.txt_accept_application))
@@ -260,17 +267,26 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
     }
 
-    override fun onFailureUpdate(messageId: Int) {
+    override fun onFailureUpdateStatus(messageId: Int) {
         dialog.dismissWithAnimation()
         showToast(resources.getString(messageId))
         activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = true
         activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.application_details_menu, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
+                true
+            }
+            R.id.markApplication -> {
+                updateApplicationMark()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -293,5 +309,14 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
             R.id.btnRejectApplication -> updateApplicationStatus("Rejected")
             R.id.btnAcceptApplication -> updateApplicationStatus("Accepted")
         }
+    }
+
+    override fun onSuccessUpdateMark() {
+        isApplicationMarked = !isApplicationMarked
+        showToast(resources.getString(R.string.txt_mark_application))
+    }
+
+    override fun onFailureUpdateMark(messageId: Int) {
+        showToast(resources.getString(messageId))
     }
 }

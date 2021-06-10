@@ -25,6 +25,9 @@ interface ApplicationDao {
     @Query("SELECT * FROM applications WHERE job_id = :jobId")
     fun getApplicationsByJob(jobId: String): DataSource.Factory<Int, ApplicationEntity>
 
+    @Query("UPDATE applications SET is_marked = :isMarked WHERE id = :applicationId")
+    fun updateApplicationMark(applicationId: String, isMarked: Boolean)
+
     @Query("UPDATE applications SET status = :status WHERE id = :applicationId")
     fun updateApplicationStatus(applicationId: String, status: String)
 

@@ -157,4 +157,5 @@
     <string name="txt_update_application_alert">%1$s lamaran ?</string>
     <string name="txt_accept_application">Lamaran diterima</string>
     <string name="txt_reject_application">Lamaran ditolak</string>
+    <string name="txt_mark_application">Lamaran ditandai</string>
 </resources>
