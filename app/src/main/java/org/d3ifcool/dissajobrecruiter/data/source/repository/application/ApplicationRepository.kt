@@ -9,8 +9,9 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalApplicationS
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteApplicationSource
-import org.d3ifcool.dissajobrecruiter.ui.application.LoadAllApplicationsCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.LoadApplicationDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadAllApplicationsCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadApplicationDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
@@ -319,5 +320,14 @@ class ApplicationRepository private constructor(
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
+    }
+
+    override fun updateApplicationStatus(
+        applicationId: String,
+        status: String,
+        callback: UpdateApplicationCallback
+    ) = appExecutors.diskIO().execute {
+        localApplicationSource.updateApplicationStatus(applicationId, status)
+        remoteApplicationSource.updateApplicationStatus(applicationId, status, callback)
     }
 }

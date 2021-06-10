@@ -25,6 +25,9 @@ interface ApplicationDao {
     @Query("SELECT * FROM applications WHERE job_id = :jobId")
     fun getApplicationsByJob(jobId: String): DataSource.Factory<Int, ApplicationEntity>
 
+    @Query("UPDATE applications SET status = :status WHERE id = :applicationId")
+    fun updateApplicationStatus(applicationId: String, status: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertApplication(applicants: List<ApplicationEntity>)
 }

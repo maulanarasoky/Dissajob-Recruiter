@@ -19,7 +19,7 @@ import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
-import org.d3ifcool.dissajobrecruiter.ui.application.OnApplicationClickCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils

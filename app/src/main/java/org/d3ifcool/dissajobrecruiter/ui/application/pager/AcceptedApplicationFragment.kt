@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.ui.application
+package org.d3ifcool.dissajobrecruiter.ui.application.pager
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,15 +11,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
-import org.d3ifcool.dissajobrecruiter.databinding.FragmentRejectedApplicationBinding
+import org.d3ifcool.dissajobrecruiter.databinding.FragmentAcceptedApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
+class AcceptedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
     OnApplicationClickCallback {
 
-    private lateinit var fragmentRejectedApplicationBinding: FragmentRejectedApplicationBinding
+    private lateinit var fragmentAcceptedApplicationBinding: FragmentAcceptedApplicationBinding
 
     private lateinit var applicantViewModel: ApplicantViewModel
 
@@ -32,9 +36,9 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        fragmentRejectedApplicationBinding =
-            FragmentRejectedApplicationBinding.inflate(layoutInflater, container, false)
-        return fragmentRejectedApplicationBinding.root
+        fragmentAcceptedApplicationBinding =
+            FragmentAcceptedApplicationBinding.inflate(layoutInflater, container, false)
+        return fragmentAcceptedApplicationBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,7 +54,7 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
             applicationAdapter = ApplicationAdapter(this, this)
-            applicationViewModel.getRejectedApplications()
+            applicationViewModel.getAcceptedApplications()
                 .observe(viewLifecycleOwner) { applications ->
                     if (applications != null) {
                         when (applications.status) {
@@ -61,7 +65,7 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
                                     applicationAdapter.submitList(applications.data)
                                     applicationAdapter.notifyDataSetChanged()
                                 } else {
-                                    fragmentRejectedApplicationBinding.tvNoData.visibility =
+                                    fragmentAcceptedApplicationBinding.tvNoData.visibility =
                                         View.VISIBLE
                                 }
                             }
@@ -74,7 +78,7 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
                 }
         }
 
-        with(fragmentRejectedApplicationBinding.rvApplication) {
+        with(fragmentAcceptedApplicationBinding.rvApplication) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             addItemDecoration(
@@ -89,9 +93,9 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            fragmentRejectedApplicationBinding.progressBar.visibility = View.VISIBLE
+            fragmentAcceptedApplicationBinding.progressBar.visibility = View.VISIBLE
         } else {
-            fragmentRejectedApplicationBinding.progressBar.visibility = View.GONE
+            fragmentAcceptedApplicationBinding.progressBar.visibility = View.GONE
         }
     }
 

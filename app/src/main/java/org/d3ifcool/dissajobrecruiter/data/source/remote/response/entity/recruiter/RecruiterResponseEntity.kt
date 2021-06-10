@@ -11,6 +11,5 @@ data class RecruiterResponseEntity(
     val email: String? = "-",
     val address: String? = "-",
     val phoneNumber: String? = "-",
-    val role: String? = "-",
     val imagePath: String? = "-"
 )

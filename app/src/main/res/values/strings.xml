@@ -4,10 +4,10 @@
     <string name="job">Pekerjaan</string>
     <string name="notification">Notifikasi</string>
     <string name="profile">Profil</string>
-    <string name="all_applicants">Semua</string>
-    <string name="accepted_applicants">Diterima</string>
-    <string name="marked_applicants">Ditandai</string>
-    <string name="rejected_applicants">Ditolak</string>
+    <string name="txt_all">Semua</string>
+    <string name="txt_accepted">Diterima</string>
+    <string name="txt_marked">Ditandai</string>
+    <string name="txt_rejected">Ditolak</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="daftar">Daftar</string>
     <string name="lupa_password">Lupa Password ?</string>
@@ -151,4 +151,10 @@
     <string name="txt_apply_at">Dilamar pada</string>
     <string name="txt_application_status">Status Lamaran</string>
     <string name="txt_lorem_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="txt_reject">Tolak</string>
+    <string name="txt_accept">Terima</string>
+    <string name="txt_error_occurred">Terjadi kesalahan</string>
+    <string name="txt_update_application_alert">%1$s lamaran ?</string>
+    <string name="txt_accept_application">Lamaran diterima</string>
+    <string name="txt_reject_application">Lamaran ditolak</string>
 </resources>

@@ -27,9 +27,6 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
 
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignUpViewModel::class.java]
-
-//        activitySignUpBinding.header.imgBackBtn.setOnClickListener(this)
-//        activitySignUpBinding.header.btnSignIn.setOnClickListener(this)
         activitySignUpBinding.btnSignUp.setOnClickListener(this)
     }
 
@@ -43,13 +40,11 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
         val firstName = activitySignUpBinding.etFirstName.text.toString().trim()
         val lastName = activitySignUpBinding.etLastName.text.toString().trim()
         val fullName = "$firstName $lastName"
-        val role = activitySignUpBinding.etRole.text.toString().trim()
         val user = RecruiterResponseEntity(
             firstName = firstName,
             lastName = lastName,
             fullName = fullName,
-            email = email,
-            role = role
+            email = email
         )
 
         viewModel.signUp(email, password, user, this)

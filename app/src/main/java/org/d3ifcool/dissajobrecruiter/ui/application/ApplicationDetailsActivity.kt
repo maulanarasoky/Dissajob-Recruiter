@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -18,13 +19,15 @@ import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationDetailsBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.question.InterviewViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
+class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
+    UpdateApplicationCallback {
 
     companion object {
         const val APPLICATION_ID = "application_id"
@@ -42,8 +45,13 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var interviewViewModel: InterviewViewModel
 
+    private lateinit var dialog: SweetAlertDialog
+
+    private lateinit var applicationId: String
     private lateinit var applicantId: String
     private lateinit var jobId: String
+
+    private var isApplicationAccepted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +65,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        val applicationId = intent.getStringExtra(APPLICATION_ID)
+        applicationId = intent.getStringExtra(APPLICATION_ID).toString()
         applicantId = intent.getStringExtra(APPLICANT_ID).toString()
         jobId = intent.getStringExtra(JOB_ID).toString()
 
@@ -83,7 +91,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        applicationViewModel.getApplicationById(applicationId.toString())
+        applicationViewModel.getApplicationById(applicationId)
             .observe(this) { application ->
                 if (application.data != null) {
                     when (application.status) {
@@ -115,7 +123,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        interviewViewModel.getInterviewAnswers(applicationId.toString())
+        interviewViewModel.getInterviewAnswers(applicationId)
             .observe(this) { interview ->
                 if (interview.data != null) {
                     when (interview.status) {
@@ -135,6 +143,8 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         activityApplicationDetailsBinding.applicantProfileSection.root.setOnClickListener(this)
         activityApplicationDetailsBinding.applicationDetailsSection.root.setOnClickListener(this)
+        activityApplicationDetailsBinding.footerSection.btnRejectApplication.setOnClickListener(this)
+        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.setOnClickListener(this)
     }
 
     private fun populateApplicantData(applicantName: String, imagePath: String) {
@@ -155,7 +165,9 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 .into(activityApplicationDetailsBinding.applicantProfileSection.imgApplicantPicture)
         }
 
-        activityApplicationDetailsBinding.applicantProfileSection.tvShowProfile.setOnClickListener(this)
+        activityApplicationDetailsBinding.applicantProfileSection.tvShowProfile.setOnClickListener(
+            this
+        )
     }
 
     private fun populateApplicationData(applyDate: String, status: String) {
@@ -205,6 +217,56 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
+    private fun updateApplicationStatus(status: String) {
+        activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
+        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
+
+        val dialogTitle = if (status == "Accepted") {
+            resources.getString(R.string.txt_accept)
+        } else {
+            resources.getString(R.string.txt_reject)
+        }
+
+        dialog = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+        dialog.titleText = resources.getString(R.string.txt_update_application_alert, dialogTitle)
+        dialog.setCancelable(true)
+        dialog.cancelText = resources.getString(R.string.txt_cancel)
+        dialog.setConfirmClickListener {
+            dialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE)
+            dialog.titleText = resources.getString(R.string.loading)
+            dialog.showCancelButton(false)
+            dialog.setCancelable(false)
+            applicationViewModel.updateApplicationStatus(applicationId, status, this)
+
+        }.setOnCancelListener {
+            activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = true
+            activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = true
+        }
+        dialog.show()
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSuccessUpdate() {
+        dialog.dismissWithAnimation()
+        if (isApplicationAccepted) {
+            showToast(resources.getString(R.string.txt_accept_application))
+        } else {
+            showToast(resources.getString(R.string.txt_reject_application))
+        }
+        activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
+        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
+    }
+
+    override fun onFailureUpdate(messageId: Int) {
+        dialog.dismissWithAnimation()
+        showToast(resources.getString(messageId))
+        activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = true
+        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -227,6 +289,9 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 intent.putExtra(JobDetailsActivity.EXTRA_ID, jobId)
                 startActivity(intent)
             }
+
+            R.id.btnRejectApplication -> updateApplicationStatus("Rejected")
+            R.id.btnAcceptApplication -> updateApplicationStatus("Accepted")
         }
     }
 }

@@ -74,35 +74,6 @@
         app:layout_constraintTop_toBottomOf="@id/tvLastName" />
 
     <TextView
-        android:id="@+id/tvRole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_16dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/role"
-        android:textColor="@color/text_color"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etLastName" />
-
-    <EditText
-        android:id="@+id/etRole"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginEnd="@dimen/margin_16dp"
-        android:backgroundTint="@color/text_color"
-        android:fontFamily="@font/roboto"
-        android:inputType="textCapWords"
-        android:textColor="@color/text_color"
-        android:textCursorDrawable="@drawable/cursor_color"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRole" />
-
-    <TextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -113,7 +84,7 @@
         android:textColor="@color/text_color"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etRole" />
+        app:layout_constraintTop_toBottomOf="@id/etLastName" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -196,15 +167,15 @@
         android:layout_marginStart="@dimen/margin_16dp"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginEnd="@dimen/margin_16dp"
-        android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
         android:fontFamily="@font/roboto"
         android:paddingTop="@dimen/margin_16dp"
         android:paddingBottom="@dimen/margin_16dp"
+        android:text="@string/daftar"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:textAllCaps="false"
-        android:text="@string/daftar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etConfirmPassword" />

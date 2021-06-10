@@ -97,7 +97,6 @@ object RecruiterHelper {
                         dataSnapshot.child("email").value.toString(),
                         dataSnapshot.child("address").value.toString(),
                         dataSnapshot.child("phoneNumber").value.toString(),
-                        dataSnapshot.child("role").value.toString(),
                         dataSnapshot.child("imagePath").value.toString()
                     )
                     callback.onRecruiterDataReceived(userProfile)

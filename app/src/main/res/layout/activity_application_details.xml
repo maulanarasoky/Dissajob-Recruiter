@@ -49,6 +49,12 @@
                 layout="@layout/application_details_additional_information_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/footerSection"
+                layout="@layout/application_details_footer_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

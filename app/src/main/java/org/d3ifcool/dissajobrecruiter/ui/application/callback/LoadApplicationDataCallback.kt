@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.ui.application
+package org.d3ifcool.dissajobrecruiter.ui.application.callback
 
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
 

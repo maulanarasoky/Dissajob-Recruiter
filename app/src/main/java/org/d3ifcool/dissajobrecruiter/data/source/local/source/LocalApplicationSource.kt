@@ -2,9 +2,7 @@ package org.d3ifcool.dissajobrecruiter.data.source.local.source
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.room.ApplicantDao
 import org.d3ifcool.dissajobrecruiter.data.source.local.room.ApplicationDao
 
 class LocalApplicationSource private constructor(
@@ -18,18 +16,26 @@ class LocalApplicationSource private constructor(
             INSTANCE ?: LocalApplicationSource(applicationDao)
     }
 
-    fun getApplications(): DataSource.Factory<Int, ApplicationEntity> = mApplicationDao.getApplications()
+    fun getApplications(): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getApplications()
 
     fun getApplicationById(applicationId: String): LiveData<ApplicationEntity> =
         mApplicationDao.getApplicationById(applicationId)
 
-    fun getAcceptedApplications(): DataSource.Factory<Int, ApplicationEntity> = mApplicationDao.getApplicationsByStatus("accepted")
+    fun getAcceptedApplications(): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getApplicationsByStatus("accepted")
 
-    fun getRejectedApplications(): DataSource.Factory<Int, ApplicationEntity> = mApplicationDao.getApplicationsByStatus("rejected")
+    fun getRejectedApplications(): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getApplicationsByStatus("rejected")
 
-    fun getMarkedApplications(): DataSource.Factory<Int, ApplicationEntity> = mApplicationDao.getMarkedApplications()
+    fun getMarkedApplications(): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getMarkedApplications()
 
-    fun getApplicationsByJob(jobId: String): DataSource.Factory<Int, ApplicationEntity> = mApplicationDao.getApplicationsByJob(jobId)
+    fun getApplicationsByJob(jobId: String): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getApplicationsByJob(jobId)
+
+    fun updateApplicationStatus(applicationId: String, status: String) =
+        mApplicationDao.updateApplicationStatus(applicationId, status)
 
     fun insertApplication(applications: List<ApplicationEntity>) =
         mApplicationDao.insertApplication(applications)

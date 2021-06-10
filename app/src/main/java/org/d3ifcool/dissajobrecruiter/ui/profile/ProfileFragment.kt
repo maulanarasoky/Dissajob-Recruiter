@@ -32,7 +32,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         fragmentProfileBinding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         return fragmentProfileBinding.root
@@ -70,7 +70,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     private fun populateData(recruiterProfile: RecruiterEntity) {
         fragmentProfileBinding.tvRecruiterName.text = recruiterProfile.fullName
-        fragmentProfileBinding.tvRole.text = recruiterProfile.role
         fragmentProfileBinding.tvEmail.text = recruiterProfile.email
 
         if (recruiterProfile.imagePath != "-") {

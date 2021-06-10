@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.ui.application
+package org.d3ifcool.dissajobrecruiter.ui.application.pager
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentMarkedApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 

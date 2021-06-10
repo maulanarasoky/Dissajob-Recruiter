@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.ui.application
+package org.d3ifcool.dissajobrecruiter.ui.application.pager
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,15 +11,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
-import org.d3ifcool.dissajobrecruiter.databinding.FragmentAllApplicationBinding
+import org.d3ifcool.dissajobrecruiter.databinding.FragmentRejectedApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
+import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
+class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
     OnApplicationClickCallback {
 
-    private lateinit var fragmentAllApplicationBinding: FragmentAllApplicationBinding
+    private lateinit var fragmentRejectedApplicationBinding: FragmentRejectedApplicationBinding
 
     private lateinit var applicantViewModel: ApplicantViewModel
 
@@ -32,9 +36,9 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        fragmentAllApplicationBinding =
-            FragmentAllApplicationBinding.inflate(layoutInflater, container, false)
-        return fragmentAllApplicationBinding.root
+        fragmentRejectedApplicationBinding =
+            FragmentRejectedApplicationBinding.inflate(layoutInflater, container, false)
+        return fragmentRejectedApplicationBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,29 +54,31 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
             applicationAdapter = ApplicationAdapter(this, this)
-            applicationViewModel.getApplications().observe(viewLifecycleOwner) { applications ->
-                if (applications != null) {
-                    when (applications.status) {
-                        Status.LOADING -> showLoading(true)
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            if (applications.data?.isNotEmpty() == true) {
-                                applicationAdapter.submitList(applications.data)
-                                applicationAdapter.notifyDataSetChanged()
-                            } else {
-                                fragmentAllApplicationBinding.tvNoData.visibility = View.VISIBLE
+            applicationViewModel.getRejectedApplications()
+                .observe(viewLifecycleOwner) { applications ->
+                    if (applications != null) {
+                        when (applications.status) {
+                            Status.LOADING -> showLoading(true)
+                            Status.SUCCESS -> {
+                                showLoading(false)
+                                if (applications.data?.isNotEmpty() == true) {
+                                    applicationAdapter.submitList(applications.data)
+                                    applicationAdapter.notifyDataSetChanged()
+                                } else {
+                                    fragmentRejectedApplicationBinding.tvNoData.visibility =
+                                        View.VISIBLE
+                                }
                             }
-                        }
-                        Status.ERROR -> {
-                            showLoading(false)
-                            Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+                            Status.ERROR -> {
+                                showLoading(false)
+                                Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
-            }
         }
 
-        with(fragmentAllApplicationBinding.rvApplication) {
+        with(fragmentRejectedApplicationBinding.rvApplication) {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             addItemDecoration(
@@ -87,9 +93,9 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            fragmentAllApplicationBinding.progressBar.visibility = View.VISIBLE
+            fragmentRejectedApplicationBinding.progressBar.visibility = View.VISIBLE
         } else {
-            fragmentAllApplicationBinding.progressBar.visibility = View.GONE
+            fragmentRejectedApplicationBinding.progressBar.visibility = View.GONE
         }
     }
 
@@ -100,9 +106,7 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
         applicantViewModel.getApplicantDetails(applicantId)
             .observe(viewLifecycleOwner) { applicantDetails ->
                 if (applicantDetails != null) {
-                    if (applicantDetails.data != null) {
-                        callback.onGetApplicantDetails(applicantDetails.data)
-                    }
+                    callback.onGetApplicantDetails(applicantDetails.data!!)
                 }
             }
     }

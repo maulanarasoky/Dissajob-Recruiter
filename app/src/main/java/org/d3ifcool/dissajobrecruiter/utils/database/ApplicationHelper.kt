@@ -1,9 +1,11 @@
 package org.d3ifcool.dissajobrecruiter.utils.database
 
 import com.google.firebase.database.*
+import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
-import org.d3ifcool.dissajobrecruiter.ui.application.LoadAllApplicationsCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.LoadApplicationDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadAllApplicationsCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadApplicationDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
 
 object ApplicationHelper {
 
@@ -144,5 +146,13 @@ object ApplicationHelper {
                 }
 
             })
+    }
+
+    fun updateApplicationStatus(applicationId: String, status: String, callback: UpdateApplicationCallback) {
+        database.child(applicationId).child("status").setValue(status).addOnSuccessListener {
+            callback.onSuccessUpdate()
+        }.addOnFailureListener {
+            callback.onFailureUpdate(R.string.txt_error_occurred)
+        }
     }
 }

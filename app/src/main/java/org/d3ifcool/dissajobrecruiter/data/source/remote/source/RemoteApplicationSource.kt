@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
-import org.d3ifcool.dissajobrecruiter.ui.application.LoadAllApplicationsCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.LoadApplicationDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadAllApplicationsCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadApplicationDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
 import org.d3ifcool.dissajobrecruiter.utils.EspressoIdlingResource
 import org.d3ifcool.dissajobrecruiter.utils.database.ApplicationHelper
 
@@ -126,5 +127,27 @@ class RemoteApplicationSource private constructor(
             }
         })
         return resultApplication
+    }
+
+    fun updateApplicationStatus(
+        applicationId: String,
+        status: String,
+        callback: UpdateApplicationCallback
+    ) {
+        EspressoIdlingResource.increment()
+        applicationHelper.updateApplicationStatus(
+            applicationId,
+            status,
+            object : UpdateApplicationCallback {
+                override fun onSuccessUpdate() {
+                    callback.onSuccessUpdate()
+                    EspressoIdlingResource.decrement()
+                }
+
+                override fun onFailureUpdate(messageId: Int) {
+                    callback.onFailureUpdate(messageId)
+                    EspressoIdlingResource.decrement()
+                }
+            })
     }
 }

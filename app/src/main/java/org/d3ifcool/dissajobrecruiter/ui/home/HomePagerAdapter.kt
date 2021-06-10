@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.d3ifcool.dissajobrecruiter.R
-import org.d3ifcool.dissajobrecruiter.ui.application.AcceptedApplicationFragment
-import org.d3ifcool.dissajobrecruiter.ui.application.AllApplicationFragment
-import org.d3ifcool.dissajobrecruiter.ui.application.MarkedApplicationFragment
-import org.d3ifcool.dissajobrecruiter.ui.application.RejectedApplicationFragment
+import org.d3ifcool.dissajobrecruiter.ui.application.pager.AcceptedApplicationFragment
+import org.d3ifcool.dissajobrecruiter.ui.application.pager.AllApplicationFragment
+import org.d3ifcool.dissajobrecruiter.ui.application.pager.MarkedApplicationFragment
+import org.d3ifcool.dissajobrecruiter.ui.application.pager.RejectedApplicationFragment
 
 class HomePagerAdapter(private val mContext: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -17,10 +17,10 @@ class HomePagerAdapter(private val mContext: Context, fm: FragmentManager) :
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(
-            R.string.all_applicants,
-            R.string.accepted_applicants,
-            R.string.marked_applicants,
-            R.string.rejected_applicants
+            R.string.txt_all,
+            R.string.txt_accepted,
+            R.string.txt_marked,
+            R.string.txt_rejected
         )
     }
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ApplicationItemBinding
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*

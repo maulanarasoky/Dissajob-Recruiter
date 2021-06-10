@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
 import org.d3ifcool.dissajobrecruiter.data.source.repository.application.ApplicationRepository
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
 class ApplicationViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
@@ -25,4 +26,10 @@ class ApplicationViewModel(private val applicationRepository: ApplicationReposit
 
     fun getApplicationsByJob(jobId: String): LiveData<Resource<PagedList<ApplicationEntity>>> =
         applicationRepository.getApplicationsByJob(jobId)
+
+    fun updateApplicationStatus(
+        applicationId: String,
+        status: String,
+        callback: UpdateApplicationCallback
+    ) = applicationRepository.updateApplicationStatus(applicationId, status, callback)
 }
