@@ -6,13 +6,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -59,7 +59,8 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         activityChangeProfileBinding = ActivityChangeProfileBinding.inflate(layoutInflater)
         setContentView(activityChangeProfileBinding.root)
 
-        activityChangeProfileBinding.toolbar.title = resources.getString(R.string.change_profile_title)
+        activityChangeProfileBinding.toolbar.title =
+            resources.getString(R.string.change_profile_title)
         setSupportActionBar(activityChangeProfileBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -98,7 +99,6 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
 
                             activityChangeProfileBinding.etFirstName.setText(profileData.data.firstName)
                             activityChangeProfileBinding.etLastName.setText(profileData.data.lastName)
-                            activityChangeProfileBinding.etRole.setText(profileData.data.role)
                             activityChangeProfileBinding.etAddress.setText(profileData.data.address)
                         }
                         Status.ERROR -> {
@@ -179,11 +179,6 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
                 getString(R.string.txt_error_form_text, "Nama belakang")
             return
         }
-        if (TextUtils.isEmpty(activityChangeProfileBinding.etRole.text.toString().trim())) {
-            activityChangeProfileBinding.etRole.error =
-                getString(R.string.txt_error_form_text, "Role")
-            return
-        }
         if (TextUtils.isEmpty(
                 activityChangeProfileBinding.etAddress.text.toString().trim()
             ) || activityChangeProfileBinding.etAddress.text.toString() == "-"
@@ -212,7 +207,6 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         val email = recruiterData.email.toString()
         val address = activityChangeProfileBinding.etAddress.text.toString().trim()
         val phoneNumber = recruiterData.phoneNumber.toString()
-        val role = activityChangeProfileBinding.etRole.text.toString().trim()
         val profileData = RecruiterResponseEntity(
             AuthHelper.currentUser?.uid.toString(),
             firstName,
@@ -221,7 +215,6 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
             email,
             address,
             phoneNumber,
-            role,
             imageId
         )
 

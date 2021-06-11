@@ -171,4 +171,6 @@
 
     <string name="txt_education_level_field_of_study">%1$s, %2$s</string>
     <string name="txt_no_data">Tidak ada data</string>
+
+    <string name="txt_applicant_profile">Profil pelamar</string>
 </resources>

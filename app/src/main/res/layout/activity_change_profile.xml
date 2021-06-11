@@ -97,34 +97,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvLastName" />
 
         <TextView
-            android:id="@+id/tvRole"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:fontFamily="@font/roboto"
-            android:text="@string/role"
-            android:textColor="@color/text_color"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/etRole"
-            app:layout_constraintTop_toBottomOf="@id/etLastName" />
-
-        <EditText
-            android:id="@+id/etRole"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="@dimen/margin_16dp"
-            android:layout_marginEnd="@dimen/margin_16dp"
-            android:backgroundTint="@color/text_color"
-            android:fontFamily="@font/roboto"
-            android:hint="@string/role"
-            android:inputType="textCapWords"
-            android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvRole" />
-
-        <TextView
             android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -134,7 +106,7 @@
             android:textColor="@color/text_color"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/etAddress"
-            app:layout_constraintTop_toBottomOf="@id/etRole" />
+            app:layout_constraintTop_toBottomOf="@id/etLastName" />
 
         <EditText
             android:id="@+id/etAddress"

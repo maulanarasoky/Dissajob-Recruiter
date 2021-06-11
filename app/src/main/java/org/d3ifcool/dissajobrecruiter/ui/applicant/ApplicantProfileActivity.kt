@@ -2,6 +2,7 @@ package org.d3ifcool.dissajobrecruiter.ui.applicant
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,12 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
         activityApplicantProfileBinding = ActivityApplicantProfileBinding.inflate(layoutInflater)
         setContentView(activityApplicantProfileBinding.root)
 
+        activityApplicantProfileBinding.toolbar.title =
+            resources.getString(R.string.txt_applicant_profile)
+        setSupportActionBar(activityApplicantProfileBinding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         if (intent == null) {
             finish()
             return
@@ -88,6 +95,7 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
                         if (experiences.data?.isNotEmpty() == true) {
                             experienceAdapter.submitList(experiences.data)
                             experienceAdapter.notifyDataSetChanged()
+                            activityApplicantProfileBinding.workExperienceSection.tvNoData.visibility = View.GONE
                         } else {
                             activityApplicantProfileBinding.workExperienceSection.tvNoData.visibility =
                                 View.VISIBLE
@@ -129,6 +137,7 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
                             if (educations.data?.isNotEmpty() == true) {
                                 educationAdapter.submitList(educations.data)
                                 educationAdapter.notifyDataSetChanged()
+                                activityApplicantProfileBinding.educationalBackgroundSection.tvNoData.visibility = View.GONE
                             } else {
                                 activityApplicantProfileBinding.educationalBackgroundSection.tvNoData.visibility =
                                     View.VISIBLE
@@ -198,6 +207,16 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
             //This will expand the textview if it is of 2 lines
             activityApplicantProfileBinding.aboutMeSection.tvAboutMe.maxLines = Integer.MAX_VALUE
             true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

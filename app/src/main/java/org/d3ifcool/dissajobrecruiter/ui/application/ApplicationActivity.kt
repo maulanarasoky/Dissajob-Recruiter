@@ -49,6 +49,7 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
                         if (applicants.data?.isNotEmpty() == true) {
                             applicationAdapter.submitList(applicants.data)
                             applicationAdapter.notifyDataSetChanged()
+                            activityApplicationBinding.tvNoData.visibility = View.GONE
                         } else {
                             activityApplicationBinding.tvNoData.visibility = View.VISIBLE
                         }

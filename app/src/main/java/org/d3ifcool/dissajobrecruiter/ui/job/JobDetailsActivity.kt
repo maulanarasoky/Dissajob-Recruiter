@@ -151,6 +151,8 @@ class JobDetailsActivity : AppCompatActivity(),
                         if (applications.data.isNotEmpty()) {
                             applicationAdapter.submitList(applications.data)
                             applicationAdapter.notifyDataSetChanged()
+                            activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility =
+                                View.GONE
                         } else {
                             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility =
                                 View.VISIBLE

@@ -1,6 +1,7 @@
 package org.d3ifcool.dissajobrecruiter.ui.applicant.media
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -55,6 +56,9 @@ class ApplicantMediaActivity : AppCompatActivity(), LoadPdfCallback {
                             if (mediaFiles.data?.isNotEmpty() == true) {
                                 mediaAdapter.submitList(mediaFiles.data)
                                 mediaAdapter.notifyDataSetChanged()
+                                activityApplicantMediaBinding.tvNoData.visibility = View.GONE
+                            } else {
+                                activityApplicantMediaBinding.tvNoData.visibility = View.VISIBLE
                             }
                         }
                         Status.ERROR -> {
@@ -105,5 +109,15 @@ class ApplicantMediaActivity : AppCompatActivity(), LoadPdfCallback {
     }
 
     override fun onPdfDataReceived(mediaFile: ByteArray) {
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

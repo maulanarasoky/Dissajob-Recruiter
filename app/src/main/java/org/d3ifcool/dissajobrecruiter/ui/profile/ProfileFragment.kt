@@ -82,7 +82,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 .load(storageRef.child("recruiter/profile/images/${recruiterProfile.imagePath}"))
                 .transform(RoundedCorners(20))
                 .apply(RequestOptions.placeholderOf(circularProgressDrawable))
-                .error(R.drawable.ic_profile_gray_24dp)
+                .error(R.drawable.ic_image_gray_24dp)
                 .into(fragmentProfileBinding.imgProfile)
         }
     }

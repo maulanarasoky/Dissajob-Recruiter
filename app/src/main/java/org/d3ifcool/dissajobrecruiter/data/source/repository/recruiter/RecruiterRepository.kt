@@ -35,7 +35,12 @@ class RecruiterRepository private constructor(
             networkCallback: NetworkStateCallback
         ): RecruiterRepository =
             instance ?: synchronized(this) {
-                instance ?: RecruiterRepository(remoteRecruiter, localRecruiter, appExecutors, networkCallback)
+                instance ?: RecruiterRepository(
+                    remoteRecruiter,
+                    localRecruiter,
+                    appExecutors,
+                    networkCallback
+                )
             }
     }
 
@@ -80,7 +85,6 @@ class RecruiterRepository private constructor(
                     data.email,
                     data.address,
                     data.phoneNumber,
-                    data.role,
                     data.imagePath,
                 )
                 localRecruiterSource.insertRecruiterData(userProfile)
@@ -89,12 +93,14 @@ class RecruiterRepository private constructor(
     }
 
     override fun uploadRecruiterProfilePicture(image: Uri, callback: UploadProfilePictureCallback) =
-        appExecutors.diskIO().execute { remoteRecruiterSource.uploadRecruiterProfilePicture(image, callback) }
+        appExecutors.diskIO()
+            .execute { remoteRecruiterSource.uploadRecruiterProfilePicture(image, callback) }
 
     override fun updateRecruiterData(
         recruiterProfile: RecruiterResponseEntity,
         callback: UpdateProfileCallback
-    ) = appExecutors.diskIO().execute { remoteRecruiterSource.updateProfileData(recruiterProfile, callback) }
+    ) = appExecutors.diskIO()
+        .execute { remoteRecruiterSource.updateProfileData(recruiterProfile, callback) }
 
     override fun updateRecruiterEmail(
         recruiterId: String,
@@ -102,7 +108,14 @@ class RecruiterRepository private constructor(
         password: String,
         callback: UpdateProfileCallback
     ) = appExecutors.diskIO()
-        .execute { remoteRecruiterSource.updateRecruiterEmail(recruiterId, newEmail, password, callback) }
+        .execute {
+            remoteRecruiterSource.updateRecruiterEmail(
+                recruiterId,
+                newEmail,
+                password,
+                callback
+            )
+        }
 
     override fun updateRecruiterPhoneNumber(
         recruiterId: String,

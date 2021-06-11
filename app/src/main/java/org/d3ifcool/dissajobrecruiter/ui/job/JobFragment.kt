@@ -47,6 +47,7 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
                             if (jobs.data.isNotEmpty()) {
                                 jobAdapter.submitList(jobs.data)
                                 jobAdapter.notifyDataSetChanged()
+                                fragmentJobBinding.tvNoData.visibility = View.GONE
                             } else {
                                 fragmentJobBinding.tvNoData.visibility = View.VISIBLE
                             }

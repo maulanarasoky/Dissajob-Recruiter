@@ -2,14 +2,14 @@ package org.d3ifcool.dissajobrecruiter.utils.database
 
 import com.google.firebase.database.*
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.experience.ExperienceResponseEntity
-import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.LoadExperienceCallback
+import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.LoadExperiencesCallback
 
 object ExperienceHelper {
     private val database: DatabaseReference =
         FirebaseDatabase.getInstance().getReference("experiences")
     private val arrExperience: MutableList<ExperienceResponseEntity> = mutableListOf()
 
-    fun getApplicantExperiences(applicantId: String, callback: LoadExperienceCallback) {
+    fun getApplicantExperiences(applicantId: String, callback: LoadExperiencesCallback) {
         database.orderByChild("applicantId").equalTo(applicantId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {

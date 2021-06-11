@@ -64,6 +64,8 @@ class AcceptedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
                                 if (applications.data?.isNotEmpty() == true) {
                                     applicationAdapter.submitList(applications.data)
                                     applicationAdapter.notifyDataSetChanged()
+                                    fragmentAcceptedApplicationBinding.tvNoData.visibility =
+                                        View.GONE
                                 } else {
                                     fragmentAcceptedApplicationBinding.tvNoData.visibility =
                                         View.VISIBLE

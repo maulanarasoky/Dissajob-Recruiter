@@ -54,26 +54,30 @@ class MarkedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDa
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
             applicationAdapter = ApplicationAdapter(this, this)
-            applicationViewModel.getMarkedApplications().observe(viewLifecycleOwner) { applications ->
-                if (applications != null) {
-                    when (applications.status) {
-                        Status.LOADING -> showLoading(true)
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            if (applications.data?.isNotEmpty() == true) {
-                                applicationAdapter.submitList(applications.data)
-                                applicationAdapter.notifyDataSetChanged()
-                            } else {
-                                fragmentMarkedApplicationBinding.tvNoData.visibility = View.VISIBLE
+            applicationViewModel.getMarkedApplications()
+                .observe(viewLifecycleOwner) { applications ->
+                    if (applications != null) {
+                        when (applications.status) {
+                            Status.LOADING -> showLoading(true)
+                            Status.SUCCESS -> {
+                                showLoading(false)
+                                if (applications.data?.isNotEmpty() == true) {
+                                    applicationAdapter.submitList(applications.data)
+                                    applicationAdapter.notifyDataSetChanged()
+                                    fragmentMarkedApplicationBinding.tvNoData.visibility =
+                                        View.GONE
+                                } else {
+                                    fragmentMarkedApplicationBinding.tvNoData.visibility =
+                                        View.VISIBLE
+                                }
                             }
-                        }
-                        Status.ERROR -> {
-                            showLoading(false)
-                            Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+                            Status.ERROR -> {
+                                showLoading(false)
+                                Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
-            }
         }
 
         with(fragmentMarkedApplicationBinding.rvApplication) {

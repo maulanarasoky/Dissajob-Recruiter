@@ -6,12 +6,26 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.education.EducationEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.experience.ExperienceEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.interview.InterviewEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.media.MediaEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.RecruiterEntity
 
 @Database(
-    entities = [RecruiterEntity::class, JobEntity::class, JobDetailsEntity::class, ApplicationEntity::class, ApplicantEntity::class],
+    entities = [
+        RecruiterEntity::class,
+        JobEntity::class,
+        JobDetailsEntity::class,
+        ApplicationEntity::class,
+        InterviewEntity::class,
+        ApplicantEntity::class,
+        MediaEntity::class,
+        ExperienceEntity::class,
+        EducationEntity::class,
+    ],
     version = 1,
     exportSchema = false
 )

@@ -1,11 +1,11 @@
 package org.d3ifcool.dissajobrecruiter.ui.job
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +43,7 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
                         if (jobs.data?.isNotEmpty() == true) {
                             jobAdapter.submitList(jobs.data)
                             jobAdapter.notifyDataSetChanged()
+                            activityJobBinding.tvNoData.visibility = View.GONE
                         } else {
                             activityJobBinding.tvNoData.visibility = View.VISIBLE
                         }
