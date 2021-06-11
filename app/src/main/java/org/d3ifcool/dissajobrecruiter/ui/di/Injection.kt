@@ -8,11 +8,13 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.source.*
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.*
 import org.d3ifcool.dissajobrecruiter.data.source.repository.applicant.ApplicantRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.application.ApplicationRepository
+import org.d3ifcool.dissajobrecruiter.data.source.repository.education.EducationRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.experience.ExperienceRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.interview.InterviewRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.recruiter.RecruiterRepository
-import org.d3ifcool.dissajobrecruiter.utils.*
+import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
+import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
 import org.d3ifcool.dissajobrecruiter.utils.database.*
 
 object Injection {
@@ -128,6 +130,30 @@ object Injection {
         }
 
         return ExperienceRepository.getInstance(
+            remoteDataSource,
+            localDataSource,
+            appExecutors,
+            callback
+        )
+    }
+
+    fun provideEducationRepository(context: Context): EducationRepository {
+        val database = DissajobRecruiterDatabase.getInstance(context)
+
+        val remoteDataSource = RemoteEducationSource.getInstance(EducationHelper)
+        val localDataSource = LocalEducationSource.getInstance(database.educationDao())
+        val appExecutors = AppExecutors()
+
+        val callback = object : NetworkStateCallback {
+            override fun hasConnectivity(): Boolean {
+                val cm =
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+                return activeNetwork?.isConnectedOrConnecting == true
+            }
+        }
+
+        return EducationRepository.getInstance(
             remoteDataSource,
             localDataSource,
             appExecutors,

@@ -9,7 +9,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalExperienceSo
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.experience.ExperienceResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteExperienceSource
-import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.LoadExperienceCallback
+import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.LoadExperiencesCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
@@ -67,7 +67,7 @@ class ExperienceRepository private constructor(
             public override fun createCall(): LiveData<ApiResponse<List<ExperienceResponseEntity>>> =
                 remoteExperienceSource.getApplicantExperiences(
                     applicantId,
-                    object : LoadExperienceCallback {
+                    object : LoadExperiencesCallback {
                         override fun onAllExperiencesReceived(experienceResponse: List<ExperienceResponseEntity>): List<ExperienceResponseEntity> {
                             return experienceResponse
                         }

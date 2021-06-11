@@ -168,4 +168,6 @@
     <string name="txt_company_type">%1$s \u2022 %2$s</string>
     <string name="txt_range_date">%1$s - %2$s</string>
     <string name="txt_present">Saat ini</string>
+
+    <string name="txt_education_level_field_of_study">%1$s, %2$s</string>
 </resources>

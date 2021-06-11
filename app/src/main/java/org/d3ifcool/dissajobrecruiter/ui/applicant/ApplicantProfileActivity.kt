@@ -1,10 +1,9 @@
 package org.d3ifcool.dissajobrecruiter.ui.applicant
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,8 +15,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.experience.ExperienceEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicantProfileBinding
+import org.d3ifcool.dissajobrecruiter.ui.applicant.education.EducationAdapter
+import org.d3ifcool.dissajobrecruiter.ui.applicant.education.EducationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.ExperienceAdapter
 import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.ExperienceViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
@@ -76,31 +76,31 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         experienceAdapter = ExperienceAdapter()
         experienceViewModel.getApplicantExperiences(applicantId).observe(this) { experiences ->
-                if (experiences != null) {
-                    when (experiences.status) {
-                        Status.LOADING -> activityApplicantProfileBinding.workExperienceSection.progressBar.visibility =
-                            View.VISIBLE
-                        Status.SUCCESS -> {
-                            activityApplicantProfileBinding.workExperienceSection.progressBar.visibility =
-                                View.GONE
-                            if (experiences.data?.isNotEmpty() == true) {
-                                experienceAdapter.submitList(experiences.data)
-                                experienceAdapter.notifyDataSetChanged()
-                            } else {
-                                activityApplicantProfileBinding.workExperienceSection.tvNoData.visibility =
-                                    View.VISIBLE
-                            }
-                        }
-                        Status.ERROR -> {
-                            activityApplicantProfileBinding.workExperienceSection.progressBar.visibility =
-                                View.GONE
+            if (experiences != null) {
+                when (experiences.status) {
+                    Status.LOADING -> activityApplicantProfileBinding.workExperienceSection.progressBar.visibility =
+                        View.VISIBLE
+                    Status.SUCCESS -> {
+                        activityApplicantProfileBinding.workExperienceSection.progressBar.visibility =
+                            View.GONE
+                        if (experiences.data?.isNotEmpty() == true) {
+                            experienceAdapter.submitList(experiences.data)
+                            experienceAdapter.notifyDataSetChanged()
+                        } else {
                             activityApplicantProfileBinding.workExperienceSection.tvNoData.visibility =
                                 View.VISIBLE
-                            Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
                         }
+                    }
+                    Status.ERROR -> {
+                        activityApplicantProfileBinding.workExperienceSection.progressBar.visibility =
+                            View.GONE
+                        activityApplicantProfileBinding.workExperienceSection.tvNoData.visibility =
+                            View.VISIBLE
+                        Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+        }
 
         with(activityApplicantProfileBinding.workExperienceSection.rvWorkExperience) {
             layoutManager = LinearLayoutManager(this@ApplicantProfileActivity)
@@ -162,11 +162,15 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
     private fun populateApplicantData(applicantProfile: ApplicantEntity) {
         activityApplicantProfileBinding.profileSection.tvApplicantName.text =
             applicantProfile.fullName.toString()
-        activityApplicantProfileBinding.profileSection.tvEmail.text = applicantProfile.email.toString()
+        activityApplicantProfileBinding.profileSection.tvEmail.text =
+            applicantProfile.email.toString()
         activityApplicantProfileBinding.profileSection.tvPhoneNumber.text =
             applicantProfile.phoneNumber.toString()
-        activityApplicantProfileBinding.aboutMeSection.tvAboutMe.text = applicantProfile.aboutMe.toString()
-        activityApplicantProfileBinding.aboutMeSection.tvAboutMe.setOnClickListener(tvAboutMeClickListener)
+        activityApplicantProfileBinding.aboutMeSection.tvAboutMe.text =
+            applicantProfile.aboutMe.toString()
+        activityApplicantProfileBinding.aboutMeSection.tvAboutMe.setOnClickListener(
+            tvAboutMeClickListener
+        )
 
         if (applicantProfile.imagePath != "-") {
             val storageRef = Firebase.storage.reference
