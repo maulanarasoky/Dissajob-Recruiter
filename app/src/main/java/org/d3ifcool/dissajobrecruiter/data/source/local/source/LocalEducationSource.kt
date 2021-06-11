@@ -18,6 +18,9 @@ class LocalEducationSource private constructor(
     fun getApplicantEducations(applicantId: String): DataSource.Factory<Int, EducationEntity> =
         mEducationDao.getApplicantEducations(applicantId)
 
+    fun deleteAllApplicantEducations(applicantId: String) =
+        mEducationDao.deleteAllApplicantEducations(applicantId)
+
     fun insertApplicantEducations(educations: List<EducationEntity>) =
         mEducationDao.insertApplicantEducations(educations)
 }

@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.ui.applicant
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -20,6 +21,7 @@ import org.d3ifcool.dissajobrecruiter.ui.applicant.education.EducationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.applicant.education.EducationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.ExperienceAdapter
 import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.ExperienceViewModel
+import org.d3ifcool.dissajobrecruiter.ui.applicant.media.ApplicantMediaActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
@@ -156,7 +158,7 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         //Upload media section
-        activityApplicantProfileBinding.uploadMediaSection.root.setOnClickListener(this)
+        activityApplicantProfileBinding.mediaSection.root.setOnClickListener(this)
     }
 
     private fun populateApplicantData(applicantProfile: ApplicantEntity) {
@@ -201,7 +203,11 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-//            R.id.uploadMediaSection -> startActivity(Intent(this, MediaActivity::class.java))
+            R.id.mediaSection -> {
+                val intent = Intent(this, ApplicantMediaActivity::class.java)
+                intent.putExtra(ApplicantMediaActivity.APPLICANT_ID, applicantId)
+                startActivity(intent)
+            }
         }
     }
 }

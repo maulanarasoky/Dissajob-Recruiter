@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content" />
 
             <include
-                android:id="@+id/uploadMediaSection"
+                android:id="@+id/mediaSection"
                 layout="@layout/applicant_profile_media_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

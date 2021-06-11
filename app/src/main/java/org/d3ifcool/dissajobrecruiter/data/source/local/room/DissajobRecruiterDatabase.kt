@@ -22,6 +22,7 @@ abstract class DissajobRecruiterDatabase : RoomDatabase() {
     abstract fun applicationDao(): ApplicationDao
     abstract fun interviewDao(): InterviewDao
     abstract fun applicantDao(): ApplicantDao
+    abstract fun mediaDao(): MediaDao
     abstract fun experienceDao(): ExperienceDao
     abstract fun educationDao(): EducationDao
 

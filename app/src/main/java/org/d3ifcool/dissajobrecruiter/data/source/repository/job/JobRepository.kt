@@ -75,6 +75,7 @@ class JobRepository private constructor(
                     jobList.add(job)
                 }
 
+                localJobSource.deleteAllJobs()
                 localJobSource.insertJob(jobList)
             }
         }.asLiveData()

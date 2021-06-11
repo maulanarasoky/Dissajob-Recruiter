@@ -92,7 +92,7 @@ class ExperienceRepository private constructor(
                     )
                     experienceList.add(experience)
                 }
-
+                localExperienceSource.deleteAllApplicantExperiences(applicantId)
                 localExperienceSource.insertApplicantExperiences(experienceList)
             }
         }.asLiveData()

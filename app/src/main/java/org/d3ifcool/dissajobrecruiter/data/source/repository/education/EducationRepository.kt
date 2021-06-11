@@ -90,6 +90,7 @@ class EducationRepository private constructor(
                     educationList.add(education)
                 }
 
+                localEducationSource.deleteAllApplicantEducations(applicantId)
                 localEducationSource.insertApplicantEducations(educationList)
             }
         }.asLiveData()

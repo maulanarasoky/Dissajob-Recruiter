@@ -29,5 +29,5 @@ class LocalJobSource private constructor(
 
     fun deleteJobDetails(jobId: String) = mJobDao.deleteJobDetails(jobId)
 
-//    fun updateJobDetails(jobDetails: JobDetailsEntity) = mJobDao.updateJobDetails(jobDetails)
+    fun deleteAllJobs() = mJobDao.deleteAllJobs()
 }

@@ -25,4 +25,7 @@ interface JobDao {
 
     @Query("DELETE FROM job_details WHERE id = :jobId")
     fun deleteJobDetails(jobId: String)
+
+    @Query("DELETE FROM jobs")
+    fun deleteAllJobs()
 }

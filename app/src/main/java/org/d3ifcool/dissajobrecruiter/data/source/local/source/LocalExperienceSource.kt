@@ -18,6 +18,9 @@ class LocalExperienceSource private constructor(
     fun getApplicantExperiences(applicantId: String): DataSource.Factory<Int, ExperienceEntity> =
         mExperienceDao.getApplicantExperiences(applicantId)
 
+    fun deleteAllApplicantExperiences(applicantId: String) =
+        mExperienceDao.deleteAllApplicantExperiences(applicantId)
+
     fun insertApplicantExperiences(experiences: List<ExperienceEntity>) =
         mExperienceDao.insertApplicantExperiences(experiences)
 }

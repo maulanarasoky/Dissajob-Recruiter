@@ -12,6 +12,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.repository.education.Education
 import org.d3ifcool.dissajobrecruiter.data.source.repository.experience.ExperienceRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.interview.InterviewRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobRepository
+import org.d3ifcool.dissajobrecruiter.data.source.repository.media.MediaRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.recruiter.RecruiterRepository
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
@@ -106,6 +107,30 @@ object Injection {
         }
 
         return ApplicantRepository.getInstance(
+            remoteDataSource,
+            localDataSource,
+            appExecutors,
+            callback
+        )
+    }
+
+    fun provideMediaRepository(context: Context): MediaRepository {
+        val database = DissajobRecruiterDatabase.getInstance(context)
+
+        val remoteDataSource = RemoteMediaSource.getInstance(MediaHelper)
+        val localDataSource = LocalMediaSource.getInstance(database.mediaDao())
+        val appExecutors = AppExecutors()
+
+        val callback = object : NetworkStateCallback {
+            override fun hasConnectivity(): Boolean {
+                val cm =
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+                return activeNetwork?.isConnectedOrConnecting == true
+            }
+        }
+
+        return MediaRepository.getInstance(
             remoteDataSource,
             localDataSource,
             appExecutors,

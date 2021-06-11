@@ -19,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationDetailsBinding
+import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantProfileActivity
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationMarkCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationStatusCallback
@@ -296,9 +297,9 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.tvShowProfile -> {
-//                val intent = Intent(this, RecruiterProfileActivity::class.java)
-//                intent.putExtra(RecruiterProfileActivity.RECRUITER_ID, recruiterId)
-//                startActivity(intent)
+                val intent = Intent(this, ApplicantProfileActivity::class.java)
+                intent.putExtra(ApplicantProfileActivity.APPLICANT_ID, applicantId)
+                startActivity(intent)
             }
             R.id.applicationDetailsSection -> {
                 val intent = Intent(this, JobDetailsActivity::class.java)

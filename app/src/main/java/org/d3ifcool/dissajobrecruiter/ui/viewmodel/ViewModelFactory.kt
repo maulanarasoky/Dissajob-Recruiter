@@ -9,10 +9,12 @@ import org.d3ifcool.dissajobrecruiter.data.source.repository.education.Education
 import org.d3ifcool.dissajobrecruiter.data.source.repository.experience.ExperienceRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.interview.InterviewRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobRepository
+import org.d3ifcool.dissajobrecruiter.data.source.repository.media.MediaRepository
 import org.d3ifcool.dissajobrecruiter.data.source.repository.recruiter.RecruiterRepository
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.applicant.education.EducationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.applicant.experience.ExperienceViewModel
+import org.d3ifcool.dissajobrecruiter.ui.applicant.media.MediaViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.di.Injection
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
@@ -26,6 +28,7 @@ class ViewModelFactory private constructor(
     private val applicationRepository: ApplicationRepository,
     private val interviewRepository: InterviewRepository,
     private val applicantRepository: ApplicantRepository,
+    private val mediaRepository: MediaRepository,
     private val experienceRepository: ExperienceRepository,
     private val educationRepository: EducationRepository,
     private val recruiterRepository: RecruiterRepository
@@ -41,6 +44,7 @@ class ViewModelFactory private constructor(
                 Injection.provideApplicationRepository(context),
                 Injection.provideInterviewRepository(context),
                 Injection.provideApplicantRepository(context),
+                Injection.provideMediaRepository(context),
                 Injection.provideExperienceRepository(context),
                 Injection.provideEducationRepository(context),
                 Injection.provideRecruiterRepository(context)
@@ -68,6 +72,9 @@ class ViewModelFactory private constructor(
             }
             modelClass.isAssignableFrom(ApplicantViewModel::class.java) -> {
                 ApplicantViewModel(applicantRepository) as T
+            }
+            modelClass.isAssignableFrom(MediaViewModel::class.java) -> {
+                MediaViewModel(mediaRepository) as T
             }
             modelClass.isAssignableFrom(ExperienceViewModel::class.java) -> {
                 ExperienceViewModel(experienceRepository) as T
