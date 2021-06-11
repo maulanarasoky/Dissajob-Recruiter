@@ -3,6 +3,7 @@ package org.d3ifcool.dissajobrecruiter.ui.application
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -127,8 +128,8 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
             }
         }
 
-        interviewViewModel.getInterviewAnswers(applicationId)
-            .observe(this) { interview ->
+        interviewViewModel.getInterviewAnswers(applicationId).observe(this) { interview ->
+            Log.d("INTERVIEW DATA", interview.toString())
                 if (interview.data != null) {
                     when (interview.status) {
                         Status.LOADING -> {
@@ -219,6 +220,10 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         activityApplicationDetailsBinding.additionalInformationSection.etThirdQuestion.setText(
             thirdAnswer
         )
+
+        Log.d("DATA INTERVIEW", firstAnswer)
+        Log.d("DATA INTERVIEW", secondAnswer)
+        Log.d("DATA INTERVIEW", thirdAnswer)
     }
 
     private fun updateApplicationMark() {
@@ -226,14 +231,13 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun updateApplicationStatus(status: String) {
-        activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
-        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
-
         val dialogTitle = if (status == "Accepted") {
             resources.getString(R.string.txt_accept)
         } else {
             resources.getString(R.string.txt_reject)
         }
+
+        isApplicationMarked = status == "Accepted"
 
         dialog = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
         dialog.titleText = resources.getString(R.string.txt_update_application_alert, dialogTitle)
@@ -244,11 +248,11 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
             dialog.titleText = resources.getString(R.string.loading)
             dialog.showCancelButton(false)
             dialog.setCancelable(false)
-            applicationViewModel.updateApplicationStatus(applicationId, status, this)
 
-        }.setOnCancelListener {
-            activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = true
-            activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = true
+            activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
+            activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
+
+            applicationViewModel.updateApplicationStatus(applicationId, status, this)
         }
         dialog.show()
     }

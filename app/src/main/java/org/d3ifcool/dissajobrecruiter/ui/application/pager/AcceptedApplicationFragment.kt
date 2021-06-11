@@ -108,7 +108,9 @@ class AcceptedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
         applicantViewModel.getApplicantDetails(applicantId)
             .observe(viewLifecycleOwner) { applicantDetails ->
                 if (applicantDetails != null) {
-                    callback.onGetApplicantDetails(applicantDetails.data!!)
+                    if (applicantDetails.data != null) {
+                        callback.onGetApplicantDetails(applicantDetails.data)
+                    }
                 }
             }
     }

@@ -7,6 +7,7 @@ import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadAllApplication
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadApplicationDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationMarkCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationStatusCallback
+import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 
 object ApplicationHelper {
 
@@ -167,8 +168,20 @@ object ApplicationHelper {
         callback: UpdateApplicationStatusCallback
     ) {
         database.child(applicationId).child("status").setValue(status).addOnSuccessListener {
-            callback.onSuccessUpdateStatus()
+            updateApplicationUpdatedDate(applicationId, callback)
         }.addOnFailureListener {
+            callback.onFailureUpdateStatus(R.string.txt_error_occurred)
+        }
+    }
+
+    private fun updateApplicationUpdatedDate(
+        applicationId: String,
+        callback: UpdateApplicationStatusCallback
+    ) {
+        database.child(applicationId).child("updatedDate").setValue(DateUtils.getCurrentDate())
+            .addOnSuccessListener {
+                callback.onSuccessUpdateStatus()
+            }.addOnFailureListener {
             callback.onFailureUpdateStatus(R.string.txt_error_occurred)
         }
     }

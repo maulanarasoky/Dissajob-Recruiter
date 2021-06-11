@@ -16,8 +16,7 @@ import org.d3ifcool.dissajobrecruiter.databinding.ActivityCreateEditJobBinding
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.CreateJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.UpdateJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import java.text.SimpleDateFormat
-import java.util.*
+import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 
 class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJobCallback,
     UpdateJobCallback, RadioGroup.OnCheckedChangeListener {
@@ -182,8 +181,7 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
             "-"
         }
 
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val currentDate: String = sdf.format(Date())
+        val currentDate: String = DateUtils.getCurrentDate()
 
         val job = JobDetailsResponseEntity(
             "",

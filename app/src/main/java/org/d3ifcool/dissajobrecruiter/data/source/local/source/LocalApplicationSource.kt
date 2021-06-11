@@ -23,10 +23,10 @@ class LocalApplicationSource private constructor(
         mApplicationDao.getApplicationById(applicationId)
 
     fun getAcceptedApplications(): DataSource.Factory<Int, ApplicationEntity> =
-        mApplicationDao.getApplicationsByStatus("accepted")
+        mApplicationDao.getApplicationsByStatus("Accepted")
 
     fun getRejectedApplications(): DataSource.Factory<Int, ApplicationEntity> =
-        mApplicationDao.getApplicationsByStatus("rejected")
+        mApplicationDao.getApplicationsByStatus("Rejected")
 
     fun getMarkedApplications(): DataSource.Factory<Int, ApplicationEntity> =
         mApplicationDao.getMarkedApplications()

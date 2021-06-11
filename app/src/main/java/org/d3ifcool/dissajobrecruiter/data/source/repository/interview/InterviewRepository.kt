@@ -61,7 +61,7 @@ class InterviewRepository private constructor(
                     })
 
             public override fun saveCallResult(data: InterviewResponseEntity) {
-                val jobDetails = InterviewEntity(
+                val interview = InterviewEntity(
                     data.id,
                     data.applicationId,
                     data.applicantId,
@@ -69,7 +69,7 @@ class InterviewRepository private constructor(
                     data.secondAnswer,
                     data.thirdAnswer
                 )
-                localInterviewSource.insertInterviewAnswers(jobDetails)
+                localInterviewSource.insertInterviewAnswers(interview)
             }
         }.asLiveData()
     }
