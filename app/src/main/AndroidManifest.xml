@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DissajobRecruiter"
         tools:replace="android:icon">
+        <activity android:name=".ui.applicant.ApplicantProfileActivity"></activity>
         <activity android:name=".ui.application.ApplicationDetailsActivity" />
         <activity android:name=".ui.job.JobTypeActivity" />
         <activity android:name=".ui.job.IndustryTypeActivity" />
