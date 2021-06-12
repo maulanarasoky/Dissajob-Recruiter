@@ -8,37 +8,48 @@
     android:padding="@dimen/margin_16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgApplicantPicture"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="@dimen/margin_16dp"
+        android:id="@+id/imgProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/ic_image_gray_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvApplicantName"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvRecruiterName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginTop="@dimen/margin_4dp"
         android:fontFamily="@font/roboto"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/imgApplicantPicture"
-        app:layout_constraintStart_toStartOf="@id/imgApplicantPicture"
-        app:layout_constraintTop_toBottomOf="@id/imgApplicantPicture"
-        tools:text="Profile name" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgProfile"
+        tools:text="Maulana Rasoky Nasution" />
+
+    <TextView
+        android:id="@+id/tvContact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/txt_contact"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRecruiterName" />
 
     <ImageView
         android:id="@+id/imgEmail"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginTop="@dimen/margin_8dp"
         android:src="@drawable/ic_email_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvApplicantName" />
+        app:layout_constraintTop_toBottomOf="@id/tvContact" />
 
     <TextView
         android:id="@+id/tvEmail"
@@ -76,5 +87,28 @@
         app:layout_constraintStart_toEndOf="@id/imgPhoneNumber"
         app:layout_constraintTop_toTopOf="@id/imgPhoneNumber"
         tools:text="0821-1234-5678" />
+
+    <ImageView
+        android:id="@+id/imgAddress"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:src="@drawable/ic_place_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgPhoneNumber" />
+
+    <TextView
+        android:id="@+id/tvAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8dp"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgAddress"
+        app:layout_constraintTop_toTopOf="@id/imgAddress"
+        tools:text="Jl. Telekomunikasi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

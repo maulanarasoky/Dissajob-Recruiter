@@ -22,12 +22,13 @@ import org.d3ifcool.dissajobrecruiter.ui.job.JobActivity
 import org.d3ifcool.dissajobrecruiter.ui.settings.SettingsActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
-import org.d3ifcool.dissajobrecruiter.utils.LogoutDialog
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ProfileFragment : Fragment(), View.OnClickListener {
 
     private lateinit var fragmentProfileBinding: FragmentProfileBinding
+
+    private var isAboutMeExpanded = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,18 +60,19 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 }
 
             //Main menu
-            fragmentProfileBinding.profileMainMenu.btnJobMenu.setOnClickListener(this)
-            fragmentProfileBinding.profileMainMenu.btnApplicationMenu.setOnClickListener(this)
-            fragmentProfileBinding.profileMainMenu.btnSettingsMenu.setOnClickListener(this)
-
-            //SignOut button
-            fragmentProfileBinding.btnSignOut.setOnClickListener(this)
+            fragmentProfileBinding.profileMainMenuSection.btnJobMenu.setOnClickListener(this)
+            fragmentProfileBinding.profileMainMenuSection.btnApplicationMenu.setOnClickListener(this)
+            fragmentProfileBinding.profileMainMenuSection.btnSettingsMenu.setOnClickListener(this)
         }
     }
 
     private fun populateData(recruiterProfile: RecruiterEntity) {
-        fragmentProfileBinding.tvRecruiterName.text = recruiterProfile.fullName
-        fragmentProfileBinding.tvEmail.text = recruiterProfile.email
+        fragmentProfileBinding.profileNameSection.tvRecruiterName.text = recruiterProfile.fullName
+        fragmentProfileBinding.profileNameSection.tvEmail.text = recruiterProfile.email
+        fragmentProfileBinding.profileNameSection.tvPhoneNumber.text = recruiterProfile.phoneNumber
+        fragmentProfileBinding.profileNameSection.tvAddress.text = recruiterProfile.address
+        fragmentProfileBinding.profileAboutMeSection.tvAboutMe.text = recruiterProfile.aboutMe
+        fragmentProfileBinding.profileAboutMeSection.tvAboutMe.setOnClickListener(tvAboutMeClickListener)
 
         if (recruiterProfile.imagePath != "-") {
             val storageRef = Firebase.storage.reference
@@ -83,7 +85,19 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 .transform(RoundedCorners(20))
                 .apply(RequestOptions.placeholderOf(circularProgressDrawable))
                 .error(R.drawable.ic_image_gray_24dp)
-                .into(fragmentProfileBinding.imgProfile)
+                .into(fragmentProfileBinding.profileNameSection.imgProfile)
+        }
+    }
+
+    private val tvAboutMeClickListener = View.OnClickListener {
+        isAboutMeExpanded = if (isAboutMeExpanded) {
+            //This will shrink textview to 2 lines if it is expanded.
+            fragmentProfileBinding.profileAboutMeSection.tvAboutMe.maxLines = 3
+            false
+        } else {
+            //This will expand the textview if it is of 2 lines
+            fragmentProfileBinding.profileAboutMeSection.tvAboutMe.maxLines = Integer.MAX_VALUE
+            true
         }
     }
 
@@ -97,9 +111,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
             R.id.btnSettingsMenu -> {
                 activity?.startActivity(Intent(activity, SettingsActivity::class.java))
-            }
-            R.id.btnSignOut -> {
-                LogoutDialog().show(parentFragmentManager, LogoutDialog::class.java.simpleName)
             }
         }
     }

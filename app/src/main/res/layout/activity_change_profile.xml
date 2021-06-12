@@ -124,6 +124,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAddress" />
 
+        <TextView
+            android:id="@+id/tvAboutMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/txt_about_me"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/etAboutMe"
+            app:layout_constraintTop_toBottomOf="@id/etAddress" />
+
+        <EditText
+            android:id="@+id/etAboutMe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/txt_about_me"
+            android:inputType="textCapSentences|textMultiLine"
+            android:paddingTop="@dimen/margin_16dp"
+            android:paddingBottom="@dimen/margin_16dp"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAboutMe" />
+
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
@@ -143,6 +173,6 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etAddress" />
+            app:layout_constraintTop_toBottomOf="@id/etAboutMe" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

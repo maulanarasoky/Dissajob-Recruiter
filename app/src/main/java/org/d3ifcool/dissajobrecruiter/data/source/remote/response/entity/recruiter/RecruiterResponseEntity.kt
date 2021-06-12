@@ -9,7 +9,8 @@ data class RecruiterResponseEntity(
     val lastName: String? = "-",
     val fullName: String? = "-",
     val email: String? = "-",
-    val address: String? = "-",
     val phoneNumber: String? = "-",
+    val address: String? = "-",
+    val aboutMe: String? = "-",
     val imagePath: String? = "-"
 )

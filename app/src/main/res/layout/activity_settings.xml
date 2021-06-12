@@ -22,7 +22,7 @@
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
         <include
-            android:id="@+id/profileSection"
+            android:id="@+id/settingsProfileSection"
             layout="@layout/settings_profile_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,14 +31,24 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <include
-            android:id="@+id/securitySection"
+            android:id="@+id/settingsSecuritySection"
             layout="@layout/settings_security_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profileSection" />
+            app:layout_constraintTop_toBottomOf="@id/settingsProfileSection" />
+
+        <include
+            android:id="@+id/settingsAdavanceSection"
+            layout="@layout/settings_advance_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settingsSecuritySection" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

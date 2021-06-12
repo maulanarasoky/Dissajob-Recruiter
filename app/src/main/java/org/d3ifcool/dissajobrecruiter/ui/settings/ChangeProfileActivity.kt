@@ -187,6 +187,11 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
                 getString(R.string.txt_error_form_text, "Alamat")
             return
         }
+        if (TextUtils.isEmpty(activityChangeProfileBinding.etAboutMe.text.toString().trim())) {
+            activityChangeProfileBinding.etAboutMe.error =
+                getString(R.string.txt_error_form_text, "Kolom")
+            return
+        }
 
         dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
         dialog.titleText = resources.getString(R.string.loading)
@@ -205,16 +210,18 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         val lastName = activityChangeProfileBinding.etLastName.text.toString().trim()
         val fullName = "$firstName $lastName"
         val email = recruiterData.email.toString()
-        val address = activityChangeProfileBinding.etAddress.text.toString().trim()
         val phoneNumber = recruiterData.phoneNumber.toString()
+        val address = activityChangeProfileBinding.etAddress.text.toString().trim()
+        val aboutMe = activityChangeProfileBinding.etAboutMe.text.toString().trim()
         val profileData = RecruiterResponseEntity(
             AuthHelper.currentUser?.uid.toString(),
             firstName,
             lastName,
             fullName,
             email,
-            address,
             phoneNumber,
+            address,
+            aboutMe,
             imageId
         )
 

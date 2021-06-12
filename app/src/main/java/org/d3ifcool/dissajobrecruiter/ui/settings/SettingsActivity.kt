@@ -1,13 +1,13 @@
 package org.d3ifcool.dissajobrecruiter.ui.settings
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivitySettingsBinding
+import org.d3ifcool.dissajobrecruiter.utils.SignOutDialog
 
 class SettingsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -24,12 +24,15 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         //Change profile section
-        activitySettingsBinding.profileSection.btnChangeProfile.setOnClickListener(this)
-        activitySettingsBinding.profileSection.btnChangePhoneNumber.setOnClickListener(this)
-        activitySettingsBinding.profileSection.btnChangeEmail.setOnClickListener(this)
+        activitySettingsBinding.settingsProfileSection.btnChangeProfile.setOnClickListener(this)
+        activitySettingsBinding.settingsProfileSection.btnChangePhoneNumber.setOnClickListener(this)
+        activitySettingsBinding.settingsProfileSection.btnChangeEmail.setOnClickListener(this)
 
         //Change password section
-        activitySettingsBinding.securitySection.btnChangePassword.setOnClickListener(this)
+        activitySettingsBinding.settingsSecuritySection.btnChangePassword.setOnClickListener(this)
+
+        //Advance section
+        activitySettingsBinding.settingsAdavanceSection.btnSignOut.setOnClickListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -44,18 +47,24 @@ class SettingsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnChangeProfile -> {
-                startActivity(Intent(this, ChangeProfileActivity::class.java))
-            }
-            R.id.btnChangePhoneNumber -> {
-                startActivity(Intent(this, ChangePhoneNumberActivity::class.java))
-            }
-            R.id.btnChangeEmail -> {
-                startActivity(Intent(this, ChangeEmailActivity::class.java))
-            }
-            R.id.btnChangePassword -> {
-                startActivity(Intent(this, ChangePasswordActivity::class.java))
-            }
+            R.id.btnChangeProfile -> startActivity(Intent(this, ChangeProfileActivity::class.java))
+            R.id.btnChangePhoneNumber -> startActivity(
+                Intent(
+                    this,
+                    ChangePhoneNumberActivity::class.java
+                )
+            )
+            R.id.btnChangeEmail -> startActivity(Intent(this, ChangeEmailActivity::class.java))
+            R.id.btnChangePassword -> startActivity(
+                Intent(
+                    this,
+                    ChangePasswordActivity::class.java
+                )
+            )
+            R.id.btnSignOut -> SignOutDialog().show(
+                supportFragmentManager,
+                SignOutDialog::class.java.simpleName
+            )
         }
     }
 }

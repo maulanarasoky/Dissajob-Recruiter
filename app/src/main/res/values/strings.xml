@@ -65,7 +65,7 @@
     <string name="txt_retype_password">Masukkan sekali lagi</string>
     <string name="password_confirm_password_not_match">Password tidak cocok</string>
     <string name="wrong_password">Password salah</string>
-    <string name="logout">Keluar</string>
+    <string name="txt_sign_out">Keluar</string>
     <string name="preview">Preview</string>
     <string name="txt_old_phone_number">Nomor lama</string>
     <string name="txt_new_phone_number">Nomor baru</string>
@@ -173,4 +173,6 @@
     <string name="txt_no_data">Tidak ada data</string>
 
     <string name="txt_applicant_profile">Profil pelamar</string>
+    <string name="txt_contact">Kontak</string>
+    <string name="txt_advance">Lanjutan</string>
 </resources>

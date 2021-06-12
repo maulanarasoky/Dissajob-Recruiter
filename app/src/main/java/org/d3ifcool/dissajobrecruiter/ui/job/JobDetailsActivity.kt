@@ -86,27 +86,20 @@ class JobDetailsActivity : AppCompatActivity(),
     }
 
     private fun populateData(jobDetails: JobDetailsEntity) {
+        getApplicationsByJob(jobDetails.id)
+
         //Title section
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobTitle.text =
             jobDetails.title
 
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobAddress.text =
-            jobDetails.address.toString()
+            jobDetails.address
 
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobType.text = resources.getString(
             R.string.txt_job_type_value,
             jobDetails.employment,
             jobDetails.type
         )
-
-        val postedDate = DateUtils.getPostedDate(jobDetails.postedDate)
-        getApplicationsByJob(jobDetails.id)
-        activityJobDetailsBinding.jobDetailsTitleSection.tvJobPostedDateAndApplicants.text =
-            resources.getString(
-                R.string.job_details_date_format,
-                postedDate,
-                applicationAdapter.itemCount
-            )
 
         //Description section
         activityJobDetailsBinding.jobDetailsDescriptionSection.tvDescription.text =
@@ -157,6 +150,12 @@ class JobDetailsActivity : AppCompatActivity(),
                             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility =
                                 View.VISIBLE
                         }
+                        activityJobDetailsBinding.jobDetailsTitleSection.tvJobPostedDateAndApplicants.text =
+                            resources.getString(
+                                R.string.job_details_date_format,
+                                DateUtils.getPostedDate(jobData.postedDate),
+                                applicationAdapter.itemCount
+                            )
                     }
                     Status.ERROR -> {
                         Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
