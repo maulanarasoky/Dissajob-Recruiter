@@ -54,12 +54,12 @@
         android:textColor="@color/text_color"
         android:textSize="15.5sp"
         app:layout_constraintBottom_toBottomOf="@id/imgApplicantMenu"
-        app:layout_constraintEnd_toStartOf="@id/btnApplicantMenu"
+        app:layout_constraintEnd_toStartOf="@id/btnApplicationMenu"
         app:layout_constraintStart_toEndOf="@id/imgApplicantMenu"
         app:layout_constraintTop_toTopOf="@id/imgApplicantMenu" />
 
     <ImageButton
-        android:id="@+id/btnApplicantMenu"
+        android:id="@+id/btnApplicationMenu"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:background="@drawable/bg_profile_menu_btn"

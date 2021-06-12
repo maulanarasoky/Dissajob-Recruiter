@@ -22,7 +22,7 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
 
     private lateinit var activityApplicationBinding: ActivityApplicationBinding
 
-    private lateinit var viewModel: ApplicantViewModel
+    private lateinit var applicantViewModel: ApplicantViewModel
 
     private lateinit var applicationAdapter: ApplicationAdapter
 
@@ -38,9 +38,11 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
 
         showLoading(true)
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
+        val applicationViewModel =
+            ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
+        applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
         applicationAdapter = ApplicationAdapter(this, this)
-        viewModel.getApplications().observe(this) { applicants ->
+        applicationViewModel.getApplications().observe(this) { applicants ->
             if (applicants != null) {
                 when (applicants.status) {
                     Status.LOADING -> showLoading(true)
@@ -87,9 +89,11 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         applicantId: String,
         callback: ApplicationAdapter.LoadApplicantDataCallback
     ) {
-        viewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
+        applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
             if (applicantDetails != null) {
-                callback.onGetApplicantDetails(applicantDetails.data!!)
+                if (applicantDetails.data != null) {
+                    callback.onGetApplicantDetails(applicantDetails.data)
+                }
             }
         }
     }

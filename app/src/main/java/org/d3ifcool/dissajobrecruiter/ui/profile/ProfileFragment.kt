@@ -60,7 +60,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
             //Main menu
             fragmentProfileBinding.profileMainMenu.btnJobMenu.setOnClickListener(this)
-            fragmentProfileBinding.profileMainMenu.btnApplicantMenu.setOnClickListener(this)
+            fragmentProfileBinding.profileMainMenu.btnApplicationMenu.setOnClickListener(this)
             fragmentProfileBinding.profileMainMenu.btnSettingsMenu.setOnClickListener(this)
 
             //SignOut button
@@ -89,7 +89,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnApplicantMenu -> {
+            R.id.btnApplicationMenu -> {
                 activity?.startActivity(Intent(activity, ApplicationActivity::class.java))
             }
             R.id.btnJobMenu -> {
