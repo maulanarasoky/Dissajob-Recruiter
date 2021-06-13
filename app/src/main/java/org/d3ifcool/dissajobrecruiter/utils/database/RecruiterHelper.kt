@@ -12,6 +12,7 @@ import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.RecruiterResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteRecruiterSource
+import org.d3ifcool.dissajobrecruiter.ui.profile.CheckRecruiterDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
@@ -101,6 +102,32 @@ object RecruiterHelper {
                         dataSnapshot.child("imagePath").value.toString()
                     )
                     callback.onRecruiterDataReceived(userProfile)
+                }
+            }
+
+        })
+    }
+
+    fun checkRecruiterData(
+        recruiterId: String,
+        callback: CheckRecruiterDataCallback
+    ) {
+        database.child(recruiterId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(dataSnapshot: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child("imagePath").value.toString() == "-" || dataSnapshot.child(
+                            "address"
+                        ).value.toString() == "-" || dataSnapshot.child("aboutMe").value.toString() == "-"
+                    ) {
+                        callback.profileDataNotAvailable()
+                    } else if (dataSnapshot.child("phoneNumber").value.toString() == "-") {
+                        callback.phoneNumberNotAvailable()
+                    } else {
+                        callback.allDataAvailable()
+                    }
                 }
             }
 

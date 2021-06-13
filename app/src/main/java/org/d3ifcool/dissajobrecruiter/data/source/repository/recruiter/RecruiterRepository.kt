@@ -8,6 +8,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalRecruiterSou
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.RecruiterResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteRecruiterSource
+import org.d3ifcool.dissajobrecruiter.ui.profile.CheckRecruiterDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
@@ -92,6 +93,10 @@ class RecruiterRepository private constructor(
             }
         }.asLiveData()
     }
+
+    override fun checkRecruiterData(recruiterId: String, callback: CheckRecruiterDataCallback) =
+        appExecutors.diskIO()
+            .execute { remoteRecruiterSource.checkRecruiterData(recruiterId, callback) }
 
     override fun uploadRecruiterProfilePicture(image: Uri, callback: UploadProfilePictureCallback) =
         appExecutors.diskIO()

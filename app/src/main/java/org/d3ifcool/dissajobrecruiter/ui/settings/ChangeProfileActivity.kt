@@ -100,6 +100,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
                             activityChangeProfileBinding.etFirstName.setText(profileData.data.firstName)
                             activityChangeProfileBinding.etLastName.setText(profileData.data.lastName)
                             activityChangeProfileBinding.etAddress.setText(profileData.data.address)
+                            activityChangeProfileBinding.etAboutMe.setText(profileData.data.aboutMe)
                         }
                         Status.ERROR -> {
                             Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
@@ -174,20 +175,19 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
                 getString(R.string.txt_error_form_text, "Nama depan")
             return
         }
-        if (TextUtils.isEmpty(activityChangeProfileBinding.etLastName.text.toString().trim())) {
-            activityChangeProfileBinding.etLastName.error =
-                getString(R.string.txt_error_form_text, "Nama belakang")
-            return
-        }
+
         if (TextUtils.isEmpty(
                 activityChangeProfileBinding.etAddress.text.toString().trim()
-            ) || activityChangeProfileBinding.etAddress.text.toString() == "-"
+            ) || activityChangeProfileBinding.etAddress.text.toString().trim() == "-"
         ) {
             activityChangeProfileBinding.etAddress.error =
                 getString(R.string.txt_error_form_text, "Alamat")
             return
         }
-        if (TextUtils.isEmpty(activityChangeProfileBinding.etAboutMe.text.toString().trim())) {
+        if (TextUtils.isEmpty(
+                activityChangeProfileBinding.etAboutMe.text.toString().trim()
+            ) || activityChangeProfileBinding.etAboutMe.text.toString().trim() == "-"
+        ) {
             activityChangeProfileBinding.etAboutMe.error =
                 getString(R.string.txt_error_form_text, "Kolom")
             return
@@ -201,7 +201,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         if (isUpdateImage) {
             viewModel.uploadRecruiterProfilePicture(image, this)
         } else {
-            updateUserProfile("-")
+            updateUserProfile(recruiterData.imagePath.toString())
         }
     }
 

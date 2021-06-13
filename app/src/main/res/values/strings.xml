@@ -175,4 +175,6 @@
     <string name="txt_applicant_profile">Profil pelamar</string>
     <string name="txt_contact">Kontak</string>
     <string name="txt_advance">Lanjutan</string>
+
+    <string name="txt_fill_all_data_alert">Silahkan untuk melengkapi data terlebih dahulu</string>
 </resources>

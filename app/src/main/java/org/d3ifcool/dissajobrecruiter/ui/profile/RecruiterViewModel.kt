@@ -13,6 +13,9 @@ class RecruiterViewModel(private val recruiterRepository: RecruiterRepository) :
     fun getRecruiterData(userId: String): LiveData<Resource<RecruiterEntity>> =
         recruiterRepository.getRecruiterData(userId)
 
+    fun checkRecruiterData(recruiterId: String, callback: CheckRecruiterDataCallback) =
+        recruiterRepository.checkRecruiterData(recruiterId, callback)
+
     fun updateRecruiterData(
         recruiterProfile: RecruiterResponseEntity,
         callback: UpdateProfileCallback

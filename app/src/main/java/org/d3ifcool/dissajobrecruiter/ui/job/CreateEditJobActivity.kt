@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -15,11 +16,16 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.Job
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityCreateEditJobBinding
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.CreateJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.UpdateJobCallback
+import org.d3ifcool.dissajobrecruiter.ui.profile.CheckRecruiterDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
+import org.d3ifcool.dissajobrecruiter.ui.settings.ChangePhoneNumberActivity
+import org.d3ifcool.dissajobrecruiter.ui.settings.ChangeProfileActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
+import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 
 class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJobCallback,
-    UpdateJobCallback, RadioGroup.OnCheckedChangeListener {
+    UpdateJobCallback, RadioGroup.OnCheckedChangeListener, CheckRecruiterDataCallback {
 
     companion object {
         const val JOB_EXTRA = "job_extra"
@@ -29,13 +35,17 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
 
     private lateinit var activityCreateEditJobBinding: ActivityCreateEditJobBinding
 
-    private lateinit var viewModel: JobViewModel
+    private lateinit var recruiterViewModel: RecruiterViewModel
+
+    private lateinit var jobViewModel: JobViewModel
 
     private lateinit var dialog: SweetAlertDialog
 
     private lateinit var jobId: String
 
     private lateinit var jobLastPostedDate: String
+
+    private var isBtnClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +69,8 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val factory = ViewModelFactory.getInstance(this)
-        viewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
+        recruiterViewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
+        jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
 
         dialog = SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE)
 
@@ -213,13 +224,20 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
             if (!job.isOpen) {
                 job.closedDate = currentDate
             }
-            viewModel.updateJob(job, this)
+            jobViewModel.updateJob(job, this)
         } else {
             job.isOpen = true
             job.postedDate = currentDate
-            viewModel.createJob(job, this)
+            jobViewModel.createJob(job, this)
         }
     }
+
+    private fun showToast() =
+        Toast.makeText(
+            this,
+            resources.getString(R.string.txt_fill_all_data_alert),
+            Toast.LENGTH_SHORT
+        ).show()
 
     override fun onSuccess() {
         dialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE)
@@ -258,7 +276,10 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btnSubmitJob -> formValidation()
+            R.id.btnSubmitJob -> {
+                isBtnClicked = true
+                recruiterViewModel.checkRecruiterData(AuthHelper.currentUser?.uid.toString(), this)
+            }
             R.id.etJobEmploymentType -> {
                 startActivityForResult(
                     Intent(
@@ -325,6 +346,29 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
                     )
                 )
             }
+        }
+    }
+
+    override fun allDataAvailable() {
+        if (isBtnClicked) {
+            isBtnClicked = false
+            formValidation()
+        }
+    }
+
+    override fun profileDataNotAvailable() {
+        if (isBtnClicked) {
+            isBtnClicked = false
+            showToast()
+            startActivity(Intent(this, ChangeProfileActivity::class.java))
+        }
+    }
+
+    override fun phoneNumberNotAvailable() {
+        if (isBtnClicked) {
+            isBtnClicked = false
+            showToast()
+            startActivity(Intent(this, ChangePhoneNumberActivity::class.java))
         }
     }
 }

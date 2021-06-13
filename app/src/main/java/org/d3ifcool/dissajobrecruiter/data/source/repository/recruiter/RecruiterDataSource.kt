@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.RecruiterEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.recruiter.RecruiterResponseEntity
+import org.d3ifcool.dissajobrecruiter.ui.profile.CheckRecruiterDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.resetpassword.ResetPasswordCallback
@@ -15,6 +16,7 @@ interface RecruiterDataSource {
     fun signUp(email: String, password: String, recruiter: RecruiterResponseEntity, callback: SignUpCallback)
     fun signIn(email: String, password: String, callback: SignInCallback)
     fun getRecruiterData(recruiterId: String): LiveData<Resource<RecruiterEntity>>
+    fun checkRecruiterData(recruiterId: String, callback: CheckRecruiterDataCallback)
     fun uploadRecruiterProfilePicture(image: Uri, callback: UploadProfilePictureCallback)
     fun updateRecruiterData(recruiterProfile: RecruiterResponseEntity, callback: UpdateProfileCallback)
     fun updateRecruiterEmail(recruiterId: String, newEmail: String, password: String, callback: UpdateProfileCallback)

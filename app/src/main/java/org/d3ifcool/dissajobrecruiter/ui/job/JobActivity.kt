@@ -11,14 +11,24 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityJobBinding
+import org.d3ifcool.dissajobrecruiter.ui.profile.CheckRecruiterDataCallback
+import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
+import org.d3ifcool.dissajobrecruiter.ui.settings.ChangePhoneNumberActivity
+import org.d3ifcool.dissajobrecruiter.ui.settings.ChangeProfileActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
+import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnClickListener {
+class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnClickListener,
+    CheckRecruiterDataCallback {
 
     private lateinit var activityJobBinding: ActivityJobBinding
 
+    private lateinit var recruiterViewModel: RecruiterViewModel
+
     private lateinit var jobAdapter: JobAdapter
+
+    private var isBtnClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +42,10 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
 
         showLoading(true)
         val factory = ViewModelFactory.getInstance(this)
-        val viewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
+        recruiterViewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
+        val jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
         jobAdapter = JobAdapter(this)
-        viewModel.getJobs().observe(this) { jobs ->
+        jobViewModel.getJobs().observe(this) { jobs ->
             if (jobs != null) {
                 when (jobs.status) {
                     Status.LOADING -> showLoading(true)
@@ -50,7 +61,7 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
                     }
                     Status.ERROR -> {
                         showLoading(false)
-                        Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
+                        showToast(R.string.txt_error_occurred)
                     }
                 }
             }
@@ -79,6 +90,9 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
         }
     }
 
+    private fun showToast(messageId: Int) =
+        Toast.makeText(this, resources.getString(messageId), Toast.LENGTH_LONG).show()
+
     override fun onItemClicked(jobId: String) {
         val intent = Intent(this, JobDetailsActivity::class.java)
         intent.putExtra(JobDetailsActivity.EXTRA_ID, jobId)
@@ -98,8 +112,35 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fabAddJob -> {
-                startActivity(Intent(this, CreateEditJobActivity::class.java))
+                isBtnClicked = true
+                recruiterViewModel.checkRecruiterData(
+                    AuthHelper.currentUser?.uid.toString(),
+                    this
+                )
             }
+        }
+    }
+
+    override fun allDataAvailable() {
+        if (isBtnClicked) {
+            isBtnClicked = false
+            startActivity(Intent(this, CreateEditJobActivity::class.java))
+        }
+    }
+
+    override fun profileDataNotAvailable() {
+        if (isBtnClicked) {
+            isBtnClicked = false
+            showToast(R.string.txt_fill_all_data_alert)
+            startActivity(Intent(this, ChangeProfileActivity::class.java))
+        }
+    }
+
+    override fun phoneNumberNotAvailable() {
+        if (isBtnClicked) {
+            isBtnClicked = false
+            showToast(R.string.txt_fill_all_data_alert)
+            startActivity(Intent(this, ChangePhoneNumberActivity::class.java))
         }
     }
 }
