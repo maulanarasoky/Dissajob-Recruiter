@@ -60,7 +60,7 @@ class JobAdapter(private val callback: ItemClickListener) : PagedListAdapter<Job
                     e.printStackTrace()
                 }
 
-                if (items.isOpen == true) {
+                if (items.isOpen) {
                     tvStatus.setBackgroundResource(R.drawable.bg_open_status)
                     tvStatus.text = itemView.resources.getText(R.string.open_status)
                 } else {

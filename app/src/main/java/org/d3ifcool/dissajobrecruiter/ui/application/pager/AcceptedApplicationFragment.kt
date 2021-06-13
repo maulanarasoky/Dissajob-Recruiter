@@ -11,19 +11,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentAcceptedApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class AcceptedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
-    OnApplicationClickCallback {
+    OnApplicationClickCallback, ApplicationAdapter.LoadJobDataCallback {
 
     private lateinit var fragmentAcceptedApplicationBinding: FragmentAcceptedApplicationBinding
+
+    private lateinit var jobViewModel: JobViewModel
 
     private lateinit var applicantViewModel: ApplicantViewModel
 
@@ -49,11 +53,11 @@ class AcceptedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
             showLoading(true)
             val factory = ViewModelFactory.getInstance(requireContext())
 
+            jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
             applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
-
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
-            applicationAdapter = ApplicationAdapter(this, this)
+            applicationAdapter = ApplicationAdapter(this, this, this)
             applicationViewModel.getAcceptedApplications()
                 .observe(viewLifecycleOwner) { applications ->
                     if (applications != null) {
@@ -116,6 +120,22 @@ class AcceptedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
     }
 
     override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
+    }
+
+    override fun onLoadJobDetailsCallback(
+        jobId: String,
+        callback: ApplicationAdapter.LoadJobDataCallback
+    ) {
+        jobViewModel.getJobDetails(jobId).observe(this) { jobDetails ->
+            if (jobDetails != null) {
+                if (jobDetails.data != null) {
+                    callback.onGetJobDetails(jobDetails.data)
+                }
+            }
+        }
+    }
+
+    override fun onGetJobDetails(jobDetails: JobDetailsEntity) {
     }
 
     override fun onItemClick(applicationId: String, jobId: String, applicantId: String) {

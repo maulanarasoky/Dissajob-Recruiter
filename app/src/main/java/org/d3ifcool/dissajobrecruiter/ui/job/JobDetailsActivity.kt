@@ -26,7 +26,8 @@ import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobDetailsActivity : AppCompatActivity(),
-    ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback {
+    ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback,
+    ApplicationAdapter.LoadJobDataCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -63,6 +64,7 @@ class JobDetailsActivity : AppCompatActivity(),
             val jobId = extras.getString(EXTRA_ID)
             if (jobId != null) {
                 showJobDetails(jobId)
+                getApplicationsByJob(jobId)
             }
         }
     }
@@ -86,8 +88,6 @@ class JobDetailsActivity : AppCompatActivity(),
     }
 
     private fun populateData(jobDetails: JobDetailsEntity) {
-        getApplicationsByJob(jobDetails.id)
-
         //Title section
         activityJobDetailsBinding.jobDetailsTitleSection.tvJobTitle.text =
             jobDetails.title
@@ -134,7 +134,7 @@ class JobDetailsActivity : AppCompatActivity(),
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
 
         applicationViewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
-        applicationAdapter = ApplicationAdapter(this, this)
+        applicationAdapter = ApplicationAdapter(this, this, this)
         applicationViewModel.getApplicationsByJob(jobId).observe(this) { applications ->
             if (applications.data != null) {
                 when (applications.status) {
@@ -214,20 +214,6 @@ class JobDetailsActivity : AppCompatActivity(),
         }
     }
 
-    override fun onLoadApplicantDetailsCallback(
-        applicantId: String,
-        callback: ApplicationAdapter.LoadApplicantDataCallback
-    ) {
-        applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
-            if (applicantDetails.data != null) {
-                callback.onGetApplicantDetails(applicantDetails.data)
-            }
-        }
-    }
-
-    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CreateEditJobActivity.REQUEST_UPDATE) {
@@ -254,6 +240,36 @@ class JobDetailsActivity : AppCompatActivity(),
             resources.getString(messageId),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onLoadApplicantDetailsCallback(
+        applicantId: String,
+        callback: ApplicationAdapter.LoadApplicantDataCallback
+    ) {
+        applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
+            if (applicantDetails.data != null) {
+                callback.onGetApplicantDetails(applicantDetails.data)
+            }
+        }
+    }
+
+    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
+    }
+
+    override fun onLoadJobDetailsCallback(
+        jobId: String,
+        callback: ApplicationAdapter.LoadJobDataCallback
+    ) {
+        jobViewModel.getJobDetails(jobId).observe(this) { jobDetails ->
+            if (jobDetails != null) {
+                if (jobDetails.data != null) {
+                    callback.onGetJobDetails(jobDetails.data)
+                }
+            }
+        }
+    }
+
+    override fun onGetJobDetails(jobDetails: JobDetailsEntity) {
     }
 
     override fun onItemClick(applicationId: String, jobId: String, applicantId: String) {

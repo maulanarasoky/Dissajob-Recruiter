@@ -11,16 +11,20 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplicantDataCallback,
-    View.OnClickListener, OnApplicationClickCallback {
+    View.OnClickListener, OnApplicationClickCallback, ApplicationAdapter.LoadJobDataCallback {
 
     private lateinit var activityApplicationBinding: ActivityApplicationBinding
+
+    private lateinit var jobViewModel: JobViewModel
 
     private lateinit var applicantViewModel: ApplicantViewModel
 
@@ -40,8 +44,9 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         val factory = ViewModelFactory.getInstance(this)
         val applicationViewModel =
             ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
+        jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
-        applicationAdapter = ApplicationAdapter(this, this)
+        applicationAdapter = ApplicationAdapter(this, this, this)
         applicationViewModel.getApplications().observe(this) { applicants ->
             if (applicants != null) {
                 when (applicants.status) {
@@ -85,23 +90,6 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         }
     }
 
-    override fun onLoadApplicantDetailsCallback(
-        applicantId: String,
-        callback: ApplicationAdapter.LoadApplicantDataCallback
-    ) {
-        applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
-            if (applicantDetails != null) {
-                if (applicantDetails.data != null) {
-                    callback.onGetApplicantDetails(applicantDetails.data)
-                }
-            }
-        }
-    }
-
-    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
-
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -116,6 +104,38 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         when (v?.id) {
             R.id.imgBackBtn -> finish()
         }
+    }
+
+    override fun onLoadApplicantDetailsCallback(
+        applicantId: String,
+        callback: ApplicationAdapter.LoadApplicantDataCallback
+    ) {
+        applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
+            if (applicantDetails != null) {
+                if (applicantDetails.data != null) {
+                    callback.onGetApplicantDetails(applicantDetails.data)
+                }
+            }
+        }
+    }
+
+    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
+    }
+
+    override fun onLoadJobDetailsCallback(
+        jobId: String,
+        callback: ApplicationAdapter.LoadJobDataCallback
+    ) {
+        jobViewModel.getJobDetails(jobId).observe(this) { jobDetails ->
+            if (jobDetails != null) {
+                if (jobDetails.data != null) {
+                    callback.onGetJobDetails(jobDetails.data)
+                }
+            }
+        }
+    }
+
+    override fun onGetJobDetails(jobDetails: JobDetailsEntity) {
     }
 
     override fun onItemClick(applicationId: String, jobId: String, applicantId: String) {
