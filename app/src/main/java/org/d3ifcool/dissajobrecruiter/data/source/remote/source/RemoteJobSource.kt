@@ -89,13 +89,13 @@ class RemoteJobSource private constructor(
     fun deleteJob(jobId: String, callback: DeleteJobCallback) {
         EspressoIdlingResource.increment()
         jobHelper.deleteJob(jobId, object : DeleteJobCallback {
-            override fun onDeleteSuccess() {
-                callback.onDeleteSuccess()
+            override fun onSuccessDeleteJob() {
+                callback.onSuccessDeleteJob()
                 EspressoIdlingResource.decrement()
             }
 
-            override fun onDeleteFailure(messageId: Int) {
-                callback.onDeleteFailure(messageId)
+            override fun onFailureDeleteJob(messageId: Int) {
+                callback.onFailureDeleteJob(messageId)
                 EspressoIdlingResource.decrement()
             }
         })

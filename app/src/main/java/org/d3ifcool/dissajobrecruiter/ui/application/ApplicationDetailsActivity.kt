@@ -130,21 +130,21 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
         interviewViewModel.getInterviewAnswers(applicationId).observe(this) { interview ->
             Log.d("INTERVIEW DATA", interview.toString())
-                if (interview.data != null) {
-                    when (interview.status) {
-                        Status.LOADING -> {
-                        }
-                        Status.SUCCESS -> populateInterviewData(
-                            interview.data.firstAnswer.toString(),
-                            interview.data.secondAnswer.toString(),
-                            interview.data.thirdAnswer.toString()
-                        )
-                        Status.ERROR -> {
-                            Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
-                        }
+            if (interview.data != null) {
+                when (interview.status) {
+                    Status.LOADING -> {
+                    }
+                    Status.SUCCESS -> populateInterviewData(
+                        interview.data.firstAnswer.toString(),
+                        interview.data.secondAnswer.toString(),
+                        interview.data.thirdAnswer.toString()
+                    )
+                    Status.ERROR -> {
+                        Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+        }
 
         activityApplicationDetailsBinding.applicantProfileSection.root.setOnClickListener(this)
         activityApplicationDetailsBinding.applicationDetailsSection.root.setOnClickListener(this)
@@ -176,6 +176,13 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun populateApplicationData(applyDate: String, status: String) {
+        if (status != "Waiting") {
+            activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
+            activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
+        } else {
+            activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = true
+            activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = true
+        }
 
         activityApplicationDetailsBinding.applicationDetailsSection.tvApplyDate.text = applyDate
 
@@ -237,7 +244,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
             resources.getString(R.string.txt_reject)
         }
 
-        isApplicationMarked = status == "Accepted"
+        isApplicationAccepted = status == "Accepted"
 
         dialog = SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
         dialog.titleText = resources.getString(R.string.txt_update_application_alert, dialogTitle)

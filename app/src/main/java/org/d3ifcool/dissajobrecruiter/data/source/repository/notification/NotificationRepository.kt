@@ -65,8 +65,7 @@ class NotificationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<NotificationEntity>?): Boolean =
-                networkCallback.hasConnectivity() && loadFromDB() != createCall()
-//                data == null || data.isEmpty()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<List<NotificationResponseEntity>>> =
                 remoteNotificationSource.getNotifications(

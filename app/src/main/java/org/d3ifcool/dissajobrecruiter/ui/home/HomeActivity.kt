@@ -48,23 +48,15 @@ class HomeActivity : AppCompatActivity() {
             if (bottomNavState != item.itemId) {
                 bottomNavState = item.itemId
                 when (item.itemId) {
-                    R.id.home -> {
-                        loadHomeFragment()
-                    }
-                    R.id.job -> {
-                        loadJobFragment()
-                    }
-                    R.id.notification -> {
-                        loadNotificationFragment()
-                    }
-                    R.id.profile -> {
-                        loadProfileFragment()
-                    }
+                    R.id.home -> loadHomeFragment()
+                    R.id.job -> loadJobFragment()
+                    R.id.notification -> loadNotificationFragment()
+                    R.id.profile -> loadProfileFragment()
                 }
             }
             true
         }
-        if (savedInstanceState == null || bottomNavState == 0) {
+        if (savedInstanceState == null && bottomNavState == 0) {
             activityHomeBinding.bottomNavigation.selectedItemId = R.id.home
         }
     }

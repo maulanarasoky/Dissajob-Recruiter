@@ -16,20 +16,20 @@ class LocalApplicationSource private constructor(
             INSTANCE ?: LocalApplicationSource(applicationDao)
     }
 
-    fun getApplications(): DataSource.Factory<Int, ApplicationEntity> =
-        mApplicationDao.getApplications()
+    fun getApplications(recruiterId: String): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getApplications(recruiterId)
 
     fun getApplicationById(applicationId: String): LiveData<ApplicationEntity> =
         mApplicationDao.getApplicationById(applicationId)
 
-    fun getAcceptedApplications(): DataSource.Factory<Int, ApplicationEntity> =
-        mApplicationDao.getApplicationsByStatus("Accepted")
+    fun getAcceptedApplications(recruiterId: String): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getApplicationsByStatus(recruiterId, "Accepted")
 
-    fun getRejectedApplications(): DataSource.Factory<Int, ApplicationEntity> =
-        mApplicationDao.getApplicationsByStatus("Rejected")
+    fun getRejectedApplications(recruiterId: String): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getApplicationsByStatus(recruiterId, "Rejected")
 
-    fun getMarkedApplications(): DataSource.Factory<Int, ApplicationEntity> =
-        mApplicationDao.getMarkedApplications()
+    fun getMarkedApplications(recruiterId: String): DataSource.Factory<Int, ApplicationEntity> =
+        mApplicationDao.getMarkedApplications(recruiterId)
 
     fun getApplicationsByJob(jobId: String): DataSource.Factory<Int, ApplicationEntity> =
         mApplicationDao.getApplicationsByJob(jobId)
@@ -39,6 +39,11 @@ class LocalApplicationSource private constructor(
 
     fun updateApplicationStatus(applicationId: String, status: String) =
         mApplicationDao.updateApplicationStatus(applicationId, status)
+
+    fun deleteApplicationsByJob(jobId: String) =
+        mApplicationDao.deleteApplicationsByJob(jobId)
+
+    fun deleteAllApplications() = mApplicationDao.deleteAllApplications()
 
     fun insertApplication(applications: List<ApplicationEntity>) =
         mApplicationDao.insertApplication(applications)

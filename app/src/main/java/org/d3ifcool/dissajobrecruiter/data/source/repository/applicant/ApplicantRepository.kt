@@ -49,14 +49,16 @@ class ApplicantRepository private constructor(
                 localApplicantSource.getApplicantDetails(applicantId)
 
             override fun shouldFetch(data: ApplicantEntity?): Boolean =
-                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<ApplicantResponseEntity>> =
-                remoteApplicantSource.getApplicantDetails(applicantId, object : LoadApplicantDetailsCallback {
-                    override fun onApplicantDetailsReceived(applicantDetailsResponse: ApplicantResponseEntity): ApplicantResponseEntity {
-                        return applicantDetailsResponse
-                    }
-                })
+                remoteApplicantSource.getApplicantDetails(
+                    applicantId,
+                    object : LoadApplicantDetailsCallback {
+                        override fun onApplicantDetailsReceived(applicantDetailsResponse: ApplicantResponseEntity): ApplicantResponseEntity {
+                            return applicantDetailsResponse
+                        }
+                    })
 
             public override fun saveCallResult(data: ApplicantResponseEntity) {
                 val applicant = ApplicantEntity(

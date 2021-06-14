@@ -10,17 +10,20 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.Appli
 
 @Dao
 interface ApplicationDao {
-    @Query("SELECT * FROM applications")
-    fun getApplications(): DataSource.Factory<Int, ApplicationEntity>
+    @Query("SELECT * FROM applications WHERE recruiter_id = :recruiterId")
+    fun getApplications(recruiterId: String): DataSource.Factory<Int, ApplicationEntity>
 
     @Query("SELECT * FROM applications WHERE id = :applicationId")
     fun getApplicationById(applicationId: String): LiveData<ApplicationEntity>
 
-    @Query("SELECT * FROM applications WHERE status = :status")
-    fun getApplicationsByStatus(status: String): DataSource.Factory<Int, ApplicationEntity>
+    @Query("SELECT * FROM applications WHERE recruiter_id = :recruiterId AND status = :status")
+    fun getApplicationsByStatus(
+        recruiterId: String,
+        status: String
+    ): DataSource.Factory<Int, ApplicationEntity>
 
-    @Query("SELECT * FROM applications WHERE is_marked = 1")
-    fun getMarkedApplications(): DataSource.Factory<Int, ApplicationEntity>
+    @Query("SELECT * FROM applications WHERE recruiter_id = :recruiterId AND is_marked = 1")
+    fun getMarkedApplications(recruiterId: String): DataSource.Factory<Int, ApplicationEntity>
 
     @Query("SELECT * FROM applications WHERE job_id = :jobId")
     fun getApplicationsByJob(jobId: String): DataSource.Factory<Int, ApplicationEntity>
@@ -30,6 +33,12 @@ interface ApplicationDao {
 
     @Query("UPDATE applications SET status = :status WHERE id = :applicationId")
     fun updateApplicationStatus(applicationId: String, status: String)
+
+    @Query("DELETE FROM applications WHERE job_id = :jobId")
+    fun deleteApplicationsByJob(jobId: String)
+
+    @Query("DELETE FROM applications")
+    fun deleteAllApplications()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertApplication(applicants: List<ApplicationEntity>)

@@ -28,6 +28,7 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
         val factory = ViewModelFactory.getInstance(this)
         viewModel = ViewModelProvider(this, factory)[SignUpViewModel::class.java]
         activitySignUpBinding.btnSignUp.setOnClickListener(this)
+        activitySignUpBinding.footer.btnSignIn.setOnClickListener(this)
     }
 
     private fun signUp(email: String, password: String) {
@@ -126,9 +127,8 @@ class SignUpActivity : AppCompatActivity(), SignUpCallback, View.OnClickListener
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.imgBackBtn -> finish()
-            R.id.btnSignIn -> finish()
             R.id.btnSignUp -> formValidation()
+            R.id.btnSignIn -> finish()
         }
     }
 }

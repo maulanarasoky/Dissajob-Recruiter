@@ -100,9 +100,9 @@ object JobHelper {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     dataSnapshot.ref.removeValue().addOnSuccessListener {
-                        callback.onDeleteSuccess()
+                        callback.onSuccessDeleteJob()
                     }.addOnFailureListener {
-                        callback.onDeleteFailure(R.string.failure_alert_delete_job)
+                        callback.onFailureDeleteJob(R.string.failure_alert_delete_job)
                     }
                 }
             }

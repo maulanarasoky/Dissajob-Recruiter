@@ -9,10 +9,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalApplicationS
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteApplicationSource
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadAllApplicationsCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.LoadApplicationDataCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationMarkCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationStatusCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.*
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
@@ -45,7 +42,7 @@ class ApplicationRepository private constructor(
             }
     }
 
-    override fun getApplications(): LiveData<Resource<PagedList<ApplicationEntity>>> {
+    override fun getApplications(recruiterId: String): LiveData<Resource<PagedList<ApplicationEntity>>> {
         return object :
             NetworkBoundResource<PagedList<ApplicationEntity>, List<ApplicationResponseEntity>>(
                 appExecutors
@@ -57,20 +54,22 @@ class ApplicationRepository private constructor(
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(
-                    localApplicationSource.getApplications(),
+                    localApplicationSource.getApplications(recruiterId),
                     config
                 ).build()
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
-                remoteApplicationSource.getAllApplications(object : LoadAllApplicationsCallback {
-                    override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
-                        return applicationsResponse
-                    }
-                })
+                remoteApplicationSource.getAllApplications(
+                    recruiterId,
+                    object : LoadAllApplicationsCallback {
+                        override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
+                            return applicationsResponse
+                        }
+                    })
 
             public override fun saveCallResult(data: List<ApplicationResponseEntity>) {
                 val applicationList = ArrayList<ApplicationEntity>()
@@ -82,11 +81,13 @@ class ApplicationRepository private constructor(
                         response.applyDate,
                         response.updatedDate,
                         response.status,
-                        response.isMarked
+                        response.isMarked,
+                        response.recruiterId
                     )
                     applicationList.add(application)
                 }
 
+                localApplicationSource.deleteAllApplications()
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
@@ -101,7 +102,7 @@ class ApplicationRepository private constructor(
                 localApplicationSource.getApplicationById(applicationId)
 
             override fun shouldFetch(data: ApplicationEntity?): Boolean =
-                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<ApplicationResponseEntity>> =
                 remoteApplicationSource.getApplicationById(
@@ -121,7 +122,8 @@ class ApplicationRepository private constructor(
                     data.applyDate,
                     data.updatedDate,
                     data.status,
-                    data.isMarked
+                    data.isMarked,
+                    data.recruiterId
                 )
                 applicationList.add(application)
                 localApplicationSource.insertApplication(applicationList)
@@ -129,7 +131,7 @@ class ApplicationRepository private constructor(
         }.asLiveData()
     }
 
-    override fun getAcceptedApplications(): LiveData<Resource<PagedList<ApplicationEntity>>> {
+    override fun getAcceptedApplications(recruiterId: String): LiveData<Resource<PagedList<ApplicationEntity>>> {
         return object :
             NetworkBoundResource<PagedList<ApplicationEntity>, List<ApplicationResponseEntity>>(
                 appExecutors
@@ -141,16 +143,66 @@ class ApplicationRepository private constructor(
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(
-                    localApplicationSource.getAcceptedApplications(),
+                    localApplicationSource.getAcceptedApplications(recruiterId),
                     config
                 ).build()
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
-                remoteApplicationSource.getAcceptedApplications(object :
+                remoteApplicationSource.getAcceptedApplications(
+                    recruiterId,
+                    object : LoadAllApplicationsCallback {
+                        override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
+                            return applicationsResponse
+                        }
+                    })
+
+            public override fun saveCallResult(data: List<ApplicationResponseEntity>) {
+                val applicationList = ArrayList<ApplicationEntity>()
+                for (response in data) {
+                    val application = ApplicationEntity(
+                        response.id,
+                        response.applicantId,
+                        response.jobId,
+                        response.applyDate,
+                        response.updatedDate,
+                        response.status,
+                        response.isMarked,
+                        response.recruiterId
+                    )
+                    applicationList.add(application)
+                }
+                localApplicationSource.deleteAllApplications()
+                localApplicationSource.insertApplication(applicationList)
+            }
+        }.asLiveData()
+    }
+
+    override fun getRejectedApplications(recruiterId: String): LiveData<Resource<PagedList<ApplicationEntity>>> {
+        return object :
+            NetworkBoundResource<PagedList<ApplicationEntity>, List<ApplicationResponseEntity>>(
+                appExecutors
+            ) {
+            public override fun loadFromDB(): LiveData<PagedList<ApplicationEntity>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+                return LivePagedListBuilder(
+                    localApplicationSource.getRejectedApplications(recruiterId),
+                    config
+                ).build()
+            }
+
+            override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
+                networkCallback.hasConnectivity()
+
+            public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
+                remoteApplicationSource.getRejectedApplications(recruiterId, object :
                     LoadAllApplicationsCallback {
                     override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
                         return applicationsResponse
@@ -167,17 +219,18 @@ class ApplicationRepository private constructor(
                         response.applyDate,
                         response.updatedDate,
                         response.status,
-                        response.isMarked
+                        response.isMarked,
+                        response.recruiterId
                     )
                     applicationList.add(application)
                 }
-
+                localApplicationSource.deleteAllApplications()
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
     }
 
-    override fun getRejectedApplications(): LiveData<Resource<PagedList<ApplicationEntity>>> {
+    override fun getMarkedApplications(recruiterId: String): LiveData<Resource<PagedList<ApplicationEntity>>> {
         return object :
             NetworkBoundResource<PagedList<ApplicationEntity>, List<ApplicationResponseEntity>>(
                 appExecutors
@@ -189,21 +242,22 @@ class ApplicationRepository private constructor(
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(
-                    localApplicationSource.getRejectedApplications(),
+                    localApplicationSource.getMarkedApplications(recruiterId),
                     config
                 ).build()
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity() && localApplicationSource.getRejectedApplications() != createCall()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
-                remoteApplicationSource.getRejectedApplications(object :
-                    LoadAllApplicationsCallback {
-                    override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
-                        return applicationsResponse
-                    }
-                })
+                remoteApplicationSource.getMarkedApplications(
+                    recruiterId,
+                    object : LoadAllApplicationsCallback {
+                        override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
+                            return applicationsResponse
+                        }
+                    })
 
             public override fun saveCallResult(data: List<ApplicationResponseEntity>) {
                 val applicationList = ArrayList<ApplicationEntity>()
@@ -215,58 +269,12 @@ class ApplicationRepository private constructor(
                         response.applyDate,
                         response.updatedDate,
                         response.status,
-                        response.isMarked
+                        response.isMarked,
+                        response.recruiterId
                     )
                     applicationList.add(application)
                 }
-
-                localApplicationSource.insertApplication(applicationList)
-            }
-        }.asLiveData()
-    }
-
-    override fun getMarkedApplications(): LiveData<Resource<PagedList<ApplicationEntity>>> {
-        return object :
-            NetworkBoundResource<PagedList<ApplicationEntity>, List<ApplicationResponseEntity>>(
-                appExecutors
-            ) {
-            public override fun loadFromDB(): LiveData<PagedList<ApplicationEntity>> {
-                val config = PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
-                    .setPageSize(4)
-                    .build()
-                return LivePagedListBuilder(
-                    localApplicationSource.getMarkedApplications(),
-                    config
-                ).build()
-            }
-
-            override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity() && localApplicationSource.getMarkedApplications() != createCall()
-
-            public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
-                remoteApplicationSource.getMarkedApplications(object : LoadAllApplicationsCallback {
-                    override fun onAllApplicationsReceived(applicationsResponse: List<ApplicationResponseEntity>): List<ApplicationResponseEntity> {
-                        return applicationsResponse
-                    }
-                })
-
-            public override fun saveCallResult(data: List<ApplicationResponseEntity>) {
-                val applicationList = ArrayList<ApplicationEntity>()
-                for (response in data) {
-                    val application = ApplicationEntity(
-                        response.id,
-                        response.applicantId,
-                        response.jobId,
-                        response.applyDate,
-                        response.updatedDate,
-                        response.status,
-                        response.isMarked
-                    )
-                    applicationList.add(application)
-                }
-
+                localApplicationSource.deleteAllApplications()
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
@@ -290,9 +298,7 @@ class ApplicationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity() && localApplicationSource.getApplicationsByJob(
-                    jobId
-                ) != createCall()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
                 remoteApplicationSource.getApplicationsByJob(
@@ -313,11 +319,12 @@ class ApplicationRepository private constructor(
                         response.applyDate,
                         response.updatedDate,
                         response.status,
-                        response.isMarked
+                        response.isMarked,
+                        response.recruiterId
                     )
                     applicationList.add(application)
                 }
-
+                localApplicationSource.deleteAllApplications()
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
@@ -340,4 +347,10 @@ class ApplicationRepository private constructor(
         localApplicationSource.updateApplicationStatus(applicationId, status)
         remoteApplicationSource.updateApplicationStatus(applicationId, status, callback)
     }
+
+    override fun deleteApplicationsByJob(jobId: String, callback: DeleteApplicationByJobCallback) =
+        appExecutors.diskIO().execute {
+            localApplicationSource.deleteApplicationsByJob(jobId)
+            remoteApplicationSource.deleteApplicationsByJob(jobId, callback)
+        }
 }

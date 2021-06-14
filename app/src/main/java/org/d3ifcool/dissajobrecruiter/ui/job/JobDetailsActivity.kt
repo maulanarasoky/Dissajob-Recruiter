@@ -19,6 +19,7 @@ import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.DeleteApplicationByJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
@@ -27,7 +28,7 @@ import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobDetailsActivity : AppCompatActivity(),
     ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback,
-    ApplicationAdapter.LoadJobDataCallback {
+    ApplicationAdapter.LoadJobDataCallback, DeleteApplicationByJobCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -224,7 +225,20 @@ class JobDetailsActivity : AppCompatActivity(),
         }
     }
 
-    override fun onDeleteSuccess() {
+    override fun onSuccessDeleteJob() {
+        applicationViewModel.deleteApplicationsByJob(jobData.id, this)
+    }
+
+    override fun onFailureDeleteJob(messageId: Int) {
+        dialog.dismissWithAnimation()
+        Toast.makeText(
+            this,
+            resources.getString(messageId),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun onSuccessDeleteApplications() {
         dialog.dismissWithAnimation()
         Toast.makeText(
             this,
@@ -234,7 +248,8 @@ class JobDetailsActivity : AppCompatActivity(),
         finish()
     }
 
-    override fun onDeleteFailure(messageId: Int) {
+    override fun onFailureDeleteApplications(messageId: Int) {
+        dialog.dismissWithAnimation()
         Toast.makeText(
             this,
             resources.getString(messageId),

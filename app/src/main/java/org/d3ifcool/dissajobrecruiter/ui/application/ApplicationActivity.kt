@@ -17,6 +17,7 @@ import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
+import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplicantDataCallback,
@@ -47,7 +48,7 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
         applicationAdapter = ApplicationAdapter(this, this, this)
-        applicationViewModel.getApplications().observe(this) { applicants ->
+        applicationViewModel.getApplications(AuthHelper.currentUser?.uid.toString()).observe(this) { applicants ->
             if (applicants != null) {
                 when (applicants.status) {
                     Status.LOADING -> showLoading(true)

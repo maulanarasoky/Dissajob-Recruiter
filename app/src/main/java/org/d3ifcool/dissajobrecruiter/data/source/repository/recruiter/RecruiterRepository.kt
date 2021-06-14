@@ -66,7 +66,7 @@ class RecruiterRepository private constructor(
                 localRecruiterSource.getRecruiterData(recruiterId)
 
             override fun shouldFetch(data: RecruiterEntity?): Boolean =
-                networkCallback.hasConnectivity() && loadFromDB() != createCall()
+                networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<RecruiterResponseEntity>> =
                 remoteRecruiterSource.getRecruiterData(

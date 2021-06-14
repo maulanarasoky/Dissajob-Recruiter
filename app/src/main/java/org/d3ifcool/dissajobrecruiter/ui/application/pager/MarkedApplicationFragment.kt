@@ -20,6 +20,7 @@ import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
+import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class MarkedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
@@ -58,7 +59,7 @@ class MarkedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDa
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
             applicationAdapter = ApplicationAdapter(this, this, this)
-            applicationViewModel.getMarkedApplications()
+            applicationViewModel.getMarkedApplications(AuthHelper.currentUser?.uid.toString())
                 .observe(viewLifecycleOwner) { applications ->
                     if (applications != null) {
                         when (applications.status) {
