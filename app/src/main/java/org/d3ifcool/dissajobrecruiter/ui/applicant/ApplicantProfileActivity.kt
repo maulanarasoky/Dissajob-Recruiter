@@ -115,12 +115,6 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
         with(activityApplicantProfileBinding.workExperienceSection.rvWorkExperience) {
             layoutManager = LinearLayoutManager(this@ApplicantProfileActivity)
             setHasFixedSize(true)
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@ApplicantProfileActivity,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
             adapter = experienceAdapter
         }
 
@@ -157,12 +151,6 @@ class ApplicantProfileActivity : AppCompatActivity(), View.OnClickListener {
         with(activityApplicantProfileBinding.educationalBackgroundSection.rvEducationalBackground) {
             layoutManager = LinearLayoutManager(this@ApplicantProfileActivity)
             setHasFixedSize(true)
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@ApplicantProfileActivity,
-                    DividerItemDecoration.VERTICAL
-                )
-            )
             adapter = educationAdapter
         }
 

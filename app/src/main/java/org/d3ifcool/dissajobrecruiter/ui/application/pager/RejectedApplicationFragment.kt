@@ -69,15 +69,14 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
                                 if (applications.data?.isNotEmpty() == true) {
                                     applicationAdapter.submitList(applications.data)
                                     applicationAdapter.notifyDataSetChanged()
-                                    fragmentRejectedApplicationBinding.tvNoData.visibility =
-                                        View.GONE
+                                    showRecyclerView(true)
                                 } else {
-                                    fragmentRejectedApplicationBinding.tvNoData.visibility =
-                                        View.VISIBLE
+                                    showRecyclerView(false)
                                 }
                             }
                             Status.ERROR -> {
                                 showLoading(false)
+                                showRecyclerView(false)
                                 Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -103,6 +102,16 @@ class RejectedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicant
             fragmentRejectedApplicationBinding.progressBar.visibility = View.VISIBLE
         } else {
             fragmentRejectedApplicationBinding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showRecyclerView(state: Boolean) {
+        if (state) {
+            fragmentRejectedApplicationBinding.rvApplication.visibility = View.VISIBLE
+            fragmentRejectedApplicationBinding.tvNoData.visibility = View.GONE
+        } else {
+            fragmentRejectedApplicationBinding.rvApplication.visibility = View.GONE
+            fragmentRejectedApplicationBinding.tvNoData.visibility = View.VISIBLE
         }
     }
 

@@ -22,8 +22,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEducationalBackground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/tvViewAllEducationalBackground"
+        android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvEducationalBackgroundTitle" />
@@ -53,27 +52,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvEducationalBackgroundTitle" />
-
-    <TextView
-        android:id="@+id/tvViewAllEducationalBackground"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_16dp"
-        android:layout_marginTop="@dimen/margin_8dp"
-        android:layout_marginEnd="@dimen/margin_16dp"
-        android:background="?attr/selectableItemBackground"
-        android:fontFamily="@font/roboto"
-        android:paddingStart="@dimen/margin_8dp"
-        android:paddingTop="@dimen/margin_16dp"
-        android:paddingEnd="@dimen/margin_8dp"
-        android:paddingBottom="@dimen/margin_16dp"
-        android:text="@string/txt_view_all"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rvEducationalBackground" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

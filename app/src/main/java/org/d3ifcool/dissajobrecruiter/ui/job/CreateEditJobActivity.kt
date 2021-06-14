@@ -187,7 +187,7 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
         val isOpenForDisability = activityCreateEditJobBinding.rbOpenForDisability.isChecked
 
         val additionalInformation = if (isOpenForDisability) {
-            activityCreateEditJobBinding.etAdditionalInformation.text.toString()
+            activityCreateEditJobBinding.etAdditionalInformation.text.toString().trim()
         } else {
             "-"
         }

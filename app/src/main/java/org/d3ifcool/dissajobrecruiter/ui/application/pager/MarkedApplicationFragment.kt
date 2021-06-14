@@ -69,15 +69,14 @@ class MarkedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDa
                                 if (applications.data?.isNotEmpty() == true) {
                                     applicationAdapter.submitList(applications.data)
                                     applicationAdapter.notifyDataSetChanged()
-                                    fragmentMarkedApplicationBinding.tvNoData.visibility =
-                                        View.GONE
+                                    showRecyclerView(true)
                                 } else {
-                                    fragmentMarkedApplicationBinding.tvNoData.visibility =
-                                        View.VISIBLE
+                                    showRecyclerView(false)
                                 }
                             }
                             Status.ERROR -> {
                                 showLoading(false)
+                                showRecyclerView(false)
                                 Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -103,6 +102,16 @@ class MarkedApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDa
             fragmentMarkedApplicationBinding.progressBar.visibility = View.VISIBLE
         } else {
             fragmentMarkedApplicationBinding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showRecyclerView(state: Boolean) {
+        if (state) {
+            fragmentMarkedApplicationBinding.rvApplication.visibility = View.VISIBLE
+            fragmentMarkedApplicationBinding.tvNoData.visibility = View.GONE
+        } else {
+            fragmentMarkedApplicationBinding.rvApplication.visibility = View.GONE
+            fragmentMarkedApplicationBinding.tvNoData.visibility = View.VISIBLE
         }
     }
 

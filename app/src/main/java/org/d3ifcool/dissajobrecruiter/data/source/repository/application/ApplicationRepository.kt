@@ -175,7 +175,6 @@ class ApplicationRepository private constructor(
                     )
                     applicationList.add(application)
                 }
-                localApplicationSource.deleteAllApplications()
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
@@ -224,7 +223,6 @@ class ApplicationRepository private constructor(
                     )
                     applicationList.add(application)
                 }
-                localApplicationSource.deleteAllApplications()
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
@@ -274,7 +272,6 @@ class ApplicationRepository private constructor(
                     )
                     applicationList.add(application)
                 }
-                localApplicationSource.deleteAllApplications()
                 localApplicationSource.insertApplication(applicationList)
             }
         }.asLiveData()
