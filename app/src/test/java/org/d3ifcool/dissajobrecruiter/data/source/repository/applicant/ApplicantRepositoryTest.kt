@@ -29,9 +29,9 @@ class ApplicantRepositoryTest {
     private val applicantData = ApplicantDummy.generateApplicantData()
 
     @Test
-    fun getApplicantData() {
-        val dataSourceFactory = MutableLiveData<ApplicantEntity>()
-        `when`(local.getApplicantDetails(applicantData.id)).thenReturn(dataSourceFactory)
+    fun getApplicantDataTest() {
+        val applicantLiveData = MutableLiveData<ApplicantEntity>()
+        `when`(local.getApplicantDetails(applicantData.id)).thenReturn(applicantLiveData)
         applicantRepository.getApplicantDetails(applicantData.id)
 
         val applicantEntity = Resource.success(ApplicantDummy.generateApplicantData())
