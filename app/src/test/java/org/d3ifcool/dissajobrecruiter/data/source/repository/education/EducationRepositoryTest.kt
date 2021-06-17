@@ -29,7 +29,7 @@ class EducationRepositoryTest {
     private val applicantData = ApplicantDummy.generateApplicantData()
 
     @Test
-    fun getEducationTest() {
+    fun getEducationsTest() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, EducationEntity>
         `when`(local.getApplicantEducations(applicantData.id)).thenReturn(dataSourceFactory)

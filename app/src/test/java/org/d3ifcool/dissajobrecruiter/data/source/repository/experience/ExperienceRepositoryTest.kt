@@ -1,27 +1,44 @@
 package org.d3ifcool.dissajobrecruiter.data.source.repository.experience
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import junit.framework.TestCase
-import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalEducationSource
+import androidx.paging.DataSource
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.experience.ExperienceEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalExperienceSource
-import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteEducationSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteExperienceSource
-import org.d3ifcool.dissajobrecruiter.data.source.repository.education.FakeEducationRepository
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
+import org.d3ifcool.dissajobrecruiter.utils.PagedListUtil
 import org.d3ifcool.dissajobrecruiter.utils.dummy.ApplicantDummy
-import org.d3ifcool.dissajobrecruiter.utils.dummy.EducationDummy
+import org.d3ifcool.dissajobrecruiter.utils.dummy.ExperienceDummy
+import org.d3ifcool.dissajobrecruiter.vo.Resource
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Rule
-import org.mockito.Mockito
+import org.junit.Test
+import org.mockito.Mockito.*
 
 class ExperienceRepositoryTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val remote = Mockito.mock(RemoteExperienceSource::class.java)
-    private val local = Mockito.mock(LocalExperienceSource::class.java)
-    private val appExecutors = Mockito.mock(AppExecutors::class.java)
+    private val remote = mock(RemoteExperienceSource::class.java)
+    private val local = mock(LocalExperienceSource::class.java)
+    private val appExecutors = mock(AppExecutors::class.java)
 
     private val experienceRepository = FakeExperienceRepository(remote, local, appExecutors)
-    private val experienceResponse = EducationDummy.generateEducationData()
+    private val experienceResponse = ExperienceDummy.generateExperienceData()
     private val applicantData = ApplicantDummy.generateApplicantData()
+
+    @Test
+    fun getExperiencesTest() {
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, ExperienceEntity>
+        `when`(local.getApplicantExperiences(applicantData.id)).thenReturn(dataSourceFactory)
+        experienceRepository.getApplicantExperiences(applicantData.id)
+
+        val experienceEntities =
+            Resource.success(PagedListUtil.mockPagedList(ExperienceDummy.generateExperienceData()))
+        verify(local).getApplicantExperiences(applicantData.id)
+        assertNotNull(experienceEntities.data)
+        assertEquals(experienceResponse.size.toLong(), experienceEntities.data?.size?.toLong())
+    }
 }

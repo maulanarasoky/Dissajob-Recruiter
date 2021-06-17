@@ -4,8 +4,8 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.education.Educati
 
 object EducationDummy {
     fun generateEducationData(): List<EducationEntity> {
-        val education = ArrayList<EducationEntity>()
-        education.add(
+        val educations = ArrayList<EducationEntity>()
+        educations.add(
             EducationEntity(
                 "-Mb1mBQLRsOzNWLVYX4s",
                 "Telkom University",
@@ -20,6 +20,6 @@ object EducationDummy {
             )
         )
 
-        return education
+        return educations
     }
 }
