@@ -72,6 +72,7 @@ class EducationRepository private constructor(
                     })
 
             public override fun saveCallResult(data: List<EducationResponseEntity>) {
+                localEducationSource.deleteAllApplicantEducations(applicantId)
                 val educationList = ArrayList<EducationEntity>()
                 for (response in data) {
                     val education = EducationEntity(
@@ -88,8 +89,6 @@ class EducationRepository private constructor(
                     )
                     educationList.add(education)
                 }
-
-                localEducationSource.deleteAllApplicantEducations(applicantId)
                 localEducationSource.insertApplicantEducations(educationList)
             }
         }.asLiveData()

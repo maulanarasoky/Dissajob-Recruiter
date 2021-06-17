@@ -22,13 +22,14 @@ import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.DeleteApplicationByJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteSavedJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobDetailsActivity : AppCompatActivity(),
     ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback,
-    ApplicationAdapter.LoadJobDataCallback, DeleteApplicationByJobCallback {
+    ApplicationAdapter.LoadJobDataCallback, DeleteApplicationByJobCallback, DeleteSavedJobCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -48,6 +49,8 @@ class JobDetailsActivity : AppCompatActivity(),
 
     private lateinit var dialog: SweetAlertDialog
 
+    private lateinit var jobId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityJobDetailsBinding = ActivityJobDetailsBinding.inflate(layoutInflater)
@@ -62,11 +65,9 @@ class JobDetailsActivity : AppCompatActivity(),
         if (extras != null) {
             val factory = ViewModelFactory.getInstance(this)
             jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
-            val jobId = extras.getString(EXTRA_ID)
-            if (jobId != null) {
-                showJobDetails(jobId)
-                getApplicationsByJob(jobId)
-            }
+            jobId = extras.getString(EXTRA_ID).toString()
+            showJobDetails(jobId)
+            getApplicationsByJob(jobId)
         }
     }
 
@@ -139,17 +140,15 @@ class JobDetailsActivity : AppCompatActivity(),
         applicationViewModel.getApplicationsByJob(jobId).observe(this) { applications ->
             if (applications.data != null) {
                 when (applications.status) {
-                    Status.LOADING -> {
-                    }
+                    Status.LOADING -> showLoading(true)
                     Status.SUCCESS -> {
+                        showLoading(false)
                         if (applications.data.isNotEmpty()) {
                             applicationAdapter.submitList(applications.data)
                             applicationAdapter.notifyDataSetChanged()
-                            activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility =
-                                View.GONE
+                            showRecyclerView(true)
                         } else {
-                            activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility =
-                                View.VISIBLE
+                            showRecyclerView(false)
                         }
                         activityJobDetailsBinding.jobDetailsTitleSection.tvJobPostedDateAndApplicants.text =
                             resources.getString(
@@ -159,6 +158,7 @@ class JobDetailsActivity : AppCompatActivity(),
                             )
                     }
                     Status.ERROR -> {
+                        showRecyclerView(false)
                         Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -175,6 +175,24 @@ class JobDetailsActivity : AppCompatActivity(),
                 )
             )
             adapter = applicationAdapter
+        }
+    }
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            activityJobDetailsBinding.jobDetailsApplicantsSection.progressBar.visibility = View.VISIBLE
+        } else {
+            activityJobDetailsBinding.jobDetailsApplicantsSection.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showRecyclerView(state: Boolean) {
+        if (state) {
+            activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility = View.VISIBLE
+            activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility = View.GONE
+        } else {
+            activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility = View.GONE
+            activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility = View.VISIBLE
         }
     }
 
@@ -226,10 +244,23 @@ class JobDetailsActivity : AppCompatActivity(),
     }
 
     override fun onSuccessDeleteJob() {
-        applicationViewModel.deleteApplicationsByJob(jobData.id, this)
+        jobViewModel.deleteSavedJobByJob(jobId, this)
     }
 
     override fun onFailureDeleteJob(messageId: Int) {
+        dialog.dismissWithAnimation()
+        Toast.makeText(
+            this,
+            resources.getString(messageId),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun onSuccessDeleteSavedJob() {
+        applicationViewModel.deleteApplicationsByJob(jobId, this)
+    }
+
+    override fun onFailureDeleteSavedJob(messageId: Int) {
         dialog.dismissWithAnimation()
         Toast.makeText(
             this,

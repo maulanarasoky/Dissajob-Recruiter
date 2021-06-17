@@ -60,6 +60,7 @@ class JobRepository private constructor(
                 })
 
             public override fun saveCallResult(data: List<JobResponseEntity>) {
+                localJobSource.deleteAllJobs()
                 val jobList = ArrayList<JobEntity>()
                 for (response in data) {
                     val job = JobEntity(
@@ -73,8 +74,6 @@ class JobRepository private constructor(
                     )
                     jobList.add(job)
                 }
-
-                localJobSource.deleteAllJobs()
                 localJobSource.insertJob(jobList)
             }
         }.asLiveData()
@@ -135,5 +134,10 @@ class JobRepository private constructor(
             remoteJobSource.deleteJob(jobId, callback)
             localJobSource.deleteJobItem(jobId)
             localJobSource.deleteJobDetails(jobId)
+        }
+
+    override fun deleteSavedJobByJob(jobId: String, callback: DeleteSavedJobCallback) =
+        appExecutors.diskIO().execute {
+            remoteJobSource.deleteSavedJobByJob(jobId, callback)
         }
 }

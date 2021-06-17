@@ -69,6 +69,7 @@ class MediaRepository private constructor(
                 })
 
             public override fun saveCallResult(data: List<MediaResponseEntity>) {
+                localMediaSource.deleteAllApplicantMedia(applicantId)
                 val mediaList = ArrayList<MediaEntity>()
                 for (response in data) {
                     val media = MediaEntity(
@@ -80,7 +81,6 @@ class MediaRepository private constructor(
                     )
                     mediaList.add(media)
                 }
-                localMediaSource.deleteAllApplicantMedia(applicantId)
                 localMediaSource.insertMedia(mediaList)
             }
         }.asLiveData()

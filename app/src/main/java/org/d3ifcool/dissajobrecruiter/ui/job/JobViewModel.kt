@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
-import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobRepository
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
+import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobRepository
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.CreateJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteSavedJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.UpdateJobCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
@@ -31,4 +32,9 @@ class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
         jobId: String,
         callback: DeleteJobCallback
     ) = jobRepository.deleteJob(jobId, callback)
+
+    fun deleteSavedJobByJob(
+        jobId: String,
+        callback: DeleteSavedJobCallback
+    ) = jobRepository.deleteSavedJobByJob(jobId, callback)
 }

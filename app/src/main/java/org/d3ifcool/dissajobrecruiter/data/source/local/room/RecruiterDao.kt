@@ -11,7 +11,4 @@ interface RecruiterDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecruiterData(recruiterProfile: RecruiterEntity)
-
-//    @Update
-//    fun updateUserProfile(userProfile: UserEntity)
 }

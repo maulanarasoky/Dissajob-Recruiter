@@ -11,36 +11,14 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.applica
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteApplicationSource
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.*
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
-import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
-class ApplicationRepository private constructor(
+class FakeApplicationRepository(
     private val remoteApplicationSource: RemoteApplicationSource,
     private val localApplicationSource: LocalApplicationSource,
-    private val appExecutors: AppExecutors,
-    private val networkCallback: NetworkStateCallback
+    private val appExecutors: AppExecutors
 ) :
     ApplicationDataSource {
-
-    companion object {
-        @Volatile
-        private var instance: ApplicationRepository? = null
-
-        fun getInstance(
-            remoteApplication: RemoteApplicationSource,
-            localApplication: LocalApplicationSource,
-            appExecutors: AppExecutors,
-            networkCallback: NetworkStateCallback
-        ): ApplicationRepository =
-            instance ?: synchronized(this) {
-                instance ?: ApplicationRepository(
-                    remoteApplication,
-                    localApplication,
-                    appExecutors,
-                    networkCallback
-                )
-            }
-    }
 
     override fun getApplications(recruiterId: String): LiveData<Resource<PagedList<ApplicationEntity>>> {
         return object :
@@ -60,7 +38,7 @@ class ApplicationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity()
+                data == null
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
                 remoteApplicationSource.getAllApplications(
@@ -101,7 +79,7 @@ class ApplicationRepository private constructor(
                 localApplicationSource.getApplicationById(applicationId)
 
             override fun shouldFetch(data: ApplicationEntity?): Boolean =
-                networkCallback.hasConnectivity()
+                data == null
 
             public override fun createCall(): LiveData<ApiResponse<ApplicationResponseEntity>> =
                 remoteApplicationSource.getApplicationById(
@@ -148,7 +126,7 @@ class ApplicationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity()
+                data == null
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
                 remoteApplicationSource.getAcceptedApplications(
@@ -197,7 +175,7 @@ class ApplicationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity()
+                data == null
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
                 remoteApplicationSource.getRejectedApplications(recruiterId, object :
@@ -245,7 +223,7 @@ class ApplicationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity()
+                data == null
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
                 remoteApplicationSource.getMarkedApplications(
@@ -294,7 +272,7 @@ class ApplicationRepository private constructor(
             }
 
             override fun shouldFetch(data: PagedList<ApplicationEntity>?): Boolean =
-                networkCallback.hasConnectivity()
+                data == null
 
             public override fun createCall(): LiveData<ApiResponse<List<ApplicationResponseEntity>>> =
                 remoteApplicationSource.getApplicationsByJob(

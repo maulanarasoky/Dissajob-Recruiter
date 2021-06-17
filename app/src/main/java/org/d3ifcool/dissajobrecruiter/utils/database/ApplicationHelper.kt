@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.utils.database
 
+import android.util.Log
 import com.google.firebase.database.*
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.application.ApplicationResponseEntity
@@ -133,7 +134,7 @@ object ApplicationHelper {
 
     fun getApplicationsByJob(jobId: String, callback: LoadAllApplicationsCallback) {
         database.orderByChild("jobId").equalTo(jobId)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     arrApplication.clear()
                     if (snapshot.exists()) {
@@ -207,17 +208,23 @@ object ApplicationHelper {
 
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        snapshot.children.forEachIndexed { index, data ->
+                        var index = 0
+                        for (data in snapshot.children) {
                             val removeChild = database.child(data.key.toString()).removeValue()
                                 .addOnFailureListener {
                                     callback.onFailureDeleteApplications(R.string.failure_alert_delete_job)
                                 }
-                            if (index.toLong() == snapshot.childrenCount) {
+
+                            index++
+
+                            if (index == snapshot.childrenCount.toInt()) {
                                 removeChild.addOnSuccessListener {
                                     callback.onSuccessDeleteApplications()
                                 }
                             }
                         }
+                    } else {
+                        callback.onSuccessDeleteApplications()
                     }
                 }
             })

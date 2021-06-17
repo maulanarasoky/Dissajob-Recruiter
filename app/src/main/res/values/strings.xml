@@ -25,7 +25,8 @@
     <string name="qualification">Kualifikasi</string>
     <string name="employment">Tipe pekerjaan</string>
     <string name="txt_industry">Industri</string>
-    <string name="salary">Gaji</string>
+    <string name="txt_salary_opsional">Gaji (opsional)</string>
+    <string name="txt_salary">Gaji (opsional)</string>
     <string name="publish">Tambahkan</string>
     <string name="create_job_title">Tambahkan pekerjaan</string>
     <string name="edit_job_title">Ubah pekerjaan</string>

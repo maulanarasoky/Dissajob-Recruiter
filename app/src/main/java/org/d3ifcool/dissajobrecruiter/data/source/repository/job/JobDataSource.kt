@@ -7,6 +7,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.CreateJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteSavedJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.UpdateJobCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
@@ -16,4 +17,5 @@ interface JobDataSource {
     fun createJob(jobResponse: JobDetailsResponseEntity, callback: CreateJobCallback)
     fun updateJob(jobResponse: JobDetailsResponseEntity, callback: UpdateJobCallback)
     fun deleteJob(jobId: String, callback: DeleteJobCallback)
+    fun deleteSavedJobByJob(jobId: String, callback: DeleteSavedJobCallback)
 }

@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         android:fontFamily="@font/roboto"
-        android:text="@string/salary"
+        android:text="@string/txt_salary"
         android:textColor="@color/gray"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"

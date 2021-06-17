@@ -100,4 +100,19 @@ class RemoteJobSource private constructor(
             }
         })
     }
+
+    fun deleteSavedJobByJob(jobId: String, callback: DeleteSavedJobCallback) {
+        EspressoIdlingResource.increment()
+        jobHelper.deleteSavedJobByJob(jobId, object : DeleteSavedJobCallback {
+            override fun onSuccessDeleteSavedJob() {
+                callback.onSuccessDeleteSavedJob()
+                EspressoIdlingResource.decrement()
+            }
+
+            override fun onFailureDeleteSavedJob(messageId: Int) {
+                callback.onFailureDeleteSavedJob(messageId)
+                EspressoIdlingResource.decrement()
+            }
+        })
+    }
 }

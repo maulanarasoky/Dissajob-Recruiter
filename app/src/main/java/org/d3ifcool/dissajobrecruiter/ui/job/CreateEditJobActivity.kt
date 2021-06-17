@@ -122,7 +122,7 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
     private fun formValidation() {
         if (TextUtils.isEmpty(activityCreateEditJobBinding.etJobTitle.text.toString().trim())) {
             activityCreateEditJobBinding.etJobTitle.error =
-                resources.getString(R.string.txt_edit_text_error_alert, "Title")
+                resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
             return
         }
 
@@ -131,13 +131,13 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
             )
         ) {
             activityCreateEditJobBinding.etJobDescription.error =
-                resources.getString(R.string.txt_edit_text_error_alert, "Deskripsi")
+                resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
             return
         }
 
         if (TextUtils.isEmpty(activityCreateEditJobBinding.etJobAddress.text.toString().trim())) {
             activityCreateEditJobBinding.etJobAddress.error =
-                resources.getString(R.string.txt_edit_text_error_alert, "Alamat")
+                resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
             return
         }
 
@@ -146,7 +146,34 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
             )
         ) {
             activityCreateEditJobBinding.etJobQualification.error =
-                resources.getString(R.string.txt_edit_text_error_alert, "Kualifikasi")
+                resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
+            return
+        }
+
+        if (TextUtils.isEmpty(
+                activityCreateEditJobBinding.etJobEmploymentType.text.toString().trim()
+            )
+        ) {
+            activityCreateEditJobBinding.etJobEmploymentType.error =
+                resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
+            return
+        }
+
+        if (TextUtils.isEmpty(
+                activityCreateEditJobBinding.etJobIndustryType.text.toString().trim()
+            )
+        ) {
+            activityCreateEditJobBinding.etJobIndustryType.error =
+                resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
+            return
+        }
+
+        if (TextUtils.isEmpty(
+                activityCreateEditJobBinding.etJobType.text.toString().trim()
+            )
+        ) {
+            activityCreateEditJobBinding.etJobType.error =
+                resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
             return
         }
 
@@ -156,7 +183,7 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
                 )
             ) {
                 activityCreateEditJobBinding.etAdditionalInformation.error =
-                    resources.getString(R.string.txt_edit_text_error_alert, "Data")
+                    resources.getString(R.string.txt_edit_text_error_alert, "Kolom")
                 return
             }
         }

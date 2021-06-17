@@ -1,5 +1,6 @@
 package org.d3ifcool.dissajobrecruiter.utils.database
 
+import android.util.Log
 import com.google.firebase.database.*
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
@@ -9,14 +10,15 @@ import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 
 object JobHelper {
 
-    private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("jobs")
+    private val jobDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("jobs")
+    private val savedJobDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("saved_job")
     private val arrJob: MutableList<JobResponseEntity> = mutableListOf()
 
     fun createJob(job: JobDetailsResponseEntity, callbackCreate: CreateJobCallback) {
-        val id = database.push().key
+        val id = jobDatabase.push().key
         job.id = id.toString()
         job.postedBy = AuthHelper.currentUser?.uid.toString()
-        database.child(job.id).setValue(job).addOnSuccessListener {
+        jobDatabase.child(job.id).setValue(job).addOnSuccessListener {
             callbackCreate.onSuccess()
         }.addOnFailureListener {
             callbackCreate.onFailure(R.string.failure_alert_create_job)
@@ -24,7 +26,7 @@ object JobHelper {
     }
 
     fun getJobs(callback: LoadJobsCallback) {
-        database.orderByChild("postedBy").equalTo(AuthHelper.currentUser?.uid.toString())
+        jobDatabase.orderByChild("postedBy").equalTo(AuthHelper.currentUser?.uid.toString())
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {
                 }
@@ -52,7 +54,7 @@ object JobHelper {
     }
 
     fun getJobDetails(jobId: String, callback: LoadJobDetailsCallback) {
-        database.child(jobId).addValueEventListener(object : ValueEventListener {
+        jobDatabase.child(jobId).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }
 
@@ -85,7 +87,7 @@ object JobHelper {
 
     fun updateJob(job: JobDetailsResponseEntity, callbackCreate: UpdateJobCallback) {
         job.postedBy = AuthHelper.currentUser?.uid.toString()
-        database.child(job.id).setValue(job).addOnSuccessListener {
+        jobDatabase.child(job.id).setValue(job).addOnSuccessListener {
             callbackCreate.onSuccess()
         }.addOnFailureListener {
             callbackCreate.onFailure(R.string.failure_alert_update_job)
@@ -93,7 +95,7 @@ object JobHelper {
     }
 
     fun deleteJob(jobId: String, callback: DeleteJobCallback) {
-        database.child(jobId).addValueEventListener(object : ValueEventListener {
+        jobDatabase.child(jobId).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }
 
@@ -108,5 +110,38 @@ object JobHelper {
             }
 
         })
+    }
+
+    fun deleteSavedJobByJob(
+        jobId: String,
+        callback: DeleteSavedJobCallback
+    ) {
+        savedJobDatabase.orderByChild("jobId").equalTo(jobId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        var index = 0
+                        for (data in snapshot.children) {
+                            val removeChild = savedJobDatabase.child(data.key.toString()).removeValue()
+                                .addOnFailureListener {
+                                    callback.onFailureDeleteSavedJob(R.string.failure_alert_delete_job)
+                                }
+
+                            index++
+
+                            if (index == snapshot.childrenCount.toInt()) {
+                                removeChild.addOnSuccessListener {
+                                    callback.onSuccessDeleteSavedJob()
+                                }
+                            }
+                        }
+                    } else {
+                        callback.onSuccessDeleteSavedJob()
+                    }
+                }
+            })
     }
 }
