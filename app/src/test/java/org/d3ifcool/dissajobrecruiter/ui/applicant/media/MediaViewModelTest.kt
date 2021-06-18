@@ -43,13 +43,13 @@ class MediaViewModelTest {
     }
 
     @Test
-    fun getMediaData() {
+    fun getMediaDataTest() {
         val dummyMedia = Resource.success(pagedList)
         `when`(dummyMedia.data?.size).thenReturn(1)
-        val educations = MutableLiveData<Resource<PagedList<MediaEntity>>>()
-        educations.value = dummyMedia
+        val media = MutableLiveData<Resource<PagedList<MediaEntity>>>()
+        media.value = dummyMedia
 
-        `when`(mediaRepository.getApplicantMedia(applicantData.id)).thenReturn(educations)
+        `when`(mediaRepository.getApplicantMedia(applicantData.id)).thenReturn(media)
         val mediaEntities = viewModel.getApplicantMedia(applicantData.id).value?.data
         verify(mediaRepository).getApplicantMedia(applicantData.id)
         assertNotNull(mediaEntities)

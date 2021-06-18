@@ -43,7 +43,7 @@ class EducationViewModelTest {
     }
 
     @Test
-    fun getEducationsData() {
+    fun getEducationsDataTest() {
         val dummyEducations = Resource.success(pagedList)
         `when`(dummyEducations.data?.size).thenReturn(1)
         val educations = MutableLiveData<Resource<PagedList<EducationEntity>>>()

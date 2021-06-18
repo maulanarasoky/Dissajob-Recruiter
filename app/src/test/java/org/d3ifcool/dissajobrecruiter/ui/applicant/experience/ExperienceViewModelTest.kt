@@ -43,13 +43,13 @@ class ExperienceViewModelTest {
     }
 
     @Test
-    fun getExperiencesData() {
+    fun getExperiencesDataTest() {
         val dummyExperiences = Resource.success(pagedList)
         `when`(dummyExperiences.data?.size).thenReturn(1)
-        val educations = MutableLiveData<Resource<PagedList<ExperienceEntity>>>()
-        educations.value = dummyExperiences
+        val experiences = MutableLiveData<Resource<PagedList<ExperienceEntity>>>()
+        experiences.value = dummyExperiences
 
-        `when`(experienceRepository.getApplicantExperiences(applicantData.id)).thenReturn(educations)
+        `when`(experienceRepository.getApplicantExperiences(applicantData.id)).thenReturn(experiences)
         val experienceEntities = viewModel.getApplicantExperiences(applicantData.id).value?.data
         verify(experienceRepository).getApplicantExperiences(applicantData.id)
         assertNotNull(experienceEntities)
