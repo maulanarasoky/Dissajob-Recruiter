@@ -12,7 +12,8 @@ object RecruiterDummy {
             "hahaboi02@gmail.com",
             "Jl. Telekomunikasi No 01",
             "-",
-            "-MZ42Vx55oXuKRp2pPL-"
+            "-MZ42Vx55oXuKRp2pPL-",
+            "-MZ42Vx55oXuKRp2pPL"
         )
 
         return recruiter
