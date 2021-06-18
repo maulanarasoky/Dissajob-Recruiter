@@ -49,27 +49,28 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
             recruiterViewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
             val jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
             jobAdapter = JobAdapter(this)
-            jobViewModel.getJobs().observe(viewLifecycleOwner) { jobs ->
-                if (jobs.data != null) {
-                    when (jobs.status) {
-                        Status.LOADING -> showLoading(true)
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            if (jobs.data.isNotEmpty()) {
-                                jobAdapter.submitList(jobs.data)
-                                jobAdapter.notifyDataSetChanged()
-                                fragmentJobBinding.tvNoData.visibility = View.GONE
-                            } else {
-                                fragmentJobBinding.tvNoData.visibility = View.VISIBLE
+            jobViewModel.getJobs(AuthHelper.currentUser?.uid.toString())
+                .observe(viewLifecycleOwner) { jobs ->
+                    if (jobs.data != null) {
+                        when (jobs.status) {
+                            Status.LOADING -> showLoading(true)
+                            Status.SUCCESS -> {
+                                showLoading(false)
+                                if (jobs.data.isNotEmpty()) {
+                                    jobAdapter.submitList(jobs.data)
+                                    jobAdapter.notifyDataSetChanged()
+                                    fragmentJobBinding.tvNoData.visibility = View.GONE
+                                } else {
+                                    fragmentJobBinding.tvNoData.visibility = View.VISIBLE
+                                }
                             }
-                        }
-                        Status.ERROR -> {
-                            showLoading(false)
-                            showToast(R.string.txt_error_occurred)
+                            Status.ERROR -> {
+                                showLoading(false)
+                                showToast(R.string.txt_error_occurred)
+                            }
                         }
                     }
                 }
-            }
         }
 
         with(fragmentJobBinding.rvJob) {

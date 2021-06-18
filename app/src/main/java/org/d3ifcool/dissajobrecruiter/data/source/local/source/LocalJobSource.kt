@@ -17,7 +17,8 @@ class LocalJobSource private constructor(
             INSTANCE ?: LocalJobSource(jobDao)
     }
 
-    fun getJobs(): DataSource.Factory<Int, JobEntity> = mJobDao.getJobs()
+    fun getJobs(recruiterId: String): DataSource.Factory<Int, JobEntity> =
+        mJobDao.getJobs(recruiterId)
 
     fun getJobDetails(jobId: String): LiveData<JobDetailsEntity> = mJobDao.getJobDetails(jobId)
 
@@ -29,5 +30,5 @@ class LocalJobSource private constructor(
 
     fun deleteJobDetails(jobId: String) = mJobDao.deleteJobDetails(jobId)
 
-    fun deleteAllJobs() = mJobDao.deleteAllJobs()
+    fun deleteAllJobs(recruiterId: String) = mJobDao.deleteAllJobs(recruiterId)
 }

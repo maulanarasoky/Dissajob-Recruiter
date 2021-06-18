@@ -25,8 +25,8 @@ object JobHelper {
         }
     }
 
-    fun getJobs(callback: LoadJobsCallback) {
-        jobDatabase.orderByChild("postedBy").equalTo(AuthHelper.currentUser?.uid.toString())
+    fun getJobs(recruiterId: String, callback: LoadJobsCallback) {
+        jobDatabase.orderByChild("postedBy").equalTo(recruiterId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(dataSnapshot: DatabaseError) {
                 }

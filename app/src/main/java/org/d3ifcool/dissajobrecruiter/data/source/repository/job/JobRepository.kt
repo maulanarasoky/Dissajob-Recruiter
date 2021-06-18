@@ -37,7 +37,7 @@ class JobRepository private constructor(
             }
     }
 
-    override fun getJobs(): LiveData<Resource<PagedList<JobEntity>>> {
+    override fun getJobs(recruiterId: String): LiveData<Resource<PagedList<JobEntity>>> {
         return object :
             NetworkBoundResource<PagedList<JobEntity>, List<JobResponseEntity>>(appExecutors) {
             public override fun loadFromDB(): LiveData<PagedList<JobEntity>> {
@@ -46,21 +46,21 @@ class JobRepository private constructor(
                     .setInitialLoadSizeHint(4)
                     .setPageSize(4)
                     .build()
-                return LivePagedListBuilder(localJobSource.getJobs(), config).build()
+                return LivePagedListBuilder(localJobSource.getJobs(recruiterId), config).build()
             }
 
             override fun shouldFetch(data: PagedList<JobEntity>?): Boolean =
                 networkCallback.hasConnectivity()
 
             public override fun createCall(): LiveData<ApiResponse<List<JobResponseEntity>>> =
-                remoteJobSource.getJobs(object : LoadJobsCallback {
+                remoteJobSource.getJobs(recruiterId, object : LoadJobsCallback {
                     override fun onAllJobsReceived(jobResponse: List<JobResponseEntity>): List<JobResponseEntity> {
                         return jobResponse
                     }
                 })
 
             public override fun saveCallResult(data: List<JobResponseEntity>) {
-                localJobSource.deleteAllJobs()
+                localJobSource.deleteAllJobs(recruiterId)
                 val jobList = ArrayList<JobEntity>()
                 for (response in data) {
                     val job = JobEntity(

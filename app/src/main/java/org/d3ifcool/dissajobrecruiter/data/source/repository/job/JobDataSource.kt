@@ -12,7 +12,7 @@ import org.d3ifcool.dissajobrecruiter.ui.job.callback.UpdateJobCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
 interface JobDataSource {
-    fun getJobs(): LiveData<Resource<PagedList<JobEntity>>>
+    fun getJobs(recruiterId: String): LiveData<Resource<PagedList<JobEntity>>>
     fun getJobDetails(jobId: String): LiveData<Resource<JobDetailsEntity>>
     fun createJob(jobResponse: JobDetailsResponseEntity, callback: CreateJobCallback)
     fun updateJob(jobResponse: JobDetailsResponseEntity, callback: UpdateJobCallback)

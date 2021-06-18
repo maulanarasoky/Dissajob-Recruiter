@@ -10,6 +10,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.PagedListUtil
 import org.d3ifcool.dissajobrecruiter.utils.dummy.JobDummy
+import org.d3ifcool.dissajobrecruiter.utils.dummy.RecruiterDummy
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -30,15 +31,17 @@ class JobRepositoryTest {
     private val jobResponse = JobDummy.generateJobsData()
     private val jobDetailsResponse = JobDummy.generateJobDetails()
 
+    private val recruiterData = RecruiterDummy.generateRecruiterDetails()
+
     @Test
     fun getJobsTest() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, JobEntity>
-        `when`(local.getJobs()).thenReturn(dataSourceFactory)
-        jobRepository.getJobs()
+        `when`(local.getJobs(recruiterData.id)).thenReturn(dataSourceFactory)
+        jobRepository.getJobs(recruiterData.id)
 
         val jobEntities = Resource.success(PagedListUtil.mockPagedList(JobDummy.generateJobsData()))
-        verify(local).getJobs()
+        verify(local).getJobs(recruiterData.id)
         assertNotNull(jobEntities.data)
         assertEquals(jobResponse.size.toLong(), jobEntities.data?.size?.toLong())
     }

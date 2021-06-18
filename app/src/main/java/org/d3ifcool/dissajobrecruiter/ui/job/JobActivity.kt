@@ -45,7 +45,7 @@ class JobActivity : AppCompatActivity(), JobAdapter.ItemClickListener, View.OnCl
         recruiterViewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
         val jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
         jobAdapter = JobAdapter(this)
-        jobViewModel.getJobs().observe(this) { jobs ->
+        jobViewModel.getJobs(AuthHelper.currentUser?.uid.toString()).observe(this) { jobs ->
             if (jobs != null) {
                 when (jobs.status) {
                     Status.LOADING -> showLoading(true)

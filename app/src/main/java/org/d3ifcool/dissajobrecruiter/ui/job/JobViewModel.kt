@@ -14,7 +14,9 @@ import org.d3ifcool.dissajobrecruiter.ui.job.callback.UpdateJobCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
 
 class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
-    fun getJobs(): LiveData<Resource<PagedList<JobEntity>>> = jobRepository.getJobs()
+    fun getJobs(recruiterId: String): LiveData<Resource<PagedList<JobEntity>>> =
+        jobRepository.getJobs(recruiterId)
+
     fun getJobDetails(jobId: String): LiveData<Resource<JobDetailsEntity>> =
         jobRepository.getJobDetails(jobId)
 
