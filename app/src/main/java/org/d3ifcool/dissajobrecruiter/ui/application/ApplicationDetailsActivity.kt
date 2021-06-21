@@ -274,8 +274,6 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         if (state) {
             menu.getItem(0).icon =
                 ContextCompat.getDrawable(this, R.drawable.ic_mark_color_primary_24dp)
-
-            showToast(resources.getString(R.string.txt_mark_application))
         } else {
             menu.getItem(0).icon = ContextCompat.getDrawable(this, R.drawable.ic_mark_black_24dp)
         }
@@ -342,6 +340,9 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
     override fun onSuccessUpdateMark() {
         isApplicationMarked = !isApplicationMarked
         changeMarkIcon(isApplicationMarked)
+        if (isApplicationMarked) {
+            showToast(resources.getString(R.string.txt_mark_application))
+        }
     }
 
     override fun onFailureUpdateMark(messageId: Int) {

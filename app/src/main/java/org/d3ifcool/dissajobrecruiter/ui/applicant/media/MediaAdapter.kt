@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.media.MediaEntity
 import org.d3ifcool.dissajobrecruiter.databinding.MediaItemBinding
 
-class MediaAdapter(private val loadPdfCallback: LoadPdfCallback) :
+class MediaAdapter(
+    private val loadPdfCallback: LoadPdfCallback,
+    private val onItemClickCallback: OnMediaItemClickListener
+) :
     PagedListAdapter<MediaEntity, MediaAdapter.MediaViewHolder>(DIFF_CALLBACK) {
 
     companion object {
@@ -55,13 +58,11 @@ class MediaAdapter(private val loadPdfCallback: LoadPdfCallback) :
 
                     override fun onPdfDataReceived(mediaFile: ByteArray) {
                         progressBar.visibility = View.GONE
-                        imgDownloadMedia.visibility = View.VISIBLE
 
                         pdfViewer.fromBytes(mediaFile)
                             .enableSwipe(true)
                             .swipeHorizontal(true)
                             .load()
-
 
                     }
                 })
@@ -70,6 +71,10 @@ class MediaAdapter(private val loadPdfCallback: LoadPdfCallback) :
                 if (items.mediaDescription.toString() != "-") {
                     tvMediaDescription.visibility = View.VISIBLE
                     tvMediaDescription.text = items.mediaDescription.toString()
+                }
+
+                itemView.setOnClickListener {
+                    onItemClickCallback.onItemClick(items.fileId, items.mediaName)
                 }
             }
         }

@@ -8,12 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.rajat.pdfviewer.PdfViewerActivity
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicantMediaBinding
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class ApplicantMediaActivity : AppCompatActivity(), LoadPdfCallback {
+class ApplicantMediaActivity : AppCompatActivity(), LoadPdfCallback, OnMediaItemClickListener {
 
     companion object {
         const val APPLICANT_ID = "applicant_id"
@@ -26,6 +29,8 @@ class ApplicantMediaActivity : AppCompatActivity(), LoadPdfCallback {
     private lateinit var mediaAdapter: MediaAdapter
 
     private lateinit var applicantId: String
+
+    private val storageRef = Firebase.storage.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +50,7 @@ class ApplicantMediaActivity : AppCompatActivity(), LoadPdfCallback {
         applicantId = intent.getStringExtra(APPLICANT_ID).toString()
         val factory = ViewModelFactory.getInstance(this)
         mediaViewModel = ViewModelProvider(this, factory)[MediaViewModel::class.java]
-        mediaAdapter = MediaAdapter(this)
+        mediaAdapter = MediaAdapter(this, this)
         mediaViewModel.getApplicantMedia(applicantId)
             .observe(this) { mediaFiles ->
                 if (mediaFiles != null) {
@@ -118,6 +123,22 @@ class ApplicantMediaActivity : AppCompatActivity(), LoadPdfCallback {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onItemClick(fileId: String, mediaName: String) {
+        storageRef.child("applicant/media/$fileId").downloadUrl.addOnSuccessListener {
+            startActivity(
+                PdfViewerActivity.launchPdfFromUrl(
+                    this,
+                    it.toString(),
+                    mediaName,
+                    "/dissajob/media",
+                    enableDownload = true
+                )
+            )
+        }.addOnFailureListener {
+            showErrorToast()
         }
     }
 }
