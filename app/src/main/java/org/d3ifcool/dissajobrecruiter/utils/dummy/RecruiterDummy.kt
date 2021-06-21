@@ -4,7 +4,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.Recruit
 
 object RecruiterDummy {
     fun generateRecruiterDetails(): RecruiterEntity {
-        val recruiter = RecruiterEntity(
+        return RecruiterEntity(
             "RT7zlmPyqte9uhi6W9zoNh3i88E2",
             "Telkom",
             "University",
@@ -15,7 +15,5 @@ object RecruiterDummy {
             "-MZ42Vx55oXuKRp2pPL-",
             "-MZ42Vx55oXuKRp2pPL"
         )
-
-        return recruiter
     }
 }

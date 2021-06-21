@@ -51,6 +51,8 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     private lateinit var dialog: SweetAlertDialog
 
+    private lateinit var menu: Menu
+
     private lateinit var applicationId: String
     private lateinit var applicantId: String
     private lateinit var jobId: String
@@ -102,10 +104,14 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     when (application.status) {
                         Status.LOADING -> {
                         }
-                        Status.SUCCESS -> populateApplicationData(
-                            application.data.applyDate.toString(),
-                            application.data.status.toString()
-                        )
+                        Status.SUCCESS -> {
+                            isApplicationMarked = application.data.isMarked.toString().toBoolean()
+                            changeMarkIcon(isApplicationMarked)
+                            populateApplicationData(
+                                application.data.applyDate.toString(),
+                                application.data.status.toString()
+                            )
+                        }
                         Status.ERROR -> {
                             Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
                         }
@@ -227,10 +233,6 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         activityApplicationDetailsBinding.additionalInformationSection.etThirdQuestion.setText(
             thirdAnswer
         )
-
-        Log.d("DATA INTERVIEW", firstAnswer)
-        Log.d("DATA INTERVIEW", secondAnswer)
-        Log.d("DATA INTERVIEW", thirdAnswer)
     }
 
     private fun updateApplicationMark() {
@@ -268,6 +270,17 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
+    private fun changeMarkIcon(state: Boolean) {
+        if (state) {
+            menu.getItem(0).icon =
+                ContextCompat.getDrawable(this, R.drawable.ic_mark_color_primary_24dp)
+
+            showToast(resources.getString(R.string.txt_mark_application))
+        } else {
+            menu.getItem(0).icon = ContextCompat.getDrawable(this, R.drawable.ic_mark_black_24dp)
+        }
+    }
+
     override fun onSuccessUpdateStatus() {
         dialog.dismissWithAnimation()
         if (isApplicationAccepted) {
@@ -288,6 +301,9 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.application_details_menu, menu)
+        if (menu != null) {
+            this.menu = menu
+        }
         return true
     }
 
@@ -325,7 +341,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onSuccessUpdateMark() {
         isApplicationMarked = !isApplicationMarked
-        showToast(resources.getString(R.string.txt_mark_application))
+        changeMarkIcon(isApplicationMarked)
     }
 
     override fun onFailureUpdateMark(messageId: Int) {

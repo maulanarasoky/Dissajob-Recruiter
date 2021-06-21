@@ -330,7 +330,7 @@ class ApplicationRepository private constructor(
         isMarked: Boolean,
         callback: UpdateApplicationMarkCallback
     ) = appExecutors.diskIO().execute {
-        localApplicationSource.updateApplicationMark(applicationId, isMarked)
+//        localApplicationSource.updateApplicationMark(applicationId, isMarked)
         remoteApplicationSource.updateApplicationMark(applicationId, isMarked, callback)
     }
 
