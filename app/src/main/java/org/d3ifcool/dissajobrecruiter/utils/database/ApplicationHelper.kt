@@ -32,8 +32,8 @@ object ApplicationHelper {
                             )
                             arrApplication.add(application)
                         }
-                        callback.onAllApplicationsReceived(arrApplication)
                     }
+                    callback.onAllApplicationsReceived(arrApplication)
                 }
 
                 override fun onCancelled(dataSnapshot: DatabaseError) {

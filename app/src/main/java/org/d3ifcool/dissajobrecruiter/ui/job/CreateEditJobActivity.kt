@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
@@ -21,7 +22,6 @@ import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.settings.ChangePhoneNumberActivity
 import org.d3ifcool.dissajobrecruiter.ui.settings.ChangeProfileActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 
 class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJobCallback,
@@ -46,6 +46,8 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
     private lateinit var jobLastPostedDate: String
 
     private var isBtnClicked = false
+
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -231,7 +233,7 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
             industry,
             type,
             salary,
-            postedBy = "",
+            recruiterId,
             currentDate,
             "-",
             "-",
@@ -305,7 +307,7 @@ class CreateEditJobActivity : AppCompatActivity(), View.OnClickListener, CreateJ
         when (v?.id) {
             R.id.btnSubmitJob -> {
                 isBtnClicked = true
-                recruiterViewModel.checkRecruiterData(AuthHelper.currentUser?.uid.toString(), this)
+                recruiterViewModel.checkRecruiterData(recruiterId, this)
             }
             R.id.etJobEmploymentType -> {
                 startActivityForResult(

@@ -1,4 +1,4 @@
-package org.d3ifcool.dissajobrecruiter.ui.application
+package org.d3ifcool.dissajobrecruiter.ui.notification
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,33 +13,29 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
-import org.d3ifcool.dissajobrecruiter.databinding.ApplicationItemBinding
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.notification.NotificationEntity
+import org.d3ifcool.dissajobrecruiter.databinding.NotificationItemBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.LoadApplicantDataCallback
-import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
-import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 
-class ApplicationAdapter(
-    private val onItemClickCallback: OnApplicationClickCallback,
-    private val loadApplicantDataCallback: LoadApplicantDataCallback,
-    private val loadJobDataCallback: LoadJobDataCallback
+class NotificationAdapter(
+    private val onItemClickCallback: OnNotificationClickCallback,
+    private val loadApplicantDataCallback: LoadApplicantDataCallback
 ) :
-    PagedListAdapter<ApplicationEntity, ApplicationAdapter.ApplicationViewHolder>(DIFF_CALLBACK) {
+    PagedListAdapter<NotificationEntity, NotificationAdapter.NotificationViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ApplicationEntity>() {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NotificationEntity>() {
             override fun areItemsTheSame(
-                oldItem: ApplicationEntity,
-                newItem: ApplicationEntity
+                oldItem: NotificationEntity,
+                newItem: NotificationEntity
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: ApplicationEntity,
-                newItem: ApplicationEntity
+                oldItem: NotificationEntity,
+                newItem: NotificationEntity
             ): Boolean {
                 return oldItem == newItem
             }
@@ -47,32 +43,28 @@ class ApplicationAdapter(
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApplicationViewHolder {
-        val itemsApplicationBinding =
-            ApplicationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ApplicationViewHolder(itemsApplicationBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
+        val itemsNotificationBinding =
+            NotificationItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return NotificationViewHolder(itemsNotificationBinding)
     }
 
-    override fun onBindViewHolder(holder: ApplicationViewHolder, position: Int) {
-        val job = getItem(position)
-        if (job != null) {
-            holder.bindItem(job)
+    override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
+        val notification = getItem(position)
+        if (notification != null) {
+            holder.bindItem(notification)
         }
     }
 
-    inner class ApplicationViewHolder(private val binding: ApplicationItemBinding) :
+    inner class NotificationViewHolder(private val binding: NotificationItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindItem(items: ApplicationEntity) {
+        fun bindItem(items: NotificationEntity) {
             with(binding) {
-                tvStatus.text = items.status
-                tvPostedDate.text = DateUtils.getPostedDate(items.applyDate.toString())
-
                 loadApplicantData(items.applicantId)
-                loadJobData(items.jobId)
-
-                itemView.setOnClickListener {
+                tvNotificationDate.text = DateUtils.getPostedDate(items.notificationDate.toString())
+                btnViewApplication.setOnClickListener {
                     onItemClickCallback.onItemClick(
-                        items.id,
+                        items.applicationId,
                         items.jobId,
                         items.applicantId
                     )
@@ -93,8 +85,10 @@ class ApplicationAdapter(
 
                     override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
                         with(binding) {
-                            tvApplicantName.text = applicantDetails.fullName
-
+                            tvNotificationTitle.text = itemView.resources.getString(
+                                R.string.txt_notification_title,
+                                applicantDetails.fullName
+                            )
 
                             if (applicantDetails.imagePath != "-") {
                                 val storageRef = Firebase.storage.reference
@@ -113,23 +107,6 @@ class ApplicationAdapter(
                         }
                     }
                 })
-        }
-
-        private fun loadJobData(jobId: String) {
-            loadJobDataCallback.onLoadJobDetailsCallback(jobId, object : LoadJobDataCallback {
-                override fun onLoadJobDetailsCallback(
-                    jobId: String,
-                    callback: LoadJobDataCallback
-                ) {
-                }
-
-                override fun onGetJobDetails(jobDetails: JobDetailsEntity) {
-                    with(binding) {
-                        tvApplyAs.text =
-                            itemView.resources.getString(R.string.txt_apply_as, jobDetails.title)
-                    }
-                }
-            })
         }
     }
 }

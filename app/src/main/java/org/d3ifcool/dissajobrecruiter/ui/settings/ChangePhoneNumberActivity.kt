@@ -1,19 +1,19 @@
 package org.d3ifcool.dissajobrecruiter.ui.settings
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangePhoneNumberBinding
 import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 import java.util.regex.Pattern
 
@@ -25,12 +25,15 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
 
     private lateinit var dialog: SweetAlertDialog
 
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityChangePhoneNumberBinding = ActivityChangePhoneNumberBinding.inflate(layoutInflater)
         setContentView(activityChangePhoneNumberBinding.root)
 
-        activityChangePhoneNumberBinding.toolbar.title = resources.getString(R.string.change_phone_number_title)
+        activityChangePhoneNumberBinding.toolbar.title =
+            resources.getString(R.string.change_phone_number_title)
         setSupportActionBar(activityChangePhoneNumberBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -44,40 +47,56 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
     }
 
     private fun showCurrentPhoneNumber() {
-        viewModel.getRecruiterData(AuthHelper.currentUser?.uid.toString()).observe(this@ChangePhoneNumberActivity) { profileData ->
-            if (profileData.data != null) {
-                when (profileData.status) {
-                    Status.LOADING -> {}
-                    Status.SUCCESS -> {
-                        if (profileData.data.phoneNumber != "-") {
-                            activityChangePhoneNumberBinding.textInputOldPhoneNumber.visibility = View.VISIBLE
-                            activityChangePhoneNumberBinding.etOldPhoneNumber.visibility = View.VISIBLE
-                            activityChangePhoneNumberBinding.etOldPhoneNumber.setText(profileData.data.phoneNumber.toString())
+        viewModel.getRecruiterData(recruiterId)
+            .observe(this@ChangePhoneNumberActivity) { profileData ->
+                if (profileData.data != null) {
+                    when (profileData.status) {
+                        Status.LOADING -> {
                         }
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
+                        Status.SUCCESS -> {
+                            if (profileData.data.phoneNumber != "-") {
+                                activityChangePhoneNumberBinding.textInputOldPhoneNumber.visibility =
+                                    View.VISIBLE
+                                activityChangePhoneNumberBinding.etOldPhoneNumber.visibility =
+                                    View.VISIBLE
+                                activityChangePhoneNumberBinding.etOldPhoneNumber.setText(
+                                    profileData.data.phoneNumber.toString()
+                                )
+                            }
+                        }
+                        Status.ERROR -> {
+                            Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
-        }
     }
 
     private fun formValidation() {
-        if (TextUtils.isEmpty(activityChangePhoneNumberBinding.etNewPhoneNumber.text.toString().trim())) {
-            activityChangePhoneNumberBinding.etNewPhoneNumber.error = getString(R.string.txt_error_form_text, "Nomor baru")
+        if (TextUtils.isEmpty(
+                activityChangePhoneNumberBinding.etNewPhoneNumber.text.toString().trim()
+            )
+        ) {
+            activityChangePhoneNumberBinding.etNewPhoneNumber.error =
+                getString(R.string.txt_error_form_text, "Nomor baru")
             return
         }
         if (TextUtils.isEmpty(activityChangePhoneNumberBinding.etPassword.text.toString().trim())) {
-            activityChangePhoneNumberBinding.etPassword.error = getString(R.string.txt_error_form_text, "Password")
+            activityChangePhoneNumberBinding.etPassword.error =
+                getString(R.string.txt_error_form_text, "Password")
             return
         }
 
         if (activityChangePhoneNumberBinding.etOldPhoneNumber.visibility == View.VISIBLE) {
-            if (activityChangePhoneNumberBinding.etOldPhoneNumber.text.toString().trim() == activityChangePhoneNumberBinding.etNewPhoneNumber.text.toString()
+            if (activityChangePhoneNumberBinding.etOldPhoneNumber.text.toString()
+                    .trim() == activityChangePhoneNumberBinding.etNewPhoneNumber.text.toString()
                     .trim()
             ) {
-                Toast.makeText(this, resources.getString(R.string.txt_success_update_profile, "Nomor telepon"), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.txt_success_update_profile, "Nomor telepon"),
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
                 return
             }
@@ -87,9 +106,14 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
     }
 
     private fun storeToDatabase() {
-        val newPhoneNumber = activityChangePhoneNumberBinding.etNewPhoneNumber.text.toString().trim()
+        val newPhoneNumber =
+            activityChangePhoneNumberBinding.etNewPhoneNumber.text.toString().trim()
         if (!isValidPhoneNumber(newPhoneNumber)) {
-            Toast.makeText(this, resources.getString(R.string.phone_number_invalid), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.phone_number_invalid),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
@@ -99,7 +123,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
         dialog.show()
 
         val password = activityChangePhoneNumberBinding.etPassword.text.toString().trim()
-        viewModel.updateRecruiterPhoneNumber(AuthHelper.currentUser?.uid.toString(), newPhoneNumber, password, this)
+        viewModel.updateRecruiterPhoneNumber(recruiterId, newPhoneNumber, password, this)
     }
 
     private fun isValidPhoneNumber(phone: String): Boolean {
@@ -119,7 +143,7 @@ class ChangePhoneNumberActivity : AppCompatActivity(), View.OnClickListener, Upd
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.btnUpdate -> {
                 formValidation()
             }

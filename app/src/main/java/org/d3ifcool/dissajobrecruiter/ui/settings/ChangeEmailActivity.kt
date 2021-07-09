@@ -8,12 +8,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.pedant.SweetAlert.SweetAlertDialog
+import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityChangeEmailBinding
 import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import java.util.regex.Pattern
 
 class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdateProfileCallback {
@@ -23,6 +23,10 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
     private lateinit var viewModel: RecruiterViewModel
 
     private lateinit var dialog: SweetAlertDialog
+
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
+    private val recruiterEmail: String = FirebaseAuth.getInstance().currentUser?.email.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +47,7 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
     }
 
     private fun showCurrentEmail() {
-        activityChangeEmailBinding.etOldEmail.setText(AuthHelper.currentUser?.email)
+        activityChangeEmailBinding.etOldEmail.setText(recruiterEmail)
     }
 
     private fun formValidation() {
@@ -76,7 +80,7 @@ class ChangeEmailActivity : AppCompatActivity(), View.OnClickListener, UpdatePro
 
         val password = activityChangeEmailBinding.etPassword.text.toString().trim()
         viewModel.updateRecruiterEmail(
-            AuthHelper.currentUser?.uid.toString(),
+            recruiterId,
             newEmail,
             password,
             this

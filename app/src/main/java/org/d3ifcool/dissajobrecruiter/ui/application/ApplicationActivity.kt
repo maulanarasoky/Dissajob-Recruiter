@@ -9,19 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.applicant.LoadApplicantDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplicantDataCallback,
-    View.OnClickListener, OnApplicationClickCallback, ApplicationAdapter.LoadJobDataCallback {
+class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
+    View.OnClickListener, OnApplicationClickCallback, LoadJobDataCallback {
 
     private lateinit var activityApplicationBinding: ActivityApplicationBinding
 
@@ -30,6 +32,8 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
     private lateinit var applicantViewModel: ApplicantViewModel
 
     private lateinit var applicationAdapter: ApplicationAdapter
+
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,27 +52,28 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
         jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
         applicationAdapter = ApplicationAdapter(this, this, this)
-        applicationViewModel.getApplications(AuthHelper.currentUser?.uid.toString()).observe(this) { applicants ->
-            if (applicants != null) {
-                when (applicants.status) {
-                    Status.LOADING -> showLoading(true)
-                    Status.SUCCESS -> {
-                        showLoading(false)
-                        if (applicants.data?.isNotEmpty() == true) {
-                            applicationAdapter.submitList(applicants.data)
-                            applicationAdapter.notifyDataSetChanged()
-                            activityApplicationBinding.tvNoData.visibility = View.GONE
-                        } else {
-                            activityApplicationBinding.tvNoData.visibility = View.VISIBLE
+        applicationViewModel.getApplications(recruiterId)
+            .observe(this) { applicants ->
+                if (applicants != null) {
+                    when (applicants.status) {
+                        Status.LOADING -> showLoading(true)
+                        Status.SUCCESS -> {
+                            showLoading(false)
+                            if (applicants.data?.isNotEmpty() == true) {
+                                applicationAdapter.submitList(applicants.data)
+                                applicationAdapter.notifyDataSetChanged()
+                                activityApplicationBinding.tvNoData.visibility = View.GONE
+                            } else {
+                                activityApplicationBinding.tvNoData.visibility = View.VISIBLE
+                            }
                         }
-                    }
-                    Status.ERROR -> {
-                        showLoading(false)
-                        Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
+                        Status.ERROR -> {
+                            showLoading(false)
+                            Toast.makeText(this, "Error occurred", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
-        }
 
         with(activityApplicationBinding.rvApplication) {
             layoutManager = LinearLayoutManager(this@ApplicationActivity)
@@ -109,7 +114,7 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
 
     override fun onLoadApplicantDetailsCallback(
         applicantId: String,
-        callback: ApplicationAdapter.LoadApplicantDataCallback
+        callback: LoadApplicantDataCallback
     ) {
         applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
             if (applicantDetails != null) {
@@ -125,7 +130,7 @@ class ApplicationActivity : AppCompatActivity(), ApplicationAdapter.LoadApplican
 
     override fun onLoadJobDetailsCallback(
         jobId: String,
-        callback: ApplicationAdapter.LoadJobDataCallback
+        callback: LoadJobDataCallback
     ) {
         jobViewModel.getJobDetails(jobId).observe(this) { jobDetails ->
             if (jobDetails != null) {

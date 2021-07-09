@@ -16,9 +16,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
+import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.notification.NotificationResponseEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationDetailsBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantProfileActivity
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
@@ -26,12 +28,15 @@ import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationM
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.UpdateApplicationStatusCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
+import org.d3ifcool.dissajobrecruiter.ui.notification.AddNotificationCallback
+import org.d3ifcool.dissajobrecruiter.ui.notification.NotificationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.question.InterviewViewModel
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
+import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
-    UpdateApplicationStatusCallback, UpdateApplicationMarkCallback {
+    UpdateApplicationStatusCallback, UpdateApplicationMarkCallback, AddNotificationCallback {
 
     companion object {
         const val APPLICATION_ID = "application_id"
@@ -49,6 +54,8 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     private lateinit var interviewViewModel: InterviewViewModel
 
+    private lateinit var notificationViewModel: NotificationViewModel
+
     private lateinit var dialog: SweetAlertDialog
 
     private lateinit var menu: Menu
@@ -59,6 +66,8 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     private var isApplicationMarked = false
     private var isApplicationAccepted = false
+
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +90,7 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
         applicationViewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
         jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
         interviewViewModel = ViewModelProvider(this, factory)[InterviewViewModel::class.java]
+        notificationViewModel = ViewModelProvider(this, factory)[NotificationViewModel::class.java]
 
         applicantViewModel.getApplicantDetails(applicantId).observe(this) { profile ->
             if (profile.data != null) {
@@ -280,14 +290,16 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onSuccessUpdateStatus() {
-        dialog.dismissWithAnimation()
-        if (isApplicationAccepted) {
-            showToast(resources.getString(R.string.txt_accept_application))
-        } else {
-            showToast(resources.getString(R.string.txt_reject_application))
-        }
-        activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
-        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
+        val notificationData = NotificationResponseEntity(
+            "",
+            jobId,
+            applicationId,
+            applicantId,
+            recruiterId,
+            DateUtils.getCurrentDate()
+        )
+
+        notificationViewModel.addNotification(notificationData, this)
     }
 
     override fun onFailureUpdateStatus(messageId: Int) {
@@ -347,5 +359,23 @@ class ApplicationDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     override fun onFailureUpdateMark(messageId: Int) {
         showToast(resources.getString(messageId))
+    }
+
+    override fun onSuccessAddingNotification() {
+        dialog.dismissWithAnimation()
+        if (isApplicationAccepted) {
+            showToast(resources.getString(R.string.txt_accept_application))
+        } else {
+            showToast(resources.getString(R.string.txt_reject_application))
+        }
+        activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = false
+        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = false
+    }
+
+    override fun onFailureAddingNotification(messageId: Int) {
+        dialog.dismissWithAnimation()
+        showToast(resources.getString(messageId))
+        activityApplicationDetailsBinding.footerSection.btnRejectApplication.isEnabled = true
+        activityApplicationDetailsBinding.footerSection.btnAcceptApplication.isEnabled = true
     }
 }

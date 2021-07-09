@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentJobBinding
 import org.d3ifcool.dissajobrecruiter.ui.profile.CheckRecruiterDataCallback
@@ -17,7 +18,6 @@ import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.settings.ChangePhoneNumberActivity
 import org.d3ifcool.dissajobrecruiter.ui.settings.ChangeProfileActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListener,
@@ -29,6 +29,8 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
     private lateinit var jobAdapter: JobAdapter
 
     private var isBtnClicked = false
+
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +51,7 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
             recruiterViewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
             val jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
             jobAdapter = JobAdapter(this)
-            jobViewModel.getJobs(AuthHelper.currentUser?.uid.toString())
+            jobViewModel.getJobs(recruiterId)
                 .observe(viewLifecycleOwner) { jobs ->
                     if (jobs.data != null) {
                         when (jobs.status) {
@@ -103,7 +105,7 @@ class JobFragment : Fragment(), View.OnClickListener, JobAdapter.ItemClickListen
         when (v?.id) {
             R.id.fabAddJob -> {
                 isBtnClicked = true
-                recruiterViewModel.checkRecruiterData(AuthHelper.currentUser?.uid.toString(), this)
+                recruiterViewModel.checkRecruiterData(recruiterId, this)
             }
         }
     }

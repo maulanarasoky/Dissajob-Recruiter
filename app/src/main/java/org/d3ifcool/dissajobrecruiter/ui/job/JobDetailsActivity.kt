@@ -16,6 +16,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.Applica
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityJobDetailsBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.applicant.LoadApplicantDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
@@ -23,13 +24,14 @@ import org.d3ifcool.dissajobrecruiter.ui.application.callback.DeleteApplicationB
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteSavedJobCallback
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class JobDetailsActivity : AppCompatActivity(),
-    ApplicationAdapter.LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback,
-    ApplicationAdapter.LoadJobDataCallback, DeleteApplicationByJobCallback, DeleteSavedJobCallback {
+    LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback,
+    LoadJobDataCallback, DeleteApplicationByJobCallback, DeleteSavedJobCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -180,7 +182,8 @@ class JobDetailsActivity : AppCompatActivity(),
 
     private fun showLoading(state: Boolean) {
         if (state) {
-            activityJobDetailsBinding.jobDetailsApplicantsSection.progressBar.visibility = View.VISIBLE
+            activityJobDetailsBinding.jobDetailsApplicantsSection.progressBar.visibility =
+                View.VISIBLE
         } else {
             activityJobDetailsBinding.jobDetailsApplicantsSection.progressBar.visibility = View.GONE
         }
@@ -188,10 +191,12 @@ class JobDetailsActivity : AppCompatActivity(),
 
     private fun showRecyclerView(state: Boolean) {
         if (state) {
-            activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility = View.VISIBLE
+            activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility =
+                View.VISIBLE
             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility = View.GONE
         } else {
-            activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility = View.GONE
+            activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility =
+                View.GONE
             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility = View.VISIBLE
         }
     }
@@ -290,7 +295,7 @@ class JobDetailsActivity : AppCompatActivity(),
 
     override fun onLoadApplicantDetailsCallback(
         applicantId: String,
-        callback: ApplicationAdapter.LoadApplicantDataCallback
+        callback: LoadApplicantDataCallback
     ) {
         applicantViewModel.getApplicantDetails(applicantId).observe(this) { applicantDetails ->
             if (applicantDetails.data != null) {
@@ -304,7 +309,7 @@ class JobDetailsActivity : AppCompatActivity(),
 
     override fun onLoadJobDetailsCallback(
         jobId: String,
-        callback: ApplicationAdapter.LoadJobDataCallback
+        callback: LoadJobDataCallback
     ) {
         jobViewModel.getJobDetails(jobId).observe(this) { jobDetails ->
             if (jobDetails != null) {

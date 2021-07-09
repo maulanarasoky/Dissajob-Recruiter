@@ -4,17 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import org.d3ifcool.dissajobrecruiter.data.NetworkBoundResource
-import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.notification.NotificationEntity
-import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.local.source.LocalNotificationSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.ApiResponse
-import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.notification.NotificationResponseEntity
-import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteJobSource
 import org.d3ifcool.dissajobrecruiter.data.source.remote.source.RemoteNotificationSource
-import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobDataSource
-import org.d3ifcool.dissajobrecruiter.data.source.repository.job.JobRepository
+import org.d3ifcool.dissajobrecruiter.ui.notification.AddNotificationCallback
+import org.d3ifcool.dissajobrecruiter.ui.notification.LoadNotificationsCallback
 import org.d3ifcool.dissajobrecruiter.utils.AppExecutors
 import org.d3ifcool.dissajobrecruiter.utils.NetworkStateCallback
 import org.d3ifcool.dissajobrecruiter.vo.Resource
@@ -47,7 +43,7 @@ class NotificationRepository private constructor(
             }
     }
 
-    override fun getNotifications(userId: String): LiveData<Resource<PagedList<NotificationEntity>>> {
+    override fun getNotifications(recruiterId: String): LiveData<Resource<PagedList<NotificationEntity>>> {
         return object :
             NetworkBoundResource<PagedList<NotificationEntity>, List<NotificationResponseEntity>>(
                 appExecutors
@@ -59,7 +55,7 @@ class NotificationRepository private constructor(
                     .setPageSize(4)
                     .build()
                 return LivePagedListBuilder(
-                    localNotificationSource.getNotifications(userId),
+                    localNotificationSource.getNotifications(recruiterId),
                     config
                 ).build()
             }
@@ -69,8 +65,8 @@ class NotificationRepository private constructor(
 
             public override fun createCall(): LiveData<ApiResponse<List<NotificationResponseEntity>>> =
                 remoteNotificationSource.getNotifications(
-                    userId,
-                    object : RemoteNotificationSource.LoadNotificationsCallback {
+                    recruiterId,
+                    object : LoadNotificationsCallback {
                         override fun onAllNotificationsReceived(notificationResponse: List<NotificationResponseEntity>): List<NotificationResponseEntity> {
                             return notificationResponse
                         }
@@ -82,6 +78,7 @@ class NotificationRepository private constructor(
                     val notification = NotificationEntity(
                         response.id,
                         response.jobId,
+                        response.applicationId,
                         response.applicantId,
                         response.recruiterId,
                         response.notificationDate,
@@ -93,6 +90,13 @@ class NotificationRepository private constructor(
             }
         }.asLiveData()
     }
+
+    override fun addNotification(
+        notificationData: NotificationResponseEntity,
+        callback: AddNotificationCallback
+    ) =
+        appExecutors.diskIO()
+            .execute { remoteNotificationSource.addNotification(notificationData, callback) }
 
 
 }

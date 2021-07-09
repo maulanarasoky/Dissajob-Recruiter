@@ -12,6 +12,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.interview.Intervi
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.media.MediaEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.notification.NotificationEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.RecruiterEntity
 
 @Database(
@@ -25,6 +26,7 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.recruiter.Recruit
         MediaEntity::class,
         ExperienceEntity::class,
         EducationEntity::class,
+    NotificationEntity::class
     ],
     version = 1,
     exportSchema = false
@@ -39,6 +41,7 @@ abstract class DissajobRecruiterDatabase : RoomDatabase() {
     abstract fun mediaDao(): MediaDao
     abstract fun experienceDao(): ExperienceDao
     abstract fun educationDao(): EducationDao
+    abstract fun notificationDao(): NotificationDao
 
     companion object {
 

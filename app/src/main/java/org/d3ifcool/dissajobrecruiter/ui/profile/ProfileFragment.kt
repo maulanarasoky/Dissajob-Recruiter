@@ -12,6 +12,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
@@ -21,7 +22,6 @@ import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationActivity
 import org.d3ifcool.dissajobrecruiter.ui.job.JobActivity
 import org.d3ifcool.dissajobrecruiter.ui.settings.SettingsActivity
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ProfileFragment : Fragment(), View.OnClickListener {
@@ -29,6 +29,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private lateinit var fragmentProfileBinding: FragmentProfileBinding
 
     private var isAboutMeExpanded = false
+
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +47,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireContext())
             val viewModel = ViewModelProvider(this, factory)[RecruiterViewModel::class.java]
-            viewModel.getRecruiterData(AuthHelper.currentUser?.uid.toString())
+            viewModel.getRecruiterData(recruiterId)
                 .observe(viewLifecycleOwner) { profile ->
                     if (profile.data != null) {
                         when (profile.status) {
@@ -72,7 +74,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         fragmentProfileBinding.profileNameSection.tvPhoneNumber.text = recruiterProfile.phoneNumber
         fragmentProfileBinding.profileNameSection.tvAddress.text = recruiterProfile.address
         fragmentProfileBinding.profileAboutMeSection.tvAboutMe.text = recruiterProfile.aboutMe
-        fragmentProfileBinding.profileAboutMeSection.tvAboutMe.setOnClickListener(tvAboutMeClickListener)
+        fragmentProfileBinding.profileAboutMeSection.tvAboutMe.setOnClickListener(
+            tvAboutMeClickListener
+        )
 
         if (recruiterProfile.imagePath != "-") {
             val storageRef = Firebase.storage.reference

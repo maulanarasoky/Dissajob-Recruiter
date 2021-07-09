@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import cn.pedant.SweetAlert.SweetAlertDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import org.d3ifcool.dissajobrecruiter.R
@@ -28,7 +29,6 @@ import org.d3ifcool.dissajobrecruiter.ui.profile.RecruiterViewModel
 import org.d3ifcool.dissajobrecruiter.ui.profile.UpdateProfileCallback
 import org.d3ifcool.dissajobrecruiter.ui.profile.UploadProfilePictureCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateProfileCallback,
@@ -54,6 +54,8 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
 
     private lateinit var recruiterData: RecruiterEntity
 
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityChangeProfileBinding = ActivityChangeProfileBinding.inflate(layoutInflater)
@@ -75,7 +77,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
     }
 
     private fun showCurrentProfileData() {
-        viewModel.getRecruiterData(AuthHelper.currentUser?.uid.toString())
+        viewModel.getRecruiterData(recruiterId)
             .observe(this) { profileData ->
                 if (profileData.data != null) {
                     when (profileData.status) {
@@ -214,7 +216,7 @@ class ChangeProfileActivity : AppCompatActivity(), View.OnClickListener, UpdateP
         val address = activityChangeProfileBinding.etAddress.text.toString().trim()
         val aboutMe = activityChangeProfileBinding.etAboutMe.text.toString().trim()
         val profileData = RecruiterResponseEntity(
-            AuthHelper.currentUser?.uid.toString(),
+            recruiterId,
             firstName,
             lastName,
             fullName,

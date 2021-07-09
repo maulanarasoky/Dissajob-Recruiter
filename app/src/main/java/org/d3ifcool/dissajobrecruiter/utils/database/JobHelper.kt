@@ -1,23 +1,21 @@
 package org.d3ifcool.dissajobrecruiter.utils.database
 
-import android.util.Log
 import com.google.firebase.database.*
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobDetailsResponseEntity
 import org.d3ifcool.dissajobrecruiter.data.source.remote.response.entity.job.JobResponseEntity
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.*
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 
 object JobHelper {
 
     private val jobDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("jobs")
-    private val savedJobDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("saved_job")
+    private val savedJobDatabase: DatabaseReference =
+        FirebaseDatabase.getInstance().getReference("saved_job")
     private val arrJob: MutableList<JobResponseEntity> = mutableListOf()
 
     fun createJob(job: JobDetailsResponseEntity, callbackCreate: CreateJobCallback) {
         val id = jobDatabase.push().key
         job.id = id.toString()
-        job.postedBy = AuthHelper.currentUser?.uid.toString()
         jobDatabase.child(job.id).setValue(job).addOnSuccessListener {
             callbackCreate.onSuccess()
         }.addOnFailureListener {
@@ -86,7 +84,6 @@ object JobHelper {
     }
 
     fun updateJob(job: JobDetailsResponseEntity, callbackCreate: UpdateJobCallback) {
-        job.postedBy = AuthHelper.currentUser?.uid.toString()
         jobDatabase.child(job.id).setValue(job).addOnSuccessListener {
             callbackCreate.onSuccess()
         }.addOnFailureListener {
@@ -125,10 +122,11 @@ object JobHelper {
                     if (snapshot.exists()) {
                         var index = 0
                         for (data in snapshot.children) {
-                            val removeChild = savedJobDatabase.child(data.key.toString()).removeValue()
-                                .addOnFailureListener {
-                                    callback.onFailureDeleteSavedJob(R.string.failure_alert_delete_job)
-                                }
+                            val removeChild =
+                                savedJobDatabase.child(data.key.toString()).removeValue()
+                                    .addOnFailureListener {
+                                        callback.onFailureDeleteSavedJob(R.string.failure_alert_delete_job)
+                                    }
 
                             index++
 

@@ -179,5 +179,8 @@
 
     <string name="txt_fill_all_data_alert">Silahkan untuk melengkapi data terlebih dahulu</string>
     <string name="txt_apply_as">Melamar sebagai %1$s</string>
-    <string name="txt_in_developing">Sedang dalam tahap pengembangan</string>
+    <string name="txt_notification_title">%1$s melamar pekerjaan yang anda bagikan</string>
+    <string name="txt_notification_body">Ayo lihat lamarannya dan dapatkan pelamar yang berkualifikasi</string>
+    <string name="txt_view_application">Lihat lamaran</string>
+    <string name="txt_no_notification">Tidak ada notifikasi</string>
 </resources>

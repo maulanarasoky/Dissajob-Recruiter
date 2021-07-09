@@ -10,21 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentAllApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
+import org.d3ifcool.dissajobrecruiter.ui.applicant.LoadApplicantDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
+import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
-import org.d3ifcool.dissajobrecruiter.utils.AuthHelper
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
-class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataCallback,
-    OnApplicationClickCallback, ApplicationAdapter.LoadJobDataCallback {
+class AllApplicationFragment : Fragment(), LoadApplicantDataCallback,
+    OnApplicationClickCallback, LoadJobDataCallback {
 
     private lateinit var fragmentAllApplicationBinding: FragmentAllApplicationBinding
 
@@ -35,6 +37,8 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
     private lateinit var applicationViewModel: ApplicationViewModel
 
     private lateinit var applicationAdapter: ApplicationAdapter
+
+    private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,28 +63,29 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
             applicationAdapter = ApplicationAdapter(this, this, this)
-            applicationViewModel.getApplications(AuthHelper.currentUser?.uid.toString()).observe(viewLifecycleOwner) { applications ->
-                if (applications != null) {
-                    when (applications.status) {
-                        Status.LOADING -> showLoading(true)
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            if (applications.data?.isNotEmpty() == true) {
-                                applicationAdapter.submitList(applications.data)
-                                applicationAdapter.notifyDataSetChanged()
-                                showRecyclerView(true)
-                            } else {
-                                showRecyclerView(false)
+            applicationViewModel.getApplications(recruiterId)
+                .observe(viewLifecycleOwner) { applications ->
+                    if (applications != null) {
+                        when (applications.status) {
+                            Status.LOADING -> showLoading(true)
+                            Status.SUCCESS -> {
+                                showLoading(false)
+                                if (applications.data?.isNotEmpty() == true) {
+                                    applicationAdapter.submitList(applications.data)
+                                    applicationAdapter.notifyDataSetChanged()
+                                    showRecyclerView(true)
+                                } else {
+                                    showRecyclerView(false)
+                                }
                             }
-                        }
-                        Status.ERROR -> {
-                            showLoading(false)
-                            showRecyclerView(false)
-                            Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+                            Status.ERROR -> {
+                                showLoading(false)
+                                showRecyclerView(false)
+                                Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
-            }
         }
 
         with(fragmentAllApplicationBinding.rvApplication) {
@@ -116,7 +121,7 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
 
     override fun onLoadApplicantDetailsCallback(
         applicantId: String,
-        callback: ApplicationAdapter.LoadApplicantDataCallback
+        callback: LoadApplicantDataCallback
     ) {
         applicantViewModel.getApplicantDetails(applicantId)
             .observe(viewLifecycleOwner) { applicantDetails ->
@@ -133,7 +138,7 @@ class AllApplicationFragment : Fragment(), ApplicationAdapter.LoadApplicantDataC
 
     override fun onLoadJobDetailsCallback(
         jobId: String,
-        callback: ApplicationAdapter.LoadJobDataCallback
+        callback: LoadJobDataCallback
     ) {
         jobViewModel.getJobDetails(jobId).observe(this) { jobDetails ->
             if (jobDetails != null) {

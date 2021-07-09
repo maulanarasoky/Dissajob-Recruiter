@@ -15,6 +15,9 @@ data class NotificationEntity(
     @ColumnInfo(name = "job_id")
     var jobId: String,
 
+    @ColumnInfo(name = "application_id")
+    var applicationId: String,
+
     @ColumnInfo(name = "applicant_id")
     var applicantId: String,
 
