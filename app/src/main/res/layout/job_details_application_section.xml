@@ -17,9 +17,27 @@
         android:textColor="@color/text_color"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnExportApplicants"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnExportApplicants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:drawableStart="@drawable/ic_export_white_24dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/txt_export"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tvApplicantsTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvApplicantsTitle"
+        app:layout_constraintTop_toTopOf="@id/tvApplicantsTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvApplication"
@@ -29,7 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvApplicantsTitle" />
+        app:layout_constraintTop_toBottomOf="@id/btnExportApplicants" />
 
     <TextView
         android:id="@+id/tvNoData"
@@ -43,7 +61,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvApplicantsTitle" />
+        app:layout_constraintTop_toBottomOf="@id/btnExportApplicants" />
 
     <ProgressBar
         android:id="@+id/progressBar"

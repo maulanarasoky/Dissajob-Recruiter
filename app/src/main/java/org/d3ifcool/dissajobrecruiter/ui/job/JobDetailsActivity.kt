@@ -1,18 +1,23 @@
 package org.d3ifcool.dissajobrecruiter.ui.job
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityJobDetailsBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
@@ -22,16 +27,22 @@ import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.DeleteApplicationByJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.SendApplicationDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.DeleteSavedJobCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 import org.d3ifcool.dissajobrecruiter.vo.Status
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
+
 
 class JobDetailsActivity : AppCompatActivity(),
     LoadApplicantDataCallback, DeleteJobCallback, OnApplicationClickCallback,
-    LoadJobDataCallback, DeleteApplicationByJobCallback, DeleteSavedJobCallback {
+    LoadJobDataCallback, DeleteApplicationByJobCallback, DeleteSavedJobCallback,
+    View.OnClickListener, SendApplicationDataCallback {
 
     companion object {
         const val EXTRA_ID = "extra_id"
@@ -53,6 +64,10 @@ class JobDetailsActivity : AppCompatActivity(),
 
     private lateinit var jobId: String
 
+    private val csv = StringBuilder()
+
+    private var count = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityJobDetailsBinding = ActivityJobDetailsBinding.inflate(layoutInflater)
@@ -62,6 +77,8 @@ class JobDetailsActivity : AppCompatActivity(),
         setSupportActionBar(activityJobDetailsBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        csv.append("No,Nama,Email,Nomor Telepon,Tentang,Melamar Sebagai,Tanggal Melamar,Status Lamaran")
 
         val extras = intent.extras
         if (extras != null) {
@@ -138,7 +155,7 @@ class JobDetailsActivity : AppCompatActivity(),
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
 
         applicationViewModel = ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
-        applicationAdapter = ApplicationAdapter(this, this, this)
+        applicationAdapter = ApplicationAdapter(this, this, this, this)
         applicationViewModel.getApplicationsByJob(jobId).observe(this) { applications ->
             if (applications.data != null) {
                 when (applications.status) {
@@ -194,10 +211,16 @@ class JobDetailsActivity : AppCompatActivity(),
             activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility =
                 View.VISIBLE
             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility = View.GONE
+            activityJobDetailsBinding.jobDetailsApplicantsSection.btnExportApplicants.visibility =
+                View.VISIBLE
+
+            activityJobDetailsBinding.jobDetailsApplicantsSection.btnExportApplicants.setOnClickListener(this)
         } else {
             activityJobDetailsBinding.jobDetailsApplicantsSection.rvApplication.visibility =
                 View.GONE
             activityJobDetailsBinding.jobDetailsApplicantsSection.tvNoData.visibility = View.VISIBLE
+            activityJobDetailsBinding.jobDetailsApplicantsSection.btnExportApplicants.visibility =
+                View.GONE
         }
     }
 
@@ -329,5 +352,47 @@ class JobDetailsActivity : AppCompatActivity(),
         intent.putExtra(ApplicationDetailsActivity.JOB_ID, jobId)
         intent.putExtra(ApplicationDetailsActivity.APPLICANT_ID, applicantId)
         startActivity(intent)
+    }
+
+    private fun export() {
+        try {
+            val fo: FileOutputStream = openFileOutput("Daftar Pelamar ${jobData.title}.csv", Context.MODE_PRIVATE)
+            fo.write(csv.toString().toByteArray())
+            fo.close()
+
+            //exporting
+            val context = applicationContext
+            val filelocation = File(filesDir, "Daftar Pelamar ${jobData.title}.csv")
+            val path: Uri = FileProvider.getUriForFile(
+                context,
+                "org.d3ifcool.dissajobrecruiter.fileprovider",
+                filelocation
+            )
+            val fileIntent = Intent(Intent.ACTION_SEND)
+            fileIntent.type = "text/csv"
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Daftar Pelamar ${jobData.title}")
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            fileIntent.putExtra(Intent.EXTRA_STREAM, path)
+            startActivity(Intent.createChooser(fileIntent, "Send mail"))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id) {
+            R.id.btnExportApplicants -> export()
+        }
+    }
+
+    override fun sendApplicationAndApplicantData(
+        applicationEntity: ApplicationEntity,
+        applicantEntity: ApplicantEntity,
+        jobDetailsEntity: JobDetailsEntity
+    ) {
+        if (count != applicationAdapter.itemCount) {
+            count++
+            csv.append("\n$count,${applicantEntity.fullName},${applicantEntity.email},${applicantEntity.phoneNumber},${applicantEntity.aboutMe},${jobDetailsEntity.title},${applicationEntity.applyDate.toString()},${applicationEntity.status}")
+        }
     }
 }

@@ -18,13 +18,15 @@ import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEnt
 import org.d3ifcool.dissajobrecruiter.databinding.ApplicationItemBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.LoadApplicantDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.SendApplicationDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.utils.DateUtils
 
 class ApplicationAdapter(
     private val onItemClickCallback: OnApplicationClickCallback,
     private val loadApplicantDataCallback: LoadApplicantDataCallback,
-    private val loadJobDataCallback: LoadJobDataCallback
+    private val loadJobDataCallback: LoadJobDataCallback,
+    private val sendApplicationDataCallback: SendApplicationDataCallback
 ) :
     PagedListAdapter<ApplicationEntity, ApplicationAdapter.ApplicationViewHolder>(DIFF_CALLBACK) {
 
@@ -67,8 +69,64 @@ class ApplicationAdapter(
                 tvStatus.text = items.status
                 tvPostedDate.text = DateUtils.getPostedDate(items.applyDate.toString())
 
-                loadApplicantData(items.applicantId)
-                loadJobData(items.jobId)
+                loadApplicantDataCallback.onLoadApplicantDetailsCallback(
+                    items.applicantId,
+                    object :
+                        LoadApplicantDataCallback {
+                        override fun onLoadApplicantDetailsCallback(
+                            applicantId: String,
+                            callback: LoadApplicantDataCallback
+                        ) {
+                        }
+
+                        override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
+                            with(binding) {
+                                tvApplicantName.text = applicantDetails.fullName
+
+
+                                if (applicantDetails.imagePath != "-") {
+                                    val storageRef = Firebase.storage.reference
+                                    val circularProgressDrawable =
+                                        CircularProgressDrawable(itemView.context)
+                                    circularProgressDrawable.strokeWidth = 5f
+                                    circularProgressDrawable.centerRadius = 30f
+                                    circularProgressDrawable.start()
+                                    Glide.with(itemView.context)
+                                        .load(storageRef.child("applicant/profile/images/${applicantDetails.imagePath}"))
+                                        .transform(RoundedCorners(20))
+                                        .apply(RequestOptions.placeholderOf(circularProgressDrawable))
+                                        .error(R.drawable.ic_image_gray_24dp)
+                                        .into(imgApplicantPicture)
+                                }
+                            }
+
+                            loadJobDataCallback.onLoadJobDetailsCallback(
+                                items.jobId,
+                                object : LoadJobDataCallback {
+                                    override fun onLoadJobDetailsCallback(
+                                        jobId: String,
+                                        callback: LoadJobDataCallback
+                                    ) {
+                                    }
+
+                                    override fun onGetJobDetails(jobDetails: JobDetailsEntity) {
+                                        with(binding) {
+                                            tvApplyAs.text =
+                                                itemView.resources.getString(
+                                                    R.string.txt_apply_as,
+                                                    jobDetails.title
+                                                )
+                                        }
+
+                                        sendApplicationDataCallback.sendApplicationAndApplicantData(
+                                            items,
+                                            applicantDetails,
+                                            jobDetails
+                                        )
+                                    }
+                                })
+                        }
+                    })
 
                 itemView.setOnClickListener {
                     onItemClickCallback.onItemClick(
@@ -77,59 +135,9 @@ class ApplicationAdapter(
                         items.applicantId
                     )
                 }
+
+
             }
-        }
-
-        private fun loadApplicantData(applicantId: String) {
-            loadApplicantDataCallback.onLoadApplicantDetailsCallback(
-                applicantId,
-                object :
-                    LoadApplicantDataCallback {
-                    override fun onLoadApplicantDetailsCallback(
-                        applicantId: String,
-                        callback: LoadApplicantDataCallback
-                    ) {
-                    }
-
-                    override fun onGetApplicantDetails(applicantDetails: ApplicantEntity) {
-                        with(binding) {
-                            tvApplicantName.text = applicantDetails.fullName
-
-
-                            if (applicantDetails.imagePath != "-") {
-                                val storageRef = Firebase.storage.reference
-                                val circularProgressDrawable =
-                                    CircularProgressDrawable(itemView.context)
-                                circularProgressDrawable.strokeWidth = 5f
-                                circularProgressDrawable.centerRadius = 30f
-                                circularProgressDrawable.start()
-                                Glide.with(itemView.context)
-                                    .load(storageRef.child("applicant/profile/images/${applicantDetails.imagePath}"))
-                                    .transform(RoundedCorners(20))
-                                    .apply(RequestOptions.placeholderOf(circularProgressDrawable))
-                                    .error(R.drawable.ic_image_gray_24dp)
-                                    .into(imgApplicantPicture)
-                            }
-                        }
-                    }
-                })
-        }
-
-        private fun loadJobData(jobId: String) {
-            loadJobDataCallback.onLoadJobDetailsCallback(jobId, object : LoadJobDataCallback {
-                override fun onLoadJobDetailsCallback(
-                    jobId: String,
-                    callback: LoadJobDataCallback
-                ) {
-                }
-
-                override fun onGetJobDetails(jobDetails: JobDetailsEntity) {
-                    with(binding) {
-                        tvApplyAs.text =
-                            itemView.resources.getString(R.string.txt_apply_as, jobDetails.title)
-                    }
-                }
-            })
         }
     }
 }

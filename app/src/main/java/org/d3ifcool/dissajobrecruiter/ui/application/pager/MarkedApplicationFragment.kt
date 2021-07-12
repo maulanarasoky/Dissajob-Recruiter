@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.FragmentMarkedApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
@@ -20,13 +21,14 @@ import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationAdapter
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationDetailsActivity
 import org.d3ifcool.dissajobrecruiter.ui.application.ApplicationViewModel
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.SendApplicationDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class MarkedApplicationFragment : Fragment(), LoadApplicantDataCallback,
-    OnApplicationClickCallback, LoadJobDataCallback {
+    OnApplicationClickCallback, LoadJobDataCallback, SendApplicationDataCallback {
 
     private lateinit var fragmentMarkedApplicationBinding: FragmentMarkedApplicationBinding
 
@@ -62,7 +64,7 @@ class MarkedApplicationFragment : Fragment(), LoadApplicantDataCallback,
             applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
             applicationViewModel =
                 ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
-            applicationAdapter = ApplicationAdapter(this, this, this)
+            applicationAdapter = ApplicationAdapter(this, this, this, this)
             applicationViewModel.getMarkedApplications(recruiterId)
                 .observe(viewLifecycleOwner) { applications ->
                     if (applications != null) {
@@ -158,5 +160,12 @@ class MarkedApplicationFragment : Fragment(), LoadApplicantDataCallback,
         intent.putExtra(ApplicationDetailsActivity.JOB_ID, jobId)
         intent.putExtra(ApplicationDetailsActivity.APPLICANT_ID, applicantId)
         activity?.startActivity(intent)
+    }
+
+    override fun sendApplicationAndApplicantData(
+        applicationEntity: ApplicationEntity,
+        applicantEntity: ApplicantEntity,
+        jobDetailsEntity: JobDetailsEntity
+    ) {
     }
 }

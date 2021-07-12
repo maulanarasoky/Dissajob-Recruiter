@@ -12,18 +12,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import org.d3ifcool.dissajobrecruiter.R
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.applicant.ApplicantEntity
+import org.d3ifcool.dissajobrecruiter.data.source.local.entity.application.ApplicationEntity
 import org.d3ifcool.dissajobrecruiter.data.source.local.entity.job.JobDetailsEntity
 import org.d3ifcool.dissajobrecruiter.databinding.ActivityApplicationBinding
 import org.d3ifcool.dissajobrecruiter.ui.applicant.ApplicantViewModel
 import org.d3ifcool.dissajobrecruiter.ui.applicant.LoadApplicantDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.application.callback.OnApplicationClickCallback
+import org.d3ifcool.dissajobrecruiter.ui.application.callback.SendApplicationDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
 
 class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
-    View.OnClickListener, OnApplicationClickCallback, LoadJobDataCallback {
+    View.OnClickListener, OnApplicationClickCallback, LoadJobDataCallback,
+    SendApplicationDataCallback {
 
     private lateinit var activityApplicationBinding: ActivityApplicationBinding
 
@@ -51,7 +54,7 @@ class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
             ViewModelProvider(this, factory)[ApplicationViewModel::class.java]
         jobViewModel = ViewModelProvider(this, factory)[JobViewModel::class.java]
         applicantViewModel = ViewModelProvider(this, factory)[ApplicantViewModel::class.java]
-        applicationAdapter = ApplicationAdapter(this, this, this)
+        applicationAdapter = ApplicationAdapter(this, this, this, this)
         applicationViewModel.getApplications(recruiterId)
             .observe(this) { applicants ->
                 if (applicants != null) {
@@ -150,5 +153,12 @@ class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
         intent.putExtra(ApplicationDetailsActivity.JOB_ID, jobId)
         intent.putExtra(ApplicationDetailsActivity.APPLICANT_ID, applicantId)
         startActivity(intent)
+    }
+
+    override fun sendApplicationAndApplicantData(
+        applicationEntity: ApplicationEntity,
+        applicantEntity: ApplicantEntity,
+        jobDetailsEntity: JobDetailsEntity
+    ) {
     }
 }
