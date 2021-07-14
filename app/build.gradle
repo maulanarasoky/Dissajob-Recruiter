@@ -55,6 +55,7 @@ dependencies {
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.github.afreakyelf:Pdf-Viewer:1.0.7'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.github.naumanmir:filedownloadservice:1.2'
 
     //api
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

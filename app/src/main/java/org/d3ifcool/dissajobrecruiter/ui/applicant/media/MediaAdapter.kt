@@ -11,7 +11,8 @@ import org.d3ifcool.dissajobrecruiter.databinding.MediaItemBinding
 
 class MediaAdapter(
     private val loadPdfCallback: LoadPdfCallback,
-    private val onItemClickCallback: OnMediaItemClickListener
+    private val onItemClickCallback: OnMediaItemClickListener,
+    private val sendMediaDataCallback: SendMediaDataCallback
 ) :
     PagedListAdapter<MediaEntity, MediaAdapter.MediaViewHolder>(DIFF_CALLBACK) {
 
@@ -76,6 +77,8 @@ class MediaAdapter(
                 itemView.setOnClickListener {
                     onItemClickCallback.onItemClick(items.fileId, items.mediaName)
                 }
+
+                sendMediaDataCallback.sendMediaData(items.fileId, items.mediaName)
             }
         }
     }

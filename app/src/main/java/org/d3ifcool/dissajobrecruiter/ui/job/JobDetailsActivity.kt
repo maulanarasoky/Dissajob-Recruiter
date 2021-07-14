@@ -354,7 +354,7 @@ class JobDetailsActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
-    private fun export() {
+    private fun exportApplicationToCsv() {
         try {
             val fo: FileOutputStream = openFileOutput("Daftar Pelamar ${jobData.title}.csv", Context.MODE_PRIVATE)
             fo.write(csv.toString().toByteArray())
@@ -381,7 +381,7 @@ class JobDetailsActivity : AppCompatActivity(),
 
     override fun onClick(v: View?) {
         when(v?.id) {
-            R.id.btnExportApplicants -> export()
+            R.id.btnExportApplicants -> exportApplicationToCsv()
         }
     }
 

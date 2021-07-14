@@ -18,6 +18,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextAppearance="@style/Toolbar.TitleText" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnExportApplicants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:drawableStart="@drawable/ic_export_white_24dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/txt_export"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/rvApplication"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvApplication"
         android:layout_width="match_parent"
@@ -25,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/btnExportApplicants" />
 
     <TextView
         android:id="@+id/tvNoData"

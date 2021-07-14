@@ -1,11 +1,14 @@
 package org.d3ifcool.dissajobrecruiter.ui.application
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +26,8 @@ import org.d3ifcool.dissajobrecruiter.ui.job.JobViewModel
 import org.d3ifcool.dissajobrecruiter.ui.job.callback.LoadJobDataCallback
 import org.d3ifcool.dissajobrecruiter.ui.viewmodel.ViewModelFactory
 import org.d3ifcool.dissajobrecruiter.vo.Status
+import java.io.File
+import java.io.FileOutputStream
 
 class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
     View.OnClickListener, OnApplicationClickCallback, LoadJobDataCallback,
@@ -38,6 +43,10 @@ class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
 
     private val recruiterId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
+    private val csv = StringBuilder()
+
+    private var count = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityApplicationBinding = ActivityApplicationBinding.inflate(layoutInflater)
@@ -47,6 +56,8 @@ class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
         setSupportActionBar(activityApplicationBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        csv.append("No,Nama,Email,Nomor Telepon,Tentang,Melamar Sebagai,Tanggal Melamar,Status Lamaran")
 
         showLoading(true)
         val factory = ViewModelFactory.getInstance(this)
@@ -66,8 +77,15 @@ class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
                                 applicationAdapter.submitList(applicants.data)
                                 applicationAdapter.notifyDataSetChanged()
                                 activityApplicationBinding.tvNoData.visibility = View.GONE
+                                activityApplicationBinding.btnExportApplicants.visibility =
+                                    View.VISIBLE
+                                activityApplicationBinding.btnExportApplicants.setOnClickListener(
+                                    this
+                                )
                             } else {
                                 activityApplicationBinding.tvNoData.visibility = View.VISIBLE
+                                activityApplicationBinding.btnExportApplicants.visibility =
+                                    View.GONE
                             }
                         }
                         Status.ERROR -> {
@@ -112,6 +130,7 @@ class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.imgBackBtn -> finish()
+            R.id.btnExportApplicants -> exportApplicationToCsv()
         }
     }
 
@@ -160,5 +179,34 @@ class ApplicationActivity : AppCompatActivity(), LoadApplicantDataCallback,
         applicantEntity: ApplicantEntity,
         jobDetailsEntity: JobDetailsEntity
     ) {
+        if (count != applicationAdapter.itemCount) {
+            count++
+            csv.append("\n$count,${applicantEntity.fullName},${applicantEntity.email},${applicantEntity.phoneNumber},${applicantEntity.aboutMe},${jobDetailsEntity.title},${applicationEntity.applyDate.toString()},${applicationEntity.status}")
+        }
+    }
+
+    private fun exportApplicationToCsv() {
+        try {
+            val fo: FileOutputStream = openFileOutput("Daftar Pelamar.csv", Context.MODE_PRIVATE)
+            fo.write(csv.toString().toByteArray())
+            fo.close()
+
+            //exporting
+            val context = applicationContext
+            val filelocation = File(filesDir, "Daftar Pelamar.csv")
+            val path: Uri = FileProvider.getUriForFile(
+                context,
+                "org.d3ifcool.dissajobrecruiter.fileprovider",
+                filelocation
+            )
+            val fileIntent = Intent(Intent.ACTION_SEND)
+            fileIntent.type = "text/csv"
+            fileIntent.putExtra(Intent.EXTRA_SUBJECT, "Daftar Pelamar")
+            fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            fileIntent.putExtra(Intent.EXTRA_STREAM, path)
+            startActivity(Intent.createChooser(fileIntent, "Send mail"))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
